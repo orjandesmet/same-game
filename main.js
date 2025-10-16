@@ -181,3 +181,4 @@ if (!input) {
 let new_board = createBoard();
 let new_score = 0;
 loop(new_board, new_score);
+// TODO: Try this with rxjs subscriptions
