@@ -1,0 +1,29 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.game-form {
+  position: absolute;
+  background-color: light-dark(#ffffff, #242424);
+}
+
+.game-form.closed {
+  display: none;
+}
+
+.game-options {
+  display: grid;
+  column-gap: 0.5rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.game-options label {
+  text-align: end;
+}
+
+.game-options input {
+  text-align: start;
+}
