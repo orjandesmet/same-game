@@ -8,13 +8,13 @@ export class Mulberry32 implements PRNG {
     this._originalSeed = seed;
     this._state = seed >>> 0;
   }
-  
+
   get seed(): Seed {
     return this._originalSeed;
   }
 
   public nextFloat() {
-    this._state += 0x6D2B79F5;
+    this._state += 0x6d2b79f5;
     let x = this._state;
     x = Math.imul(x ^ (x >>> 15), x | 1);
     x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
@@ -26,6 +26,7 @@ export class Mulberry32 implements PRNG {
   }
 
   reseed(seed: Seed) {
+    this._originalSeed = seed;
     this._state = seed >>> 0;
     if (this._state === 0) this._state = 1;
   }

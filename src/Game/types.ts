@@ -1,7 +1,20 @@
-export const COLORS = ['R', 'B', 'Y', 'G', 'W'] as const;
-export const EMPTY = '_' as const;
-export type CellValue = typeof COLORS[number] | typeof EMPTY;
-export type CellKey = `${number}:${number}`;
-export type Cell = {key: CellKey; value: CellValue;};
-export type Board = Cell[][];
-export type FlatBoard = Array<Cell & {rowIdx: number, columnIdx: number}>;
+import type { Board } from './board';
+import type { CellColor } from './cells';
+
+export const ALL_CLEARED_BONUS = 1000;
+
+export type GameStatus = Readonly<
+  'NOT-STARTED' | 'IN-PROGRESS' | 'PAUSED' | 'GAME-OVER'
+>;
+export type ScoreCard = {
+  allCleared: boolean;
+    cellsRemoved: number;
+    multiplier: number;
+    pkmn: CellColor[],
+  };
+export type GameState = Readonly<{
+  board: Board;
+  movesLeft: number;
+  scoreCard: Readonly<ScoreCard>;
+  gameState: GameStatus;
+}>;

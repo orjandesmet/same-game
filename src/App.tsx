@@ -1,104 +1,114 @@
-import { useCallback, useEffect, useState } from 'react'
-import './App.css'
-import { Board } from './Game/Board'
-import { SameGame } from './Game/engine'
-import { COLORS, type FlatBoard } from './Game/types'
-import { cellUtils } from './Game/cellUtils'
-import { Xorshift32 } from './Game/rng/xorshift32'
-import { clamp } from './utils/clamp'
+import { Board } from './components/Board';
+import { EffectsOverlay } from './components/EffectsOverlay';
+import { OptionsForm } from './components/OptionsForm';
+import { ScoreBoard } from './components/ScoreBoard';
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'react';
+import './App.css';
+import { effectUtils } from './game/effects';
+import { ALL_CLEARED_BONUS, calculatePkmnScore, calculateScore, PKMN_NAMES, SameGame, type Color, type ColumnIdx, type GameState, type GameStatus, type RowIdx, type ScoreCard } from './game';
+import { Xorshift32 } from './game/rng/xorshift32';
 
 const game = new SameGame(new Xorshift32());
 
 function App() {
   const [nrOfRows, setNrOfRows] = useState(10);
   const [nrOfColumns, setNrOfColumns] = useState(10);
-  const [nrOfColors, setNrOfColors] = useState(4);
-  const [seed, setSeed] = useState(game.seed);
-  const [flatBoard, setFlatBoard] = useState(game.board);
+  const [colors, setColors] = useState<Color[]>(['R', 'Y', 'W', 'B']);
+  const [board, setBoard] = useState(game.board);
   const [movesLeft, setMovesLeft] = useState(game.movesLeft);
-  const [score, setScore] = useState(game.score);
+  const [scoreCard, setScoreCard] = useState<Partial<ScoreCard>>({});
+  const [gameState, setGameState] = useState<GameStatus>('NOT-STARTED');
+  const [effects, setEffects] = useState<string[]>([]);
+  const [styles, setStyles] = useState<CSSProperties>({});
 
-  const [optionsOpen, setOptionsOpen] = useState(false);
+  const score = useMemo(() => calculateScore(scoreCard), [scoreCard]);
 
-  const handleStart = useCallback((newSeed?: number) => {
-    if (newSeed) {
-      setSeed(newSeed);
-    }
-    game.startGame(nrOfRows, nrOfColumns, nrOfColors, newSeed || seed);
-    setFlatBoard(game.board);
-    setMovesLeft(game.movesLeft);
-    setScore(game.score);
-  }, [nrOfRows, nrOfColumns, seed, nrOfColors]);
+  const handleStart = useCallback(
+    (newSeed: number) => {
+      game.startGame(nrOfRows, nrOfColumns, colors, newSeed);
+    },
+    [nrOfRows, nrOfColumns, colors]
+  );
 
-  const handleCellClick = useCallback((cell: FlatBoard[number]) => {
-    const cellKey = cellUtils.createCellKey(cell.rowIdx, cell.columnIdx);
-    game.removeGroupForCell(cellKey);
-    setFlatBoard(game.board);
-    setMovesLeft(game.movesLeft);
-    setScore(game.score);
+  const handleCellClick = useCallback(
+    (rowIdx: RowIdx, columnIdx: ColumnIdx) => {
+      const effects = game.removeGroupForCell(rowIdx, columnIdx);
+      setEffects(
+        effects
+          .map((stage) => stage.effectName)
+          .filter((effectName): effectName is string => !!effectName)
+      );
+      setTimeout(() => {
+        setEffects([]);
+      }, effectUtils.calculateEffectsDuration(effects));
+    },
+    []
+  );
+
+  const handleStateChange = useCallback((gameState: GameState) => {
+    setBoard(gameState.board);
+    setMovesLeft(gameState.movesLeft);
+    setScoreCard(gameState.scoreCard);
+    setGameState(gameState.gameState);
   }, []);
 
   useEffect(() => {
+    game.addStateChangeListener(handleStateChange);
+
     if (typeof window !== 'undefined') {
       const searchParams = new URLSearchParams(window.location.search);
       if (searchParams.get('debug')) {
         game.enableDebugMode();
       }
+      const seedParam = searchParams.get('seed');
+      const startingSeed = seedParam && !isNaN(Number(seedParam)) ? Number(seedParam) : Date.now();
+      console.log(startingSeed);
+      if (searchParams.get('pi')) {
+        setStyles({
+          '--i-img-r': "url('/pi/R.png')",
+          '--i-img-b': "url('/pi/B.png')",
+          '--i-img-g': "url('/pi/G.png')",
+          '--i-img-y': "url('/pi/Y.png')",
+          '--i-img-p': "url('/pi/P.png')",
+          '--i-img-w': "url('/pi/W.png')",
+        } as CSSProperties);
+      }
+      handleStart(startingSeed);
     }
-    handleStart();
-  }, [handleStart]);
 
-  const handleNrOfRowsChange = (value: number) => {
-    if (isNaN(value)) {
-      return;
-    }
-    setNrOfRows(clamp(5, value, 20));
-  }
-
-  const handleNrOfColumnsChange = (value: number) => {
-    if (isNaN(value)) {
-      return;
-    }
-    setNrOfColumns(clamp(5, value, 20));
-  }
-
-  const handleNrOfColors = (value: number) => {
-    if (isNaN(value)) {
-      return;
-    }
-    setNrOfColors(clamp(2, value, COLORS.length));
-  }
-
-  const handleSeedChange = (value: number) => {
-    if (isNaN(value)) {
-      return;
-    }
-    setSeed(value);
-  }
+    return () => {
+      game.removeStateChangeListener(handleStateChange);
+    };
+  }, [handleStart, handleStateChange]);
 
   return (
-    <div className="game-root">
-      <form className={`game-form ${optionsOpen ? 'open' : 'closed'}`}>
-        <fieldset className="game-options">
-          <legend>Game Options</legend>
-          <label htmlFor="fldNrOfRows">Number of Rows ({nrOfRows})</label>
-          <input id="fldNrOfRows" type="range" min={5} max={20} value={nrOfRows} onChange={(e) => handleNrOfRowsChange(Number(e.target.value))} />
-          <label htmlFor="fldNrOfColumns">Number of Columns ({nrOfColumns})</label>
-          <input id="fldNrOfColumns" type="range" min={5} max={20} value={nrOfColumns} onChange={(e) => handleNrOfColumnsChange(Number(e.target.value))} />
-          <label htmlFor="fldNrOfColors">Number of Colors ({nrOfColors})</label>
-          <input id="fldNrOfColors" type="range" min={2} max={COLORS.length} value={nrOfColors} onChange={(e) => handleNrOfColors(Number(e.target.value))} />
-          <label htmlFor="fldSeed">Seed</label>
-          <input id="fldSeed" type="number" inputMode="numeric" placeholder='Seed' value={seed} onChange={(e) => handleSeedChange(Number(e.target.value))} />
-        </fieldset>
-        <button type="button" onClick={() => setOptionsOpen(false)}>Close</button>
-      </form>
-      <button type="button" onClick={() => setOptionsOpen(true)}>Options...</button>
-      <Board flatBoard={flatBoard} nrOfRows={nrOfRows} nrOfColumns={nrOfColumns} onCellClick={handleCellClick} />
-      <div>Moves left: {movesLeft}</div>
-      <div>Score: {score}</div>
-      <button type="button" onClick={() => handleStart(Date.now())}>START NEW GAME</button>
+    <div className="game-root" style={styles}>
+      <OptionsForm
+        nrOfRows={nrOfRows}
+        nrOfColumns={nrOfColumns}
+        partyMembers={colors}
+        onNrOfRowsChange={setNrOfRows}
+        onNrOfColumnsChange={setNrOfColumns}
+        onPartyMembersChange={setColors}
+        onStartGame={() => handleStart(Date.now())}
+      />
+      <Board board={board} onCellClick={handleCellClick} isGameOver={gameState === 'GAME-OVER'}>
+        <h2>BLACKED OUT</h2>
+        <span>Cells removed: {scoreCard.cellsRemoved ?? 0}</span>
+        {scoreCard.multiplier && scoreCard.multiplier !== 1 && <span>Multiplier: x{scoreCard.multiplier ?? 1}</span>}
+        {!!scoreCard.pkmn?.length && (<>
+          <span>POKéMON used:</span>
+          {calculatePkmnScore(scoreCard.pkmn ?? []).map(({color, score}) => (<span>{PKMN_NAMES[color]}: {score}</span>))}
+        </>)}
+        {scoreCard.allCleared && <span>All cleared bonus: {ALL_CLEARED_BONUS}</span>}
+        <hr />
+        <span>Final score: {score}</span>
+        <button className="restart-button" type="button" onClick={() => handleStart(Date.now())}>START NEW GAME</button>
+      </Board>
+      <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed} />
+      <EffectsOverlay effects={effects} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -24,7 +24,7 @@ export class Xorshift32 implements PRNG {
   }
 
   nextFloat() {
-    return this.nextInt() / 0xFFFFFFFF;
+    return this.nextInt() / 0xffffffff;
   }
 
   nextRange(min: number, max: number) {
@@ -32,6 +32,7 @@ export class Xorshift32 implements PRNG {
   }
 
   reseed(seed: Seed) {
+    this._originalSeed = seed;
     this._state = seed >>> 0;
     if (this._state === 0) this._state = 1;
   }
