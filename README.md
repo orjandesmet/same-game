@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# Same Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+What started as a joke became a little obsession.
 
-Currently, two official plugins are available:
+## Why I made this
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+I wanted to surprise my colleagues with a continuation of an ongoing inner joke where the image of one of my colleagues was planted onto a Pokemon.
+The new idea was to create a little game with those characters and share it with the team when I was about to leave the company.
+My mind was racing with ideas: use different colors, give the different characters their signature moves, add options, add a recorder to replay the last game, add a literal extra dimension ...
+Not all these ideas came to be (yet).
 
-## React Compiler
+Most of all, I wanted it to be fun!
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## How I made this game
 
-## Expanding the ESLint configuration
+The first question to ask was
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+> Which game could I make? 
+> It should have simple rules and easy to implement.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+When I was still in university, one of the students had an old-school PDA, the type where a stylus was advised to interact with the small elements on the pixelated screen.
+But it sported the Same Game in all of 4 colors.
+I remember it being such fun to play this during classes.
+It easily beat the runner-up, the Bejeweled clone.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+As I couldn't remember the stupid name of this game, I send a query to ChatGPT to find out what this game was called.
+Additionally I needed to know what the rules are and how the score is calculated. 
+Once I had this information, I tried to implement this game.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The first version was a single JavaScript file that logged to console.
+I kept switching between a two-dimensional array representing the rows and columns and a one-dimensional array with an object that had its coordinates as properties.
+Each representation had its advantages and disadvantages, but I ultimately decided on a two-dimensional array with a function to cpnvert it to a one-dimensional array.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+While working through the function for removing cells from the grid, I finally found an easier way to filter out the removed cells.
+The solution was to switch the two-dimensional array from row-column dimensions to dimension-row dimensions.
+This lead to the end of the first phase, the game engine.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The next step was to work on the presentation.
+I wanted to use a light-weight JS library like [Phaser](https://phaser.io/), [LittleJS](https://killedbyapixel.github.io/LittleJS/) or [ExcaliburJS](https://excaliburjs.com/).
+I eventually decided on [React](https://react.dev/), with [Vite](https://vite.dev) as the build tool because of the familiarity and for a joke project I didn't want to spend the extra time learning a new framework on top of how to animate this.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The time I was afk, I clumsily fiddled with CSS animations on my phone.
+In the meantime I worked out ideas to improve on this game and to give it a special twist.
+These eventually got implemented into the project or at least became an issue on the GitHub project.
+
