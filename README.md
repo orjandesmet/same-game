@@ -39,7 +39,8 @@ The next step was to work on the presentation.
 I wanted to use a light-weight JS library like [Phaser](https://phaser.io/), [LittleJS](https://killedbyapixel.github.io/LittleJS/) or [ExcaliburJS](https://excaliburjs.com/).
 I eventually decided on [React](https://react.dev/), with [Vite](https://vite.dev) as the build tool because of the familiarity and for a joke project I didn't want to spend the extra time learning a new framework on top of how to animate this.
 
+I sank more time into this than expected.
+During work breaks, I stayed at my computer to work on this little game.
 The time I was afk, I clumsily fiddled with CSS animations on my phone.
 In the meantime I worked out ideas to improve on this game and to give it a special twist.
 These eventually got implemented into the project or at least became an issue on the GitHub project.
-
