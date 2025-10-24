@@ -2,6 +2,8 @@
 
 What started as a joke became a little obsession.
 
+[Play](https://same-game.orjan.be/)
+
 ## Why I made this
 
 I wanted to surprise my colleagues with a continuation of an ongoing inner joke where the image of one of my colleagues was planted onto a Pokemon.
@@ -44,3 +46,9 @@ During work breaks, I stayed at my computer to work on this little game.
 The time I was afk, I clumsily fiddled with CSS animations on my phone.
 In the meantime I worked out ideas to improve on this game and to give it a special twist.
 These eventually got implemented into the project or at least became an issue on the GitHub project.
+
+## Disclaimer
+
+Pokémon, the Pokémon logo, and the names of all Pokémon characters are trademarks of Nintendo, The Pokémon Company, and/or Game Freak.
+All rights reserved.
+I am not, in any way, affiliated by these companies.
