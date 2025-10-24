@@ -19,14 +19,14 @@ function App() {
   const [styles, setStyles] = useState<CSSProperties>({});
 
   const {board, gameState, movesLeft, score, scoreCard} = useGameState(game);
-  const {colors, nrOfColumns, nrOfRows, setColors, setNrOfColumns, setNrOfRows} = useGameOptions();
+  const {nrOfColumns, nrOfRows, partyMembers, setNrOfColumns, setNrOfRows, setPartyMembers} = useGameOptions();
 
   const handleStart = useCallback(
     (newSeed?: number) => {
       const seed = newSeed || (Date.now() % (12 * 60 * 60 * 1000));
-      game.startGame(nrOfRows, nrOfColumns, colors, seed);
+      game.startGame(nrOfRows, nrOfColumns, partyMembers, seed);
     },
-    [nrOfRows, nrOfColumns, colors]
+    [nrOfRows, nrOfColumns, partyMembers]
   );
 
   const handleCellClick = useCallback(
@@ -52,7 +52,6 @@ function App() {
       }
       const seedParam = searchParams.get('seed');
       const startingSeed = seedParam && !isNaN(Number(seedParam)) ? Number(seedParam) : undefined;
-      console.log(startingSeed);
       if (searchParams.get('pi')) {
         setStyles({
           '--i-img-r': "url('/pi/R.png')",
@@ -72,10 +71,10 @@ function App() {
       <OptionsForm
         nrOfRows={nrOfRows}
         nrOfColumns={nrOfColumns}
-        partyMembers={colors}
+        partyMembers={partyMembers}
         onNrOfRowsChange={setNrOfRows}
         onNrOfColumnsChange={setNrOfColumns}
-        onPartyMembersChange={setColors}
+        onPartyMembersChange={setPartyMembers}
         onStartGame={() => handleStart()}
       />
       <Board board={board} onCellClick={handleCellClick} isGameOver={gameState === 'GAME-OVER'}>
