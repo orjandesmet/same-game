@@ -92,9 +92,3 @@ input[type=checkbox]:checked + .options-label .party-image {
 input[type=checkbox]:disabled + .options-label .party-image {
   filter: grayscale() brightness(0.5);
 } */
-
-@media (max-width: 480px) {
-  .party-name {
-    display: none;
-  }
-}
