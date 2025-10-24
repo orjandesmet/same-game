@@ -1,8 +1,9 @@
 import { useCallback, useState, type ChangeEvent } from 'react';
 import { clsx } from 'clsx';
-import { clamp } from '../../utils/clamp';
-import { COLORS, PKMN_NAMES, type Color } from '../../game';
+import { clamp } from '@utils/clamp';
+import { COLORS, type Color } from '@game/cells';
 import './OptionsForm.css';
+import { PKMN_NAMES } from '@game';
 
 type OptionsFormProps = {
   nrOfRows: number;

@@ -22,7 +22,17 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Paths */
+    "paths": {
+      "@components/*": ["./src/components/*/index.ts"],
+      "@game": ["./src/game/index.ts"],
+      "@game/*": ["./src/game/*/index.ts"],
+      "@game/rng/*": ["./src/game/rng/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@utils/*": ["./src/utils/*"],
+    }
   },
   "include": ["src"]
 }

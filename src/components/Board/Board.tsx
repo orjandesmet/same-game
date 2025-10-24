@@ -1,8 +1,9 @@
 import { clsx } from 'clsx';
 
-import { cellUtils, type Board } from '../../game';
-import type { CSSProperties, PropsWithChildren } from 'react';
+;import type { CSSProperties, PropsWithChildren } from 'react';
 import './Board.css';
+import { cellUtils } from '@game/cells';
+import type { Board } from '@game/board';
 
 type BoardProps = PropsWithChildren<{
   board: Board;
