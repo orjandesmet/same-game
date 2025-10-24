@@ -24,8 +24,9 @@ function App() {
   const score = useMemo(() => calculateScore(scoreCard), [scoreCard]);
 
   const handleStart = useCallback(
-    (newSeed: number) => {
-      game.startGame(nrOfRows, nrOfColumns, colors, newSeed);
+    (newSeed?: number) => {
+      const seed = newSeed || (Date.now() % (12 * 60 * 60 * 1000));
+      game.startGame(nrOfRows, nrOfColumns, colors, seed);
     },
     [nrOfRows, nrOfColumns, colors]
   );
@@ -61,7 +62,7 @@ function App() {
         game.enableDebugMode();
       }
       const seedParam = searchParams.get('seed');
-      const startingSeed = seedParam && !isNaN(Number(seedParam)) ? Number(seedParam) : Date.now();
+      const startingSeed = seedParam && !isNaN(Number(seedParam)) ? Number(seedParam) : undefined;
       console.log(startingSeed);
       if (searchParams.get('pi')) {
         setStyles({
@@ -90,7 +91,7 @@ function App() {
         onNrOfRowsChange={setNrOfRows}
         onNrOfColumnsChange={setNrOfColumns}
         onPartyMembersChange={setColors}
-        onStartGame={() => handleStart(Date.now())}
+        onStartGame={() => handleStart()}
       />
       <Board board={board} onCellClick={handleCellClick} isGameOver={gameState === 'GAME-OVER'}>
         <h2>BLACKED OUT</h2>
@@ -103,7 +104,7 @@ function App() {
         {scoreCard.allCleared && <span>All cleared bonus: {ALL_CLEARED_BONUS}</span>}
         <hr />
         <span>Final score: {score}</span>
-        <button className="restart-button" type="button" onClick={() => handleStart(Date.now())}>START NEW GAME</button>
+        <button className="restart-button" type="button" onClick={() => handleStart()}>START NEW GAME</button>
       </Board>
       <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed} />
       <EffectsOverlay effects={effects} />
