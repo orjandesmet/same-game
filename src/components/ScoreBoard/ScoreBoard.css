@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
   margin: 0.75em 0;
   padding: 0.75em;
   border: 1px solid var(--i-foreground-color);
@@ -20,6 +21,12 @@
   display: flex;
   flex-direction: column;
   align-items: end;
+}
+
+.score-board-info-item {
+  display: inline-flex;
+  align-items: start;
+  gap: 0.5em;
 }
 
 .external-logo {

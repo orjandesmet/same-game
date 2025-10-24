@@ -1,3 +1,4 @@
+import { Octicon } from '../Octicon/Octicon';
 import './ScoreBoard.css';
 
 type ScoreBoardProps = {
@@ -16,18 +17,18 @@ export function ScoreBoard(props: ScoreBoardProps) {
         Score: <span className="score-board-value">{props.score}</span>
       </div>
       <div className="score-board-info">
-        <div>
-          🌱 <span className="score-board-value">{props.seed}</span>
+        <div className="score-board-info-item">
+          <span>🌱</span>
+          <span className="score-board-value">{props.seed}</span>
         </div>
-        <div>
-          <a
-            href="https://github.com/orjandesmet/same-game"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/github.svg" className="external-logo" /> GitHub
-          </a>
-        </div>
+        <a
+          href="https://github.com/orjandesmet/same-game"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="score-board-info-item external-link"
+        >
+          <Octicon className="external-logo" /><span>GitHub</span>
+        </a>
       </div>
     </div>
   );
