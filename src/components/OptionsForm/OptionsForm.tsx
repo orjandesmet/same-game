@@ -62,7 +62,7 @@ export function OptionsForm({partyMembers, onPartyMembersChange, ...props}: Opti
       >
         <div className="options-form" onClick={(e) => e.stopPropagation()}>
           <fieldset className="options-fieldset">
-            <legend>OPTIONS</legend>
+            <legend>OPTION</legend>
             <label className="options-label" htmlFor="fldNrOfRows">
               <img className="options-arrow" src="/sprites/arrow-solid.svg" aria-hidden /><span>Nr of Rows</span><span>({props.nrOfRows})</span>
             </label>
@@ -116,10 +116,10 @@ export function OptionsForm({partyMembers, onPartyMembersChange, ...props}: Opti
       </div>
       <div className="options-form-buttons">
         <button type="button" onClick={() => props.onStartGame()}>
-          START NEW GAME
+          NEW GAME
         </button>
         <button type="button" onClick={() => setOptionsOpen(true)}>
-          Options...
+          OPTION
         </button>
       </div>
     </>
