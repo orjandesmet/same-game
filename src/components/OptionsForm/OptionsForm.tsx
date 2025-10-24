@@ -102,7 +102,7 @@ export function OptionsForm({partyMembers, onPartyMembersChange, ...props}: Opti
                   />
                   <label className="options-label" htmlFor={`chk${color}`}>
                     <img className="options-arrow" src="/sprites/arrow-solid.svg" aria-hidden />
-                    <img className="party-image" src={`/${color}.png`} alt={PKMN_NAMES[color]} />
+                    <img className="party-image" src={`/sprites/${color}.png`} alt={PKMN_NAMES[color]} />
                     <span className="party-name">{PKMN_NAMES[color]}</span>
                   </label>
                 </div>

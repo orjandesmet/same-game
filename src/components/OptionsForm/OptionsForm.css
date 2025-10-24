@@ -43,10 +43,10 @@
 
 .options-label {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: end;
   flex-wrap: wrap;
-  gap: 0.25em;
+  gap: 0.5em;
 }
 
 .options-label .options-arrow {
@@ -79,8 +79,13 @@ input[type=checkbox]:focus-visible + .options-label .options-arrow {
 }
 
 .party-image {
-  width: 1em;
+  width: 1.5em;
   aspect-ratio: 1 / 1;
+}
+
+.party-name {
+  margin-block: auto;
+  height: 1em;
 }
 
 /* input[type=checkbox] {
