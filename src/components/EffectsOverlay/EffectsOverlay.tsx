@@ -5,7 +5,7 @@ import {
   EFFECT_DURATION_MS,
   METRONOME_DURATION_MS,
   TRANSFORM_DURATION_MS,
-} from '../../game';
+} from '@game/effects';
 
 type EffectsOverlayProps = {
   effects: string[];
