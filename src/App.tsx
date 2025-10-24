@@ -52,7 +52,6 @@ function App() {
       }
       const seedParam = searchParams.get('seed');
       const startingSeed = seedParam && !isNaN(Number(seedParam)) ? Number(seedParam) : undefined;
-      console.log(startingSeed);
       if (searchParams.get('pi')) {
         setStyles({
           '--i-img-r': "url('/pi/R.png')",
