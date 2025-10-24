@@ -1,21 +1,27 @@
 import { useCallback, useState, type ChangeEvent } from 'react';
 import { clsx } from 'clsx';
 import { clamp } from '@utils/clamp';
-import { COLORS, type Color } from '@game/cells';
+import { COLORS, type Color, type PartyMembers } from '@game/cells';
 import './OptionsForm.css';
 import { PKMN_NAMES } from '@game';
+import { LvlIcon } from '@components/LvlIcon';
+import { ArrowRight } from '@components/ArrowRight';
 
 type OptionsFormProps = {
   nrOfRows: number;
   nrOfColumns: number;
-  partyMembers: Color[];
+  partyMembers: PartyMembers;
   onNrOfRowsChange: (nrOfRows: number) => void;
   onNrOfColumnsChange: (nrOfColumns: number) => void;
-  onPartyMembersChange: (partyMembers: Color[]) => void;
+  onPartyMembersChange: (partyMembers: PartyMembers) => void;
   onStartGame: () => void;
 };
 
-export function OptionsForm({partyMembers, onPartyMembersChange, ...props}: OptionsFormProps) {
+export function OptionsForm({
+  partyMembers,
+  onPartyMembersChange,
+  ...props
+}: OptionsFormProps) {
   const [optionsOpen, setOptionsOpen] = useState(false);
 
   const handleNrOfRowsChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,26 +40,72 @@ export function OptionsForm({partyMembers, onPartyMembersChange, ...props}: Opti
     props.onNrOfColumnsChange(clamp(5, value, 20));
   };
 
-  const handlePartyMemberChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value as Color;
-    const isChecked = event.target.checked;
-    const newParty = partyMembers.filter((partyMember) => partyMember !== value).concat(isChecked ? value : []);
+  const partyMembersInclude = useCallback(
+    (color: Color) => !!partyMembers[color] && partyMembers[color] > 0,
+    [partyMembers]
+  );
 
-    onPartyMembersChange(newParty);
-  }, [partyMembers, onPartyMembersChange]);
+  const handlePartyMemberChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const color = event.target.value as Color;
+      const isChecked = event.target.checked;
+      const newValue = Math.abs(partyMembers[color]) * (isChecked ? 1 : -1);
 
-  const isDisabled = useCallback((color: Color): boolean => {
-    if (partyMembers.length <= 2 && partyMembers.includes(color)) {
-      return true;
-    }
-    if (color === 'W') {
-      return partyMembers.includes(color) && partyMembers.filter((c) => c !== 'P').length <= 1;
-    }
-    if (color === 'P') {
-      return partyMembers.includes(color) && partyMembers.filter((c) => c!=='W').length <= 1;
-    }
-    return partyMembers.includes(color) && partyMembers.filter((c) => c !== 'P' && c!=='W').length <= 1;
-  }, [partyMembers]);
+      const newParty = structuredClone(partyMembers);
+      newParty[color] = newValue;
+
+      onPartyMembersChange(newParty);
+    },
+    [partyMembers, onPartyMembersChange]
+  );
+
+  const handlePartyMemberLevelChange = useCallback(
+    (color: Color, lvl: number) => {
+      if (isNaN(lvl)) {
+        return;
+      }
+      const newValue =
+        (clamp(1, lvl, 100) / 100) * (partyMembersInclude(color) ? 1 : -1);
+      const newParty = structuredClone(partyMembers);
+      newParty[color] = newValue;
+
+      onPartyMembersChange(newParty);
+    },
+    [partyMembers, onPartyMembersChange, partyMembersInclude]
+  );
+
+  const isDisabled = useCallback(
+    (color: Color): boolean => {
+      if (
+        Object.entries(partyMembers).filter(([, level]) => level > 0).length <=
+          2 &&
+        partyMembersInclude(color)
+      ) {
+        return true;
+      }
+      if (color === 'W') {
+        return (
+          partyMembersInclude(color) &&
+          Object.entries(partyMembers).filter(([c, l]) => c !== 'P' && l > 0)
+            .length <= 1
+        );
+      }
+      if (color === 'P') {
+        return (
+          partyMembersInclude(color) &&
+          Object.entries(partyMembers).filter(([c, l]) => c !== 'W' && l > 0)
+            .length <= 1
+        );
+      }
+      return (
+        partyMembersInclude(color) &&
+        Object.entries(partyMembers).filter(
+          ([c, l]) => c !== 'P' && c !== 'W' && l > 0
+        ).length <= 1
+      );
+    },
+    [partyMembers, partyMembersInclude]
+  );
 
   return (
     <>
@@ -65,7 +117,9 @@ export function OptionsForm({partyMembers, onPartyMembersChange, ...props}: Opti
           <fieldset className="options-fieldset">
             <legend>OPTION</legend>
             <label className="options-label" htmlFor="fldNrOfRows">
-              <img className="options-arrow" src="/sprites/arrow-solid.svg" aria-hidden /><span>Nr of Rows</span><span>({props.nrOfRows})</span>
+              <ArrowRight className="options-arrow" solid aria-hidden />
+              <span>Nr of Rows</span>
+              <span>({props.nrOfRows})</span>
             </label>
             <input
               id="fldNrOfRows"
@@ -76,7 +130,9 @@ export function OptionsForm({partyMembers, onPartyMembersChange, ...props}: Opti
               onChange={handleNrOfRowsChange}
             />
             <label className="options-label" htmlFor="fldNrOfColumns">
-              <img className="options-arrow" src="/sprites/arrow-solid.svg" aria-hidden /><span>Nr of Columns</span><span>({props.nrOfColumns})</span>
+              <ArrowRight className="options-arrow" solid aria-hidden />
+              <span>Nr of Columns</span>
+              <span>({props.nrOfColumns})</span>
             </label>
             <input
               id="fldNrOfColumns"
@@ -90,28 +146,57 @@ export function OptionsForm({partyMembers, onPartyMembersChange, ...props}: Opti
           <fieldset>
             <legend>POKéMON (minimum: 2)</legend>
             <div className="party-members">
-              {COLORS.map((color) => (
-                <div className="party-member" key={color}>
-                  <input
-                    id={`chk${color}`}
-                    name="fldParty"
-                    type="checkbox"
-                    value={color}
-                    checked={partyMembers.includes(color)}
-                    disabled={isDisabled(color)}
-                    onChange={handlePartyMemberChange}
-                  />
-                  <label className="options-label" htmlFor={`chk${color}`}>
-                    <img className="options-arrow" src="/sprites/arrow-solid.svg" aria-hidden />
-                    <img className="party-image" src={`/sprites/${color}.png`} alt={PKMN_NAMES[color]} />
-                    <span className="party-name">{PKMN_NAMES[color]}</span>
-                  </label>
-                </div>
-              ))}
+              {COLORS.map((color) => {
+                const lvl = Math.round(Math.abs(partyMembers[color]) * 100);
+                return (
+                  <div className="party-member" key={color}>
+                    <input
+                      id={`chk${color}`}
+                      name="fldParty"
+                      type="checkbox"
+                      value={color}
+                      checked={partyMembersInclude(color)}
+                      disabled={isDisabled(color)}
+                      onChange={handlePartyMemberChange}
+                    />
+                    <label
+                      className="options-label options-label--party"
+                      htmlFor={`chk${color}`}
+                    >
+                      <ArrowRight
+                        className="options-arrow---"
+                        solid={partyMembersInclude(color)}
+                        aria-hidden
+                      />
+                      <img
+                        className="party-image"
+                        src={`/sprites/${color}.png`}
+                        alt={PKMN_NAMES[color]}
+                      />
+                      <span className="party-name">{PKMN_NAMES[color]}</span>
+                    </label>
+                    <span className="party-level">
+                      <LvlIcon />
+                      <input
+                        type="number"
+                        className="lvl-input"
+                        inputMode="numeric"
+                        value={lvl}
+                        onChange={(e) =>
+                          handlePartyMemberLevelChange(
+                            color,
+                            Number(e.target.value)
+                          )
+                        }
+                      />
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </fieldset>
           <button type="button" onClick={() => setOptionsOpen(false)}>
-            Close
+            CLOSE
           </button>
         </div>
       </div>

@@ -9,3 +9,5 @@ export const cellUtils = {
   hasPkmn,
   isEmptyCell,
 };
+
+export { BASE_PKMN_PROBABILITY } from './constants';

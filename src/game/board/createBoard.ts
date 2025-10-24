@@ -1,20 +1,22 @@
-import { cellUtils, type Color } from '../cells';
+import { cellUtils, type PartyMembers } from '../cells';
+import { getSelectedPartyMembers } from '../getSelectedPartyMembers';
 import type { PRNG } from '../rng';
 import type { Board } from './types';
 
 export function createBoard(
   nrOfRows: number,
   nrOfColumns: number,
-  colors: Color[],
+  partyMembers: PartyMembers,
   rng: Readonly<PRNG>
 ): Board {
+  const {selectedPartyMembers, colors} = getSelectedPartyMembers(partyMembers);
   return Array.from({ length: nrOfColumns }).map((_, columnIdx) =>
     Array.from({ length: nrOfRows }).map((_, rowIdx) => {
       const color = colors[rng.nextRange(0, colors.length)];
       return {
         key: cellUtils.createCellKey(rowIdx, columnIdx),
         color,
-        hasPkmn: cellUtils.hasPkmn(color, rng.nextFloat()),
+        hasPkmn: cellUtils.hasPkmn(color, rng.nextFloat(), selectedPartyMembers),
         cellState: 'NORMAL' as const,
       };
     })

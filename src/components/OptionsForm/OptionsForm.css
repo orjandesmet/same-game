@@ -43,10 +43,13 @@
 
 .options-label {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: end;
   flex-wrap: wrap;
   gap: 0.5em;
+}
+.options-label--party {
+  align-items: center;
 }
 
 .options-label .options-arrow {
@@ -56,10 +59,10 @@
   flex-shrink: 0;
 }
 
-.options-label:has(+ input[type=range]:focus) .options-arrow,
-.options-label:has(+ input[type=range]:focus-visible) .options-arrow,
-input[type=checkbox]:focus + .options-label .options-arrow,
-input[type=checkbox]:focus-visible + .options-label .options-arrow {
+.options-label:has(+ input[type='range']:focus) .options-arrow,
+.options-label:has(+ input[type='range']:focus-visible) .options-arrow,
+input[type='checkbox']:focus + .options-label .options-arrow,
+input[type='checkbox']:focus-visible + .options-label .options-arrow {
   /* TODO: This is anti-aliased, probably because of Image-Layer in svg file */
   /* TODO: Use currentColor */
   opacity: 1;
@@ -86,6 +89,17 @@ input[type=checkbox]:focus-visible + .options-label .options-arrow {
 .party-name {
   margin-block: auto;
   height: 1em;
+}
+
+.party-level {
+  margin-inline-start: auto;
+}
+
+.lvl-input {
+  border: none;
+  width: 5em;
+  font-size: 1em;
+  font-family: 'Pokemon GB';
 }
 
 /* input[type=checkbox] {
