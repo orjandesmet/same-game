@@ -1,0 +1,28 @@
+.score-board {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0.75em 0;
+  padding: 0.75em;
+  border: 1px solid var(--i-foreground-color);
+  background-color: light-dark(#f0f0f0, #1e1e1e);
+  border-radius: 8px;
+  width: 100%;
+}
+
+.score-board-value {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.score-board-info {
+  font-size: 0.65em;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.external-logo {
+  height: 1em;
+  width: 1em;
+}

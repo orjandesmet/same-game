@@ -1,0 +1,3 @@
+export const EFFECT_DURATION_MS = 2000;
+export const TRANSFORM_DURATION_MS = 1000;
+export const METRONOME_DURATION_MS = 1500;
