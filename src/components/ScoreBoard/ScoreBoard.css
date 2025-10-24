@@ -22,6 +22,12 @@
   align-items: end;
 }
 
+.score-board-info-item {
+  display: inline-flex;
+  align-items: start;
+  gap: 0.5em;
+}
+
 .external-logo {
   height: 1em;
   width: 1em;
