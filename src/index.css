@@ -14,13 +14,28 @@
   --i-img-p: url('/P.png');
   --i-img-w: url('/W.png');
 
+  --i-color-r: #e1af87;
+  --i-color-r-accent-1: #e46c43;
+  --i-color-r-accent-2: #fcda6c;
+  --i-color-b: #a0d4e1;
+  --i-color-b-accent-1: #e7d8b9;
+  --i-color-b-accent-2: #3797ae;
+  --i-color-g: #8ac5ab;
+  --i-color-g-accent: #44785a;
+  --i-color-y: #f2d57a;
+  --i-color-y-accent: #7b5a35;
+  --i-color-p: #cdb8d8;
+  --i-color-p-accent: #9682a5;
+  --i-color-w: #dbd8ce;
+  --i-color-w-accent-1: #ba563e;
+  --i-color-w-accent-2: #4ca3c3;
+
   background-color: var(--i-background-color);
   color: var(--i-foreground-color);
   font-synthesis: none;
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
   max-width: 100vw;
   max-height: 100vh;
 }
@@ -72,4 +87,11 @@ button:focus-visible {
   :root {
     font-size: 1rem;
   }
+}
+
+#root {
+  width: 768px;
+  max-width: calc(100vw - 32px);
+  margin: 0 auto;
+  text-align: center;
 }

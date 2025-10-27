@@ -3,4 +3,6 @@
   overflow: visible !important;
   vertical-align: text-bottom;
   fill: currentColor;
+  height: 1em;
+  aspect-ratio: 1 / 1;
 }

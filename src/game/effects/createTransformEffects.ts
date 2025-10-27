@@ -1,6 +1,7 @@
-import { cellUtils, type Color } from '../cells';
-import type { PRNG } from '../rng';
+import type { Color } from '@game/pkmn';
 import type { Group } from '../board';
+import { cellUtils } from '../cells';
+import type { PRNG } from '../rng';
 import { EFFECT_DURATION_MS, TRANSFORM_DURATION_MS } from './constants';
 import type { EffectGroupFn, Effects } from './types';
 

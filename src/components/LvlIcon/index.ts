@@ -1,1 +1,1 @@
-export {LvlIcon} from './LvlIcon';
+export { LvlIcon } from './LvlIcon';

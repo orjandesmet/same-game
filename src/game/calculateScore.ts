@@ -1,4 +1,5 @@
-import { COLORS, type CellColor, type Color } from './cells';
+import { type CellColor } from './cells';
+import { COLORS, type Color } from './pkmn';
 import { ALL_CLEARED_BONUS, type ScoreCard } from './types';
 
 export function calculateScore(scoreCard: Partial<ScoreCard> = {}, debug?: (...args: unknown[]) => void): number {

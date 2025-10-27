@@ -3,7 +3,7 @@ import { EffectsOverlay } from '@components/EffectsOverlay';
 import { OptionsForm } from '@components/OptionsForm';
 import { ScoreBoard } from '@components/ScoreBoard';
 import { useCallback, useEffect, useState, type CSSProperties } from 'react';
-import './App.css';
+import styles from './App.module.css';
 import { effectUtils } from '@game/effects';
 import { Xorshift32 } from '@game/rng/xorshift32';
 import { SameGame } from '@game';
@@ -11,19 +11,27 @@ import type { ColumnIdx, RowIdx } from '@game/board';
 import { useGameState } from '@hooks/useGameState';
 import { useGameOptions } from '@hooks/useGameOptions';
 import { GameOverScreen } from '@components/GameOverScreen';
+import { Octicon } from './components/Octicon/Octicon';
 
 const game = new SameGame(new Xorshift32());
 
 function App() {
   const [effects, setEffects] = useState<string[]>([]);
-  const [styles, setStyles] = useState<CSSProperties>({});
+  const [cssVars, setCssVars] = useState<CSSProperties>({});
 
-  const {board, gameState, movesLeft, score, scoreCard} = useGameState(game);
-  const {nrOfColumns, nrOfRows, partyMembers, setNrOfColumns, setNrOfRows, setPartyMembers} = useGameOptions();
+  const { board, gameState, movesLeft, score, scoreCard } = useGameState(game);
+  const {
+    nrOfColumns,
+    nrOfRows,
+    partyMembers,
+    setNrOfColumns,
+    setNrOfRows,
+    setPartyMembers,
+  } = useGameOptions();
 
   const handleStart = useCallback(
     (newSeed?: number) => {
-      const seed = newSeed || (Date.now() % (12 * 60 * 60 * 1000));
+      const seed = newSeed || Date.now() % (12 * 60 * 60 * 1000);
       game.startGame(nrOfRows, nrOfColumns, partyMembers, seed);
     },
     [nrOfRows, nrOfColumns, partyMembers]
@@ -51,9 +59,10 @@ function App() {
         game.enableDebugMode();
       }
       const seedParam = searchParams.get('seed');
-      const startingSeed = seedParam && !isNaN(Number(seedParam)) ? Number(seedParam) : undefined;
+      const startingSeed =
+        seedParam && !isNaN(Number(seedParam)) ? Number(seedParam) : undefined;
       if (searchParams.get('pi')) {
-        setStyles({
+        setCssVars({
           '--i-img-r': "url('/pi/R.png')",
           '--i-img-b': "url('/pi/B.png')",
           '--i-img-g': "url('/pi/G.png')",
@@ -67,7 +76,7 @@ function App() {
   }, [handleStart]);
 
   return (
-    <div className="game-root" style={styles}>
+    <div className={styles.appRoot} style={cssVars}>
       <OptionsForm
         nrOfRows={nrOfRows}
         nrOfColumns={nrOfColumns}
@@ -77,11 +86,29 @@ function App() {
         onPartyMembersChange={setPartyMembers}
         onStartGame={() => handleStart()}
       />
-      <Board board={board} onCellClick={handleCellClick} isGameOver={gameState === 'GAME-OVER'}>
-        <GameOverScreen onRestartClick={() => handleStart()} score={score} scoreCard={scoreCard} />
+      <Board
+        board={board}
+        onCellClick={handleCellClick}
+        isGameOver={gameState === 'GAME-OVER'}
+      >
+        <GameOverScreen
+          onRestartClick={() => handleStart()}
+          score={score}
+          scoreCard={scoreCard}
+        />
       </Board>
       <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed} />
       <EffectsOverlay effects={effects} />
+      <div className={styles.githubLink}>
+        <Octicon className={styles.githubLogo} />
+        <a
+          href="https://github.com/orjandesmet/same-game"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+      </div>
     </div>
   );
 }

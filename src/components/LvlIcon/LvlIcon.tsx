@@ -7,21 +7,12 @@ export function LvlIcon() {
       version="1.1"
       className={styles.lvlIcon}
       viewBox="0 0 8 8"
+      aria-hidden="true"
     >
-      <rect width="1" height="1" x="3" y="3" fill="currentColor"></rect>
-      <rect width="1" height="1" x="4" y="3" fill="currentColor"></rect>
       <rect width="1" height="1" x="1" y="4" fill="currentColor"></rect>
-      <rect width="1" height="1" x="3" y="4" fill="currentColor"></rect>
-      <rect width="1" height="1" x="4" y="4" fill="currentColor"></rect>
-      <rect width="1" height="1" x="3" y="5" fill="currentColor"></rect>
-      <rect width="1" height="1" x="4" y="5" fill="currentColor"></rect>
       <rect width="1" height="1" x="1" y="6" fill="currentColor"></rect>
-      <rect width="1" height="1" x="3" y="6" fill="currentColor"></rect>
-      <rect width="1" height="1" x="4" y="6" fill="currentColor"></rect>
-      <rect width="1" height="1" x="3" y="7" fill="currentColor"></rect>
-      <rect width="1" height="1" x="4" y="7" fill="currentColor"></rect>
-      <rect width="1" height="1" x="5" y="7" fill="currentColor"></rect>
-      <rect width="1" height="1" x="6" y="7" fill="currentColor"></rect>
+      <rect width="2" height="5" x="3" y="3" fill="currentColor"></rect>
+      <rect width="2" height="1" x="5" y="7" fill="currentColor"></rect>
     </svg>
   );
 }

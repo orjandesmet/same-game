@@ -1,6 +1,9 @@
-import { BASE_PKMN_PROBABILITY } from './constants';
-import type { Color, PartyMembers } from './types';
+import { BASE_PKMN_PROBABILITY, type Color, type PartyMembers } from '@game/pkmn';
 
-export function hasPkmn(color: Color, rngValue: Readonly<number>, probability: Partial<PartyMembers> = BASE_PKMN_PROBABILITY): Readonly<boolean> {
+export function hasPkmn(
+  color: Color,
+  rngValue: Readonly<number>,
+  probability: Partial<PartyMembers> = BASE_PKMN_PROBABILITY
+): Readonly<boolean> {
   return rngValue < (probability[color] || 0);
 }

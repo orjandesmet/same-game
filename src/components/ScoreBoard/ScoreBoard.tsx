@@ -1,5 +1,5 @@
-import { Octicon } from '../Octicon/Octicon';
-import './ScoreBoard.css';
+import styles from './ScoreBoard.module.css';
+import clsx from 'clsx';
 
 type ScoreBoardProps = {
   score: number;
@@ -9,26 +9,18 @@ type ScoreBoardProps = {
 
 export function ScoreBoard(props: ScoreBoardProps) {
   return (
-    <div className="score-board">
-      <div>
-        Moves left: <span className="score-board-value">{props.movesLeft}</span>
+    <div className={styles.scoreBoard}>
+      <div className={clsx(styles.scoreBoardData, styles.score)}>
+        Score: <span className={styles.scoreBoardValue}>{props.score}</span>
       </div>
-      <div>
-        Score: <span className="score-board-value">{props.score}</span>
+      <div className={styles.scoreBoardData}>
+        Moves left: <span className={styles.scoreBoardValue}>{props.movesLeft}</span>
       </div>
-      <div className="score-board-info">
-        <div className="score-board-info-item">
+      <div className={styles.scoreBoardInfo}>
+        <div className={styles.scoreBoardInfoItem}>
           <span>🌱</span>
-          <span className="score-board-value">{props.seed}</span>
+          <span className={styles.scoreBoardValue}>{props.seed}</span>
         </div>
-        <a
-          href="https://github.com/orjandesmet/same-game"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="score-board-info-item external-link"
-        >
-          <Octicon className="external-logo" /><span>GitHub</span>
-        </a>
       </div>
     </div>
   );

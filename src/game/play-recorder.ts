@@ -1,4 +1,5 @@
-import { BASE_PKMN_PROBABILITY, type CellKey, type PartyMembers } from './cells';
+import type { CellKey } from './cells';
+import { BASE_PKMN_PROBABILITY, type PartyMembers } from './pkmn';
 
 export class PlayRecorder {
   private _movesRecord: CellKey[] = [];
@@ -27,7 +28,12 @@ export class PlayRecorder {
   store() {
     sessionStorage.setItem(
       'same-game-moves-record',
-      [this._seed, this._nrOfRows, this._nrOfColumns, JSON.stringify(this._partyMembers)]
+      [
+        this._seed,
+        this._nrOfRows,
+        this._nrOfColumns,
+        JSON.stringify(this._partyMembers),
+      ]
         .filter(Boolean)
         .map(String)
         .concat(this._movesRecord)

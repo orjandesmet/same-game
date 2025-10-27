@@ -1,11 +1,12 @@
-import { useCallback, useState, type ChangeEvent } from 'react';
-import { clsx } from 'clsx';
+import { useCallback, useRef, type ChangeEvent } from 'react';
 import { clamp } from '@utils/clamp';
-import { COLORS, type Color, type PartyMembers } from '@game/cells';
-import './OptionsForm.css';
-import { PKMN_NAMES } from '@game';
+import { PKMN_NAMES, COLORS, type Color, type PartyMembers } from '@game/pkmn';
+import styles from './OptionsForm.module.css';
 import { LvlIcon } from '@components/LvlIcon';
-import { ArrowRight } from '@components/ArrowRight';
+import { ArrowRight } from '@components/ArrowRightIcon';
+import { BallIcon } from '@components/BallIcon';
+import { createPortal } from 'react-dom';
+import clsx from 'clsx';
 
 type OptionsFormProps = {
   nrOfRows: number;
@@ -22,7 +23,7 @@ export function OptionsForm({
   onPartyMembersChange,
   ...props
 }: OptionsFormProps) {
-  const [optionsOpen, setOptionsOpen] = useState(false);
+  const dialog = useRef<HTMLDialogElement | null>(null);
 
   const handleNrOfRowsChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
@@ -109,15 +110,15 @@ export function OptionsForm({
 
   return (
     <>
-      <div
-        className={clsx('options-form-backdrop', optionsOpen && 'open')}
-        onClick={() => setOptionsOpen(false)}
+      {createPortal(<dialog
+        className={styles.optionsFormDialog}
+        ref={dialog}
       >
-        <div className="options-form" onClick={(e) => e.stopPropagation()}>
-          <fieldset className="options-fieldset">
+        <form method="dialog" className={styles.optionsForm} onClick={(e) => e.stopPropagation()}>
+          <fieldset className={styles.optionsFieldset}>
             <legend>OPTION</legend>
-            <label className="options-label" htmlFor="fldNrOfRows">
-              <ArrowRight className="options-arrow" solid aria-hidden />
+            <label className={styles.optionsLabel} htmlFor="fldNrOfRows">
+              <ArrowRight className={styles.optionsArrow} solid />
               <span>Nr of Rows</span>
               <span>({props.nrOfRows})</span>
             </label>
@@ -129,8 +130,8 @@ export function OptionsForm({
               value={props.nrOfRows}
               onChange={handleNrOfRowsChange}
             />
-            <label className="options-label" htmlFor="fldNrOfColumns">
-              <ArrowRight className="options-arrow" solid aria-hidden />
+            <label className={styles.optionsLabel} htmlFor="fldNrOfColumns">
+              <ArrowRight className={styles.optionsArrow} solid />
               <span>Nr of Columns</span>
               <span>({props.nrOfColumns})</span>
             </label>
@@ -145,11 +146,11 @@ export function OptionsForm({
           </fieldset>
           <fieldset>
             <legend>POKéMON (minimum: 2)</legend>
-            <div className="party-members">
+            <div className={styles.partyMembers}>
               {COLORS.map((color) => {
                 const lvl = Math.round(Math.abs(partyMembers[color]) * 100);
                 return (
-                  <div className="party-member" key={color}>
+                  <div className={styles.partyMember} key={color}>
                     <input
                       id={`chk${color}`}
                       name="fldParty"
@@ -159,27 +160,30 @@ export function OptionsForm({
                       disabled={isDisabled(color)}
                       onChange={handlePartyMemberChange}
                     />
+                      <ArrowRight
+                        className={styles.optionsArrow}
+                        solid
+                      />
                     <label
-                      className="options-label options-label--party"
+                      className={clsx(styles.optionsLabel, styles.party)}
                       htmlFor={`chk${color}`}
                     >
-                      <ArrowRight
-                        className="options-arrow---"
+                      <BallIcon
                         solid={partyMembersInclude(color)}
                         aria-hidden
-                      />
+                        />
                       <img
-                        className="party-image"
+                        className={styles.partyImage}
                         src={`/sprites/${color}.png`}
                         alt={PKMN_NAMES[color]}
                       />
-                      <span className="party-name">{PKMN_NAMES[color]}</span>
+                      <span className={styles.partyName}>{PKMN_NAMES[color]}</span>
                     </label>
-                    <span className="party-level">
+                    <span className={styles.partyLevel}>
                       <LvlIcon />
                       <input
                         type="number"
-                        className="lvl-input"
+                        className={styles.lvlInput}
                         inputMode="numeric"
                         value={lvl}
                         onChange={(e) =>
@@ -195,16 +199,16 @@ export function OptionsForm({
               })}
             </div>
           </fieldset>
-          <button type="button" onClick={() => setOptionsOpen(false)}>
+          <button type="submit">
             CLOSE
           </button>
-        </div>
-      </div>
-      <div className="options-form-buttons">
+        </form>
+      </dialog>, document.body)}
+      <div className={styles.optionsFormButtons}>
         <button type="button" onClick={() => props.onStartGame()}>
           NEW GAME
         </button>
-        <button type="button" onClick={() => setOptionsOpen(true)}>
+        <button type="button" onClick={() => dialog.current?.showModal()}>
           OPTION
         </button>
       </div>

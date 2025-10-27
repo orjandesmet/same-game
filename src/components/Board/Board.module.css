@@ -2,8 +2,8 @@
   display: grid;
   grid-template-rows: repeat(var(--i-nr-of-rows), 1fr);
   grid-template-columns: repeat(var(--i-nr-of-columns), 1fr);
-  max-width: calc(100vh - 150px);
   width: 100%;
+  max-width: calc(100vh - 150px);
   border: 1px solid var(--i-foreground-color);
   border-radius: calc(50% / var(--i-nr-of-columns));
   box-sizing: border-box;
@@ -12,8 +12,8 @@
 }
 
 .cell {
-  aspect-ratio: 1 / 1;
   padding: 0;
+  aspect-ratio: 1 / 1;
   grid-row: calc(var(--i-row-idx) + 1);
   grid-column: calc(var(--i-column-idx) + 1);
   background-size: 65%;
@@ -32,7 +32,7 @@
   background-color: var(--i-color-r);
 }
 
-.cell.r.with-pkmn {
+.cell.r.withPkmn {
   background-image: var(--i-img-r);
 }
 
@@ -40,7 +40,7 @@
   background-color: var(--i-color-b);
 }
 
-.cell.b.with-pkmn {
+.cell.b.withPkmn {
   background-image: var(--i-img-b);
 }
 
@@ -48,7 +48,7 @@
   background-color: var(--i-color-g);
 }
 
-.cell.g.with-pkmn {
+.cell.g.withPkmn {
   background-image: var(--i-img-g);
 }
 
@@ -56,7 +56,7 @@
   background-color: var(--i-color-y);
 }
 
-.cell.y.with-pkmn {
+.cell.y.withPkmn {
   background-image: var(--i-img-y);
 }
 
@@ -64,7 +64,7 @@
   background-color: var(--i-color-p);
 }
 
-.cell.p.with-pkmn {
+.cell.p.withPkmn {
   background-image: var(--i-img-p);
 }
 
@@ -72,11 +72,11 @@
   background-color: var(--i-color-w);
 }
 
-.cell.w.with-pkmn {
+.cell.w.withPkmn {
   background-image: var(--i-img-w);
 }
 
-.cell.is-burning::after {
+.cell.isBurning::after {
   position: absolute;
   content: ' ';
   width: 100%;
@@ -103,7 +103,7 @@
   }
 }
 
-.cell.is-flooded::after {
+.cell.isFlooded::after {
   position: absolute;
   content: ' ';
   width: 100%;
@@ -129,7 +129,7 @@
   }
 }
 
-.cell.is-cutting::after {
+.cell.isCutting::after {
   position: absolute;
   content: ' ';
   width: 100%;
@@ -164,7 +164,7 @@
   }
 }
 
-.cell.is-shocked::after {
+.cell.isShocked::after {
   position: absolute;
   content: ' ';
   width: 100%;
@@ -211,7 +211,7 @@
   }
 }
 
-.cell.is-transforming {
+.cell.isTransforming {
   animation: transforming 1s ease-in forwards;
 }
 
@@ -234,7 +234,7 @@
   border: 1px solid light-dark(red, blue);
 }
 
-.game-over-dialog {
+.gameOverDialog {
   grid-row: 1 / -1;
   grid-column: 1 / -1;
   background-color: rgba(0, 0, 0, 0.75);

@@ -1,6 +1,7 @@
-import type { PRNG } from '../rng';
-import type { CellColor, Color } from '../cells';
+import type { Color } from '@game/pkmn';
 import type { Group } from '../board';
+import type { CellColor } from '../cells';
+import type { PRNG } from '../rng';
 import { METRONOME_DURATION_MS } from './constants';
 import type { Effects } from './types';
 
