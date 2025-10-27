@@ -1,6 +1,7 @@
-import type { PRNG } from '../rng';
-import type { CellColor, Color } from '../cells';
+import type { Color } from '@game/pkmn';
 import type { Group } from '../board';
+import type { CellColor } from '../cells';
+import type { PRNG } from '../rng';
 import { createBasicEffects } from './createBasicEffects';
 import { createMetronomeEffects } from './createMetronomeEffects';
 import { createTransformEffects } from './createTransformEffects';

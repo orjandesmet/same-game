@@ -1,4 +1,5 @@
-import { cellUtils, EMPTY } from '../cells';
+import { EMPTY } from '@game/pkmn';
+import { cellUtils } from '../cells';
 import { isEmptyColumn } from './isEmptyColumn';
 import type { Board, Group } from './types';
 import { updateCellsInBoard } from './updateCellsInBoard';

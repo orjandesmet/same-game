@@ -1,15 +1,15 @@
 import {
-  boardUtils, type Board,
+  boardUtils,
+  type Board,
   type ColumnIdx,
   type Group,
-  type RowIdx
+  type RowIdx,
 } from './board';
 import { calculateScore } from './calculateScore';
-import {
-  cellUtils, type Cell,
-  type Color
-} from './cells';
+import { cellUtils, type Cell } from './cells';
 import { effectUtils, type Effect } from './effects';
+import { getSelectedPartyMembers } from './getSelectedPartyMembers';
+import type { Color, PartyMembers } from './pkmn';
 import { PlayRecorder } from './play-recorder';
 import { PlainRNG, type PRNG, type Seed } from './rng';
 import {
@@ -86,25 +86,31 @@ export class SameGame {
   public startGame(
     rows: number,
     columns: number,
-    colors: Color[],
+    partyMembers: PartyMembers,
     seed?: Seed
   ) {
     if (seed) {
       this.reseed(seed);
     }
     this._debug(
-      `Starting new game ${rows}x${columns} with party ${colors}, (seed: ${seed})`
+      `Starting new game ${rows}x${columns} with party ${JSON.stringify(partyMembers)}, (seed: ${seed})`
     );
+    const { colors } = getSelectedPartyMembers(partyMembers);
+    this._colors = colors;
     this._scoreCard = {
       allCleared: false,
       cellsRemoved: 0,
       multiplier: colors.length / 2,
       pkmn: [],
     };
-    this._colors = colors;
-    this._recorder.reset(rows, columns, colors, seed);
+    this._recorder.reset(rows, columns, partyMembers, seed);
 
-    this._board = boardUtils.createBoard(rows, columns, colors, this._rng);
+    this._board = boardUtils.createBoard(
+      rows,
+      columns,
+      partyMembers,
+      this._rng
+    );
 
     this._debug(`\n`, boardUtils.toString(this._board));
     this.recalculateGameState();

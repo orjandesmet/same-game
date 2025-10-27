@@ -1,6 +1,5 @@
-export const COLORS = ['R', 'B', 'Y', 'G', 'P', 'W'] as const;
-export const EMPTY = '_' as const;
-export type Color = Readonly<(typeof COLORS)[number]>;
+import type { Color, EMPTY } from '@game/pkmn';
+
 export type CellColor = Readonly<Color | typeof EMPTY>;
 export type CellKey = Readonly<`${number}:${number}`>;
 export type CellState = Readonly<

@@ -1,10 +1,10 @@
-import { clsx } from 'clsx';
-
-;import type { CSSProperties, PropsWithChildren } from 'react';
-import './Board.css';
-import { cellUtils } from '@game/cells';
 import type { Board } from '@game/board';
+import { cellUtils } from '@game/cells';
+import { clsx } from 'clsx';
+import type { CSSProperties, PropsWithChildren } from 'react';
+import styles from './Board.module.css';
 
+;
 type BoardProps = PropsWithChildren<{
   board: Board;
   onCellClick: (rowIdx: number, columnIdx: number) => void;
@@ -22,7 +22,7 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
   } as CSSProperties;
 
   return (
-    <div className="board" style={boardStyles}>
+    <div className={styles.board} style={boardStyles}>
       {board.map((column, columnIdx) =>
         column.map((cell, rowIdx) => {
           const cellStyles = {
@@ -31,19 +31,19 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
           } as CSSProperties;
           if (cellUtils.isEmptyCell(cell)) {
             return <div key={cell.key}
-            className='cell empty'
+            className={clsx(styles.cell, styles.empty)}
               style={cellStyles}
               ></div>
           }
           const classNames = clsx(
-            'cell',
-            cell.color.toLowerCase(),
-            cell.hasPkmn && 'with-pkmn',
-            cell.cellState === 'BURNING' && 'is-burning',
-            cell.cellState === 'FLOODED' && 'is-flooded',
-            cell.cellState === 'CUTTING' && 'is-cutting',
-            cell.cellState === 'SHOCKED' && 'is-shocked',
-            cell.cellState === 'TRANSFORMING' && 'is-transforming'
+            styles.cell,
+            styles[cell.color.toLowerCase()],
+            cell.hasPkmn && styles.withPkmn,
+            cell.cellState === 'BURNING' && styles.isBurning,
+            cell.cellState === 'FLOODED' && styles.isFlooded,
+            cell.cellState === 'CUTTING' && styles.isCutting,
+            cell.cellState === 'SHOCKED' && styles.isShocked,
+            cell.cellState === 'TRANSFORMING' && styles.isTransforming
           );
           return (
             <button
@@ -56,7 +56,7 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
           );
         })
       )}
-      {isGameOver ? (<div className="game-over-dialog">
+      {isGameOver ? (<div className={styles.gameOverDialog}>
         {children}
       </div>) : null}
     </div>

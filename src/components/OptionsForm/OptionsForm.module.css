@@ -1,0 +1,98 @@
+.optionsFormDialog::backdrop {
+  background: rgb(0 0 0 / 75%);
+  backdrop-filter: blur(2px);
+}
+
+.optionsForm {
+  background-color: var(--i-background-color);
+  max-width: 480px;
+  margin: 0px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.optionsFieldset {
+  display: grid;
+  column-gap: 0.5rem;
+  grid-template-columns: 1fr 120px;
+}
+
+.optionsFieldset label {
+  text-align: end;
+}
+
+.optionsFieldset input {
+  text-align: start;
+}
+
+.optionsFormButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  box-sizing: border-box;
+}
+
+.optionsLabel {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: end;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+.optionsLabel.party {
+  align-items: center;
+}
+
+.optionsArrow {
+  opacity: 0;
+  width: 1em;
+  aspect-ratio: 1 /1;
+  flex-shrink: 0;
+}
+
+.optionsLabel:has(+ input[type='range']:focus) .optionsArrow,
+.optionsLabel:has(+ input[type='range']:focus-visible) .optionsArrow,
+input[type='checkbox']:focus + .optionsArrow,
+input[type='checkbox']:focus-visible + .optionsArrow {
+  opacity: 1;
+}
+
+.partyMembers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.partyMember {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.partyImage {
+  width: 1.5em;
+  aspect-ratio: 1 / 1;
+}
+
+.partyName {
+  margin-block: auto;
+  height: 1em;
+}
+
+.partyLevel {
+  margin-inline-start: auto;
+}
+
+.lvlInput {
+  border: none;
+  width: 5em;
+  font-size: 1em;
+  font-family: 'Pokemon GB';
+}
+
+input[type=checkbox] {
+  position: absolute;
+  left: -100vw;
+}
