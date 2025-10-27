@@ -17,3 +17,12 @@ export const PKMN_NAMES: Record<Color, string> = {
   P: 'DITTO',
   W: 'TOGEPI',
 }
+
+export const EVOLUTION_LEVELS: Record<Color, number[]> = {
+  R: [0],
+  B: [0],
+  Y: [0],
+  G: [0],
+  P: [0],
+  W: [0],
+}

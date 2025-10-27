@@ -23,6 +23,7 @@ export function createBoard(
           rng.nextFloat(),
           selectedPartyMembers
         ),
+        level: partyMembers[color],
         cellState: 'NORMAL' as const,
       };
     })
