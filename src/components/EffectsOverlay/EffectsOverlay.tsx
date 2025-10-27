@@ -36,23 +36,23 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
               className={clsx(
                 styles.effectBand,
                 styles[`effect-${idx + 1}`],
-                sanitizeName(effect)
+                styles[sanitizeName(effect)],
               )}
             >
-              <div className="stripes"></div>
+              <div className={styles.stripes}></div>
             </div>
             <div
               className={clsx(
                 styles.effectImg,
                 styles[`effect-${idx + 1}`],
-                sanitizeName(effect)
+                styles[sanitizeName(effect)],
               )}
             ></div>
             <div
               className={clsx(
                 styles.effectText,
                 styles[`effect-${idx + 1}`],
-                sanitizeName(effect)
+                styles[sanitizeName(effect)],
               )}
             >
               {effect}
