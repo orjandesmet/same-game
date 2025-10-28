@@ -4,7 +4,7 @@ import { OptionsForm } from '@components/OptionsForm';
 import { ScoreBoard } from '@components/ScoreBoard';
 import { useCallback, useEffect, useState, type CSSProperties } from 'react';
 import styles from './App.module.css';
-import { effectUtils } from '@game/effects';
+import { effectUtils, type Effect } from '@game/effects';
 import { Xorshift32 } from '@game/rng/xorshift32';
 import { SameGame } from '@game';
 import type { ColumnIdx, RowIdx } from '@game/board';
@@ -16,10 +16,9 @@ import { Octicon } from './components/Octicon/Octicon';
 const game = new SameGame(new Xorshift32());
 
 function App() {
-  const [effects, setEffects] = useState<string[]>([]);
+  const [effects, setEffects] = useState<Array<Pick<Effect, 'color' | 'effectName' | 'level'>>>([]);
   const [cssVars, setCssVars] = useState<CSSProperties>({});
 
-  const { board, gameState, movesLeft, score, scoreCard } = useGameState(game);
   const {
     nrOfColumns,
     nrOfRows,
@@ -28,6 +27,7 @@ function App() {
     setNrOfRows,
     setPartyMembers,
   } = useGameOptions();
+  const { board, gameState, movesLeft, pkmnScores, score, scoreCard } = useGameState(game, partyMembers);
 
   const handleStart = useCallback(
     (newSeed?: number) => {
@@ -42,8 +42,8 @@ function App() {
       const effects = game.removeGroupForCell(rowIdx, columnIdx);
       setEffects(
         effects
-          .map((stage) => stage.effectName)
-          .filter((effectName): effectName is string => !!effectName)
+          .map(({color, effectName, level}) => ({color, effectName, level}))
+          .filter(({effectName}) => !!effectName)
       );
       setTimeout(() => {
         setEffects([]);
@@ -63,12 +63,12 @@ function App() {
         seedParam && !isNaN(Number(seedParam)) ? Number(seedParam) : undefined;
       if (searchParams.get('pi')) {
         setCssVars({
-          '--i-img-r': "url('/pi/R.png')",
-          '--i-img-b': "url('/pi/B.png')",
-          '--i-img-g': "url('/pi/G.png')",
-          '--i-img-y': "url('/pi/Y.png')",
-          '--i-img-p': "url('/pi/P.png')",
-          '--i-img-w': "url('/pi/W.png')",
+          '--i-img-r': "url('/pkmn/pi/R.png')",
+          '--i-img-b': "url('/pkmn/pi/B.png')",
+          '--i-img-g': "url('/pkmn/pi/G.png')",
+          '--i-img-y': "url('/pkmn/pi/Y.png')",
+          '--i-img-p': "url('/pkmn/pi/P.png')",
+          '--i-img-w': "url('/pkmn/pi/W.png')",
         } as CSSProperties);
       }
       handleStart(startingSeed);
@@ -94,6 +94,7 @@ function App() {
         <GameOverScreen
           onRestartClick={() => handleStart()}
           score={score}
+          pkmnScores={pkmnScores}
           scoreCard={scoreCard}
         />
       </Board>

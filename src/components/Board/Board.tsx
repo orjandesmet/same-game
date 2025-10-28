@@ -3,7 +3,7 @@ import { cellUtils } from '@game/cells';
 import { pkmnUtils, type Color } from '@game/pkmn';
 import { clsx } from 'clsx';
 import type { CSSProperties, PropsWithChildren } from 'react';
-import styles from './Board.module.css';
+import styles from './Board.module.scss';
 
 ;
 type BoardProps = PropsWithChildren<{
@@ -40,7 +40,7 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
             styles.cell,
             styles[cell.color.toLowerCase()],
             cell.hasPkmn && styles.withPkmn,
-            styles[pkmnUtils.getNormalizedLevel(cell.color as Color, cell.level)],
+            styles[`${cell.color.toLowerCase()}-${pkmnUtils.getEvolutionIdx(cell.color as Color, cell.level)}`],
             cell.cellState === 'BURNING' && styles.isBurning,
             cell.cellState === 'FLOODED' && styles.isFlooded,
             cell.cellState === 'CUTTING' && styles.isCutting,

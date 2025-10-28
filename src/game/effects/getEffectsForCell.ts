@@ -1,4 +1,4 @@
-import type { Color } from '@game/pkmn';
+import type { PartyMembers } from '@game/pkmn';
 import type { Group } from '../board';
 import type { CellColor } from '../cells';
 import type { PRNG } from '../rng';
@@ -14,22 +14,22 @@ import type { Effects } from './types';
 export function getEffectsForCell(
   cellColor: CellColor,
   allGroups: Group[],
-  colors: Color[],
+  party: Partial<PartyMembers>,
   rng: Readonly<PRNG>
 ): Effects | null {
   switch (cellColor) {
     case 'R':
-      return createBasicEffects(getBurningGroup, 'EMBER', 'BURNING');
+      return createBasicEffects(getBurningGroup, 'R', 'EMBER', 'BURNING', party['R']);
     case 'B':
-      return createBasicEffects(getFloodedGroup, 'WATER GUN', 'FLOODED');
+      return createBasicEffects(getFloodedGroup, 'B', 'WATER GUN', 'FLOODED', party['B']);
     case 'G':
-      return createBasicEffects(getCuttingGroup, 'VINE WHIP', 'CUTTING');
+      return createBasicEffects(getCuttingGroup, 'G', 'VINE WHIP', 'CUTTING', party['G']);
     case 'Y':
-      return createBasicEffects(getShockedGroup, 'THUNDER SHOCK', 'SHOCKED');
+      return createBasicEffects(getShockedGroup, 'Y', 'THUNDER SHOCK', 'SHOCKED', party['Y']);
     case 'P':
-      return createTransformEffects(allGroups, colors, rng);
+      return createTransformEffects(allGroups, party, rng);
     case 'W': 
-      return createMetronomeEffects(allGroups, colors, rng, getEffectsForCell);
+      return createMetronomeEffects(allGroups, party, rng, getEffectsForCell);
     default:
       return null;
   }

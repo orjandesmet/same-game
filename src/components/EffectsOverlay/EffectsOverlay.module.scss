@@ -1,3 +1,5 @@
+@use '../../scss/pkmnBackgrounds';
+
 .effectsOverlay {
   --i-band-height: 10vh;
   --i-band-border-width: 3px;
@@ -19,7 +21,6 @@
     box-sizing: content-box;
     border-block: var(--i-band-border-width) solid silver;
 
-    &.ember,
     &.r {
       background-color: var(--i-color-r);
 
@@ -27,7 +28,6 @@
       --i-stripes-color-2: var(--i-color-r-accent-2);
     }
 
-    &.water-gun,
     &.b {
       background-color: var(--i-color-b);
 
@@ -35,7 +35,6 @@
       --i-stripes-color-2: var(--i-color-b-accent-2);
     }
 
-    &.vine-whip,
     &.g {
       background-color: var(--i-color-g);
 
@@ -43,7 +42,6 @@
       --i-stripes-color-2: var(--i-color-g-accent);
     }
 
-    &.thunder-shock,
     &.y {
       background-color: var(--i-color-y);
 
@@ -51,14 +49,14 @@
       --i-stripes-color-2: var(--i-color-y-accent);
     }
 
-    &.transform {
+    &.p {
       background-color: var(--i-color-p);
 
       --i-stripes-color-1: var(--i-color-p-accent);
       --i-stripes-color-2: var(--i-color-p-accent);
     }
 
-    &.metronome {
+    &.w {
       background-color: var(--i-color-w);
 
       --i-stripes-color-1: var(--i-color-w-accent-1);
@@ -69,45 +67,16 @@
   .effectImg {
     position: absolute;
     top: calc(50% - calc(var(--i-image-size) / 2));
+    background-size: var(--i-image-size) var(--i-image-size);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
     left: 100vw;
     width: 100vw;
     height: var(--i-image-size);
     filter: var(--i-img-border-filter);
     z-index: 100;
 
-    &.ember,
-    &.r {
-      background: var(--i-img-r) 50% no-repeat;
-      background-size: var(--i-image-size) var(--i-image-size);
-    }
-
-    &.water-gun,
-    &.b {
-      background: var(--i-img-b) 50% no-repeat;
-      background-size: var(--i-image-size) var(--i-image-size);
-    }
-
-    &.vine-whip,
-    &.g {
-      background: var(--i-img-g) 50% no-repeat;
-      background-size: var(--i-image-size) var(--i-image-size);
-    }
-
-    &.thunder-shock,
-    &.y {
-      background: var(--i-img-y) 50% no-repeat;
-      background-size: var(--i-image-size) var(--i-image-size);
-    }
-
-    &.transform {
-      background: var(--i-img-p) 50% no-repeat;
-      background-size: var(--i-image-size) var(--i-image-size);
-    }
-
-    &.metronome {
-      background: var(--i-img-w) 50% no-repeat;
-      background-size: var(--i-image-size) var(--i-image-size);
-    }
+    @include pkmnBackgrounds.addLeveledBackgrounds;
 
     .effect-2,
     .effect-3 {

@@ -7,12 +7,6 @@
 
   --i-background-color: light-dark(#fff, #242424);
   --i-foreground-color: light-dark(#213547, rgb(255 255 255 / 87%));
-  --i-img-r: url('/R.png');
-  --i-img-b: url('/B.png');
-  --i-img-g: url('/G.png');
-  --i-img-y: url('/Y.png');
-  --i-img-p: url('/P.png');
-  --i-img-w: url('/W.png');
 
   --i-color-r: #e1af87;
   --i-color-r-accent-1: #e46c43;

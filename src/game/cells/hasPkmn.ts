@@ -5,5 +5,5 @@ export function hasPkmn(
   rngValue: Readonly<number>,
   probability: Partial<PartyMembers> = BASE_PKMN_PROBABILITY
 ): Readonly<boolean> {
-  return rngValue < (probability[color] || 0);
+  return rngValue < (probability[color] ?? 0) / 100;
 }

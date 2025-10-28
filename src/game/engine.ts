@@ -9,7 +9,7 @@ import { calculateScore } from './calculateScore';
 import { cellUtils, type Cell } from './cells';
 import { effectUtils, type Effect } from './effects';
 import { getSelectedPartyMembers } from './getSelectedPartyMembers';
-import type { Color, PartyMembers } from './pkmn';
+import type { PartyMembers } from './pkmn';
 import { PlayRecorder } from './play-recorder';
 import { PlainRNG, type PRNG, type Seed } from './rng';
 import {
@@ -21,7 +21,7 @@ import {
 
 export class SameGame {
   private _rng: Readonly<PRNG>;
-  private _colors: Color[] = [];
+  private _party: Partial<PartyMembers> = {};
   private _recorder: Readonly<PlayRecorder>;
   private _board: Board = [];
   private _allGroups: Group[] = [];
@@ -51,7 +51,7 @@ export class SameGame {
   }
 
   public get score() {
-    return calculateScore(this._scoreCard, this._debug);
+    return calculateScore(this._scoreCard, this._party, this._debug);
   }
 
   public get seed() {
@@ -95,20 +95,20 @@ export class SameGame {
     this._debug(
       `Starting new game ${rows}x${columns} with party ${JSON.stringify(partyMembers)}, (seed: ${seed})`
     );
-    const { colors } = getSelectedPartyMembers(partyMembers);
-    this._colors = colors;
+    const { colors, selectedPartyMembers } = getSelectedPartyMembers(partyMembers);
+    this._party = selectedPartyMembers;
     this._scoreCard = {
       allCleared: false,
       cellsRemoved: 0,
       multiplier: colors.length / 2,
       pkmn: [],
     };
-    this._recorder.reset(rows, columns, partyMembers, seed);
+    this._recorder.reset(rows, columns, selectedPartyMembers, seed);
 
     this._board = boardUtils.createBoard(
       rows,
       columns,
-      partyMembers,
+      selectedPartyMembers,
       this._rng
     );
 
@@ -167,7 +167,7 @@ export class SameGame {
       const effects = effectUtils.getEffectsForCell(
         cell.color,
         this._allGroups,
-        this._colors,
+        this._party,
         this._rng
       );
       if (effects) {
