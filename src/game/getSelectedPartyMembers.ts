@@ -7,7 +7,7 @@ export function getSelectedPartyMembers(partyMembers: PartyMembers): {
   const selectedPartyMembers: Partial<PartyMembers> = Object.fromEntries(
     Object.entries(partyMembers).filter(([, lvl]) => lvl > 0)
   );
-  const colors = getSelectedColors(partyMembers);
+  const colors = getSelectedColors(selectedPartyMembers);
 
   return { selectedPartyMembers, colors };
 }
