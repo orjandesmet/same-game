@@ -11,7 +11,7 @@ export type EffectTools = Readonly<{
   cellUpdate: (
     board: Board,
     group: Group,
-    updatedCell: Partial<Pick<Cell, 'color' | 'cellState' | 'hasPkmn'>>
+    updatedCell: Partial<Pick<Cell, 'color' | 'cellState' | 'hasPkmn' | 'level'>>
   ) => Board;
   cellRemove: (board: Board, group: Group) => Board;
   debug: (...args: unknown[]) => void;

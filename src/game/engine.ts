@@ -228,7 +228,7 @@ export class SameGame {
   private updateCellsInBoard(
     board: Board,
     group: Group,
-    updatedCell: Partial<Pick<Cell, 'color' | 'hasPkmn' | 'cellState'>>
+    updatedCell: Partial<Pick<Cell, 'color' | 'hasPkmn' | 'cellState' | 'level'>>
   ) {
     return boardUtils.updateCellsInBoard(board, group, updatedCell);
   }
