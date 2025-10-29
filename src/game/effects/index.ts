@@ -1,5 +1,6 @@
 import { calculateEffectsDuration } from './calculateEffectsDuration';
 import { getEffectsForCell } from './getEffectsForCell';
+import { isVisibleEffectStage } from './isVisibleEffectStage';
 import { runEffects } from './runEffects';
 
 export type { Effect } from './types';
@@ -11,7 +12,8 @@ export {
 } from './constants';
 
 export const effectUtils = {
-  getEffectsForCell,
-  runEffects,
   calculateEffectsDuration,
+  getEffectsForCell,
+  isVisibleEffectStage,
+  runEffects,
 };

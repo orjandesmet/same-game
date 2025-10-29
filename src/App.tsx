@@ -42,8 +42,8 @@ function App() {
       const effects = game.removeGroupForCell(rowIdx, columnIdx);
       setEffects(
         effects
+          .filter(effectUtils.isVisibleEffectStage)
           .map(({color, effectName, level}) => ({color, effectName, level}))
-          .filter(({effectName}) => !!effectName)
       );
       setTimeout(() => {
         setEffects([]);

@@ -2,6 +2,8 @@ import type { Color } from '@game/pkmn';
 import type { Board, ColumnIdx, Group, RowIdx } from '../board';
 import type { Cell } from '../cells';
 
+export type EffectName = 'EMBER' | 'WATER GUN' | 'VINE WHIP' | 'THUNDER SHOCK' | 'TRANSFORM' | 'METRONOME' | 'FAINT';
+
 export type EffectGroupFn = (
   board: Board,
   source: { rowIdx: RowIdx; columnIdx: ColumnIdx }
@@ -19,7 +21,7 @@ export type EffectTools = Readonly<{
 export type Effect = Readonly<{
   color: Color;
   level: number;
-  effectName?: Readonly<string>;
+  effectName?: Readonly<EffectName>;
   fn: (
     board: Board,
     group: Group,
