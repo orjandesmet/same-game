@@ -1,0 +1,46 @@
+@mixin addLeveledBackgrounds() {
+  &.r {
+    background-image: var(--i-img-r, url('/pkmn/R-0.png'));
+
+    &.r-1 {
+      background-image: var(--i-img-r, url('/pkmn/R-1.png'));
+    }
+    &.r-2 {
+      background-image: var(--i-img-r, url('/pkmn/R-2.png'));
+    }
+  }
+
+  &.b {
+    background-image: var(--i-img-b, url('/pkmn/B-0.png'));
+
+    &.b-1 {
+      background-image: var(--i-img-r, url('/pkmn/B-1.png'));
+    }
+    &.b-2 {
+      background-image: var(--i-img-r, url('/pkmn/B-2.png'));
+    }
+  }
+
+  &.g {
+    background-image: var(--i-img-g, url('/pkmn/G-0.png'));
+
+    &.g-1 {
+      background-image: var(--i-img-r, url('/pkmn/G-1.png'));
+    }
+    &.g-2 {
+      background-image: var(--i-img-r, url('/pkmn/G-2.png'));
+    }
+  }
+
+  &.y {
+    background-image: var(--i-img-y, url('/pkmn/Y-0.png'));
+  }
+
+  &.p {
+    background-image: var(--i-img-p, url('/pkmn/P-0.png'));
+  }
+
+  &.w {
+    background-image: var(--i-img-w, url('/pkmn/W-0.png'));
+  }
+}

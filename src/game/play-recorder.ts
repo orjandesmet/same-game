@@ -5,13 +5,13 @@ export class PlayRecorder {
   private _movesRecord: CellKey[] = [];
   private _nrOfRows = 0;
   private _nrOfColumns = 0;
-  private _partyMembers: PartyMembers = BASE_PKMN_PROBABILITY;
+  private _partyMembers: Partial<PartyMembers> = BASE_PKMN_PROBABILITY;
   private _seed?: number;
 
   reset(
     nrOfRows: number,
     nrOfColumns: number,
-    partyMembers: PartyMembers,
+    partyMembers: Partial<PartyMembers>,
     seed?: number
   ) {
     this._movesRecord = [];

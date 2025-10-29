@@ -1,5 +1,8 @@
-import type { Cell } from '../cells';
+import type { Color } from '@game/pkmn';
 import type { Board, ColumnIdx, Group, RowIdx } from '../board';
+import type { Cell } from '../cells';
+
+export type EffectName = 'EMBER' | 'WATER GUN' | 'VINE WHIP' | 'THUNDER SHOCK' | 'TRANSFORM' | 'METRONOME' | 'FAINT';
 
 export type EffectGroupFn = (
   board: Board,
@@ -10,13 +13,15 @@ export type EffectTools = Readonly<{
   cellUpdate: (
     board: Board,
     group: Group,
-    updatedCell: Partial<Pick<Cell, 'color' | 'cellState' | 'hasPkmn'>>
+    updatedCell: Partial<Pick<Cell, 'color' | 'cellState' | 'hasPkmn' | 'level'>>
   ) => Board;
   cellRemove: (board: Board, group: Group) => Board;
   debug: (...args: unknown[]) => void;
 }>;
 export type Effect = Readonly<{
-  effectName?: Readonly<string>;
+  color: Color;
+  level: number;
+  effectName?: Readonly<EffectName>;
   fn: (
     board: Board,
     group: Group,

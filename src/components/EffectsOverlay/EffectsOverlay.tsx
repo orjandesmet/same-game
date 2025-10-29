@@ -2,16 +2,16 @@ import {
   EFFECT_DURATION_MS,
   METRONOME_DURATION_MS,
   TRANSFORM_DURATION_MS,
+  type Effect,
 } from '@game/effects';
 import clsx from 'clsx';
 import { Fragment } from 'react/jsx-runtime';
 import styles from './EffectsOverlay.module.scss';
+import { pkmnUtils } from '@game/pkmn';
 
 type EffectsOverlayProps = {
-  effects: string[];
+  effects: Array<Pick<Effect, 'color' | 'effectName' | 'level'>>;
 };
-
-const sanitizeName = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
 const cssVariables: React.CSSProperties = {
   '--i-effect-duration': `${EFFECT_DURATION_MS}ms`,
@@ -31,12 +31,12 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
     >
       {effects.map((effect, idx) => {
         return (
-          <Fragment key={effect}>
+          <Fragment key={effect.effectName}>
             <div
               className={clsx(
                 styles.effectBand,
                 styles[`effect-${idx + 1}`],
-                styles[sanitizeName(effect)],
+                styles[effect.color.toLowerCase()],
               )}
             >
               <div className={styles.stripes}></div>
@@ -45,17 +45,18 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
               className={clsx(
                 styles.effectImg,
                 styles[`effect-${idx + 1}`],
-                styles[sanitizeName(effect)],
+                styles[effect.color.toLowerCase()],
+                styles[`${effect.color.toLowerCase()}-${pkmnUtils.getEvolutionIdx(effect.color, effect.level)}`]
               )}
             ></div>
             <div
               className={clsx(
                 styles.effectText,
                 styles[`effect-${idx + 1}`],
-                styles[sanitizeName(effect)],
+                styles[effect.color.toLowerCase()],
               )}
             >
-              {effect}
+              {effect.effectName}
             </div>
           </Fragment>
         );

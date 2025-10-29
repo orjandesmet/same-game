@@ -9,5 +9,6 @@ export type Cell = Readonly<{
   key: CellKey;
   color: CellColor;
   hasPkmn: boolean;
+  level: number;
   cellState: CellState;
 }>;

@@ -1,6 +1,6 @@
 import { useCallback, useRef, type ChangeEvent } from 'react';
 import { clamp } from '@utils/clamp';
-import { PKMN_NAMES, COLORS, type Color, type PartyMembers } from '@game/pkmn';
+import { PKMN_NAMES, COLORS, type Color, type PartyMembers, pkmnUtils } from '@game/pkmn';
 import styles from './OptionsForm.module.css';
 import { LvlIcon } from '@components/LvlIcon';
 import { ArrowRight } from '@components/ArrowRightIcon';
@@ -66,7 +66,7 @@ export function OptionsForm({
         return;
       }
       const newValue =
-        (clamp(1, lvl, 100) / 100) * (partyMembersInclude(color) ? 1 : -1);
+        clamp(1, lvl, 100) * (partyMembersInclude(color) ? 1 : -1);
       const newParty = structuredClone(partyMembers);
       newParty[color] = newValue;
 
@@ -148,7 +148,7 @@ export function OptionsForm({
             <legend>POKéMON (minimum: 2)</legend>
             <div className={styles.partyMembers}>
               {COLORS.map((color) => {
-                const lvl = Math.round(Math.abs(partyMembers[color]) * 100);
+                const lvl = Math.abs(partyMembers[color]);
                 return (
                   <div className={styles.partyMember} key={color}>
                     <input
@@ -174,10 +174,10 @@ export function OptionsForm({
                         />
                       <img
                         className={styles.partyImage}
-                        src={`/sprites/${color}.png`}
-                        alt={PKMN_NAMES[color]}
+                        src={`/pkmn/sprites/${color}-${pkmnUtils.getEvolutionIdx(color, lvl)}.png`}
+                        alt={PKMN_NAMES[color][pkmnUtils.getEvolutionIdx(color, lvl)]}
                       />
-                      <span className={styles.partyName}>{PKMN_NAMES[color]}</span>
+                      <span className={styles.partyName}>{PKMN_NAMES[color][pkmnUtils.getEvolutionIdx(color, lvl)]}</span>
                     </label>
                     <span className={styles.partyLevel}>
                       <LvlIcon />

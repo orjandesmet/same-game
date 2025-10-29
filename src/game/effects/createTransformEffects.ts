@@ -1,17 +1,21 @@
-import type { Color } from '@game/pkmn';
+import type { Color, PartyMembers } from '@game/pkmn';
 import type { Group } from '../board';
 import { cellUtils } from '../cells';
 import type { PRNG } from '../rng';
 import { EFFECT_DURATION_MS, TRANSFORM_DURATION_MS } from './constants';
 import type { EffectGroupFn, Effects } from './types';
+import { getSelectedColors } from '../getSelectedPartyMembers';
 
-export function createTransformEffects(allGroups: Group[], colors: Color[], rng: PRNG): Effects {
+export function createTransformEffects(allGroups: Group[], party: Partial<PartyMembers>, rng: PRNG): Effects {
+  const colors = getSelectedColors(party);
   const transformTargetColors = colors.filter(isTransformTarget);
   const transformTarget = transformTargetColors[rng.nextRange(0, transformTargetColors.length)];
   return {
     groupFn: getTransformingGroup(allGroups),
     stages: [
       {
+        color: 'P',
+        level: party['P'] ?? 1,
         effectName: 'TRANSFORM',
         fn: (board, group, { cellUpdate }) => {
           return cellUpdate(board, group, { cellState: 'TRANSFORMING' });
@@ -19,10 +23,12 @@ export function createTransformEffects(allGroups: Group[], colors: Color[], rng:
         duration: TRANSFORM_DURATION_MS,
       },
       {
-        effectName: transformTarget,
+        color: transformTarget,
+        level: party[transformTarget] ?? 1,
         fn: (board, group, { cellUpdate }) => {
           return cellUpdate(board, group, {
             color: transformTarget,
+            level: party[transformTarget] ?? 1,
             cellState: 'NORMAL',
           });
         },
