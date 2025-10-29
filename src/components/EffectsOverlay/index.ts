@@ -1,1 +1,1 @@
-export { EffectsOverlay } from './EffectsOverlay';
+export { EffectsOverlay, type EffectList } from './EffectsOverlay';

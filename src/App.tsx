@@ -1,22 +1,23 @@
 import { Board } from '@components/Board';
 import { EffectsOverlay } from '@components/EffectsOverlay';
+import { GameOverScreen } from '@components/GameOverScreen';
 import { OptionsForm } from '@components/OptionsForm';
 import { ScoreBoard } from '@components/ScoreBoard';
-import { useCallback, useEffect, useState, type CSSProperties } from 'react';
-import styles from './App.module.css';
-import { effectUtils, type Effect } from '@game/effects';
-import { Xorshift32 } from '@game/rng/xorshift32';
 import { SameGame } from '@game';
 import type { ColumnIdx, RowIdx } from '@game/board';
-import { useGameState } from '@hooks/useGameState';
+import { effectUtils } from '@game/effects';
+import { Xorshift32 } from '@game/rng/xorshift32';
 import { useGameOptions } from '@hooks/useGameOptions';
-import { GameOverScreen } from '@components/GameOverScreen';
+import { useGameState } from '@hooks/useGameState';
+import { useCallback, useEffect, useState, type CSSProperties } from 'react';
+import styles from './App.module.css';
+import type { EffectList } from './components/EffectsOverlay';
 import { Octicon } from './components/Octicon/Octicon';
 
 const game = new SameGame(new Xorshift32());
 
 function App() {
-  const [effects, setEffects] = useState<Array<Pick<Effect, 'color' | 'effectName' | 'level'>>>([]);
+  const [effects, setEffects] = useState<EffectList>([]);
   const [cssVars, setCssVars] = useState<CSSProperties>({});
 
   const {
@@ -43,7 +44,7 @@ function App() {
       setEffects(
         effects
           .filter(effectUtils.isVisibleEffectStage)
-          .map(({color, effectName, level}) => ({color, effectName, level}))
+          .map(({color, effectName, level, hasM}) => ({color, effectName, level, hasM}))
       );
       setTimeout(() => {
         setEffects([]);
@@ -69,6 +70,7 @@ function App() {
           '--i-img-y': "url('/pkmn/pi/Y.png')",
           '--i-img-p': "url('/pkmn/pi/P.png')",
           '--i-img-w': "url('/pkmn/pi/W.png')",
+          '--i-img-m': "url('/pkmn/pi/M.png')", // TODO: this image does not exist yet
         } as CSSProperties);
       }
       handleStart(startingSeed);

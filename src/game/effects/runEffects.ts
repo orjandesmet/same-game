@@ -11,7 +11,7 @@ export async function runEffects(
   return await effects.reduce((previousPromise, effect) => {
     return previousPromise.then((newBoard) => {
       if (effect.effectName) {
-        effectTools.debug(
+        effectTools._debug(
           'Running effect:',
           effect.effectName,
           'on group',

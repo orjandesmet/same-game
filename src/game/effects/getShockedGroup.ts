@@ -1,19 +1,14 @@
-import { cellUtils, type CellKey } from '../cells';
+import type { Color } from '@game/pkmn';
 import type { EffectGroupFn } from './types';
+import { boardUtils } from '@game/board';
 
-export const getShockedGroup: EffectGroupFn = (
+export const getShockedGroup = (additionalColors: Color[]): EffectGroupFn => (
   board,
-  { rowIdx: sourceRowIdx, columnIdx: sourceColumnIdx }
+  { rowIdx: sourceRowIdx, columnIdx: sourceColumnIdx },
+  _debug
 ) => {
   const sourceColor = board[sourceColumnIdx][sourceRowIdx].color;
-  return board
-    .flatMap((column, columnIdx) =>
-      column.map((cell, rowIdx) => {
-        if (cellUtils.isEmptyCell(cell) || cell.color !== sourceColor) {
-          return null;
-        }
-        return cellUtils.createCellKey(rowIdx, columnIdx);
-      })
-    )
-    .filter((cellKey): cellKey is CellKey => cellKey !== null);
+  const sourceColors = [sourceColor].concat(additionalColors).filter((color, idx, arr) => arr.indexOf(color) === idx).slice(0, 2);
+  _debug('THUNDER SHOCK on idx r:%s-c:%s of board with %s rows will affect these additional colors', sourceRowIdx, sourceColumnIdx, additionalColors);
+  return boardUtils.getCellsWithColors(board, sourceColors);
 };
