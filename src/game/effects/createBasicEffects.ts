@@ -1,8 +1,8 @@
 import type { Color } from '@game/pkmn';
 import type { CellState } from '../cells';
 import { EFFECT_DURATION_MS } from './constants';
-import type { EffectGroupFn, EffectName, Effects } from './types';
 import { createFaintEffectStage } from './createFaintEffectStage';
+import type { EffectGroupFn, EffectName, Effects } from './types';
 
 export function createBasicEffects(
   groupFn: EffectGroupFn,
@@ -10,6 +10,7 @@ export function createBasicEffects(
   effectName: Readonly<EffectName>,
   cellState: CellState,
   level: number = 1,
+  cellHasM: boolean = false,
   durationInMs: Readonly<number> = EFFECT_DURATION_MS,
 ): Effects {
   return {
@@ -19,11 +20,12 @@ export function createBasicEffects(
         color,
         level,
         effectName,
+        hasM: cellHasM,
         fn: (board, group, { cellUpdate }) =>
           cellUpdate(board, group, { cellState, hasPkmn: false }),
         duration: durationInMs,
       },
-      createFaintEffectStage(color, level),
+      createFaintEffectStage(color, level, cellHasM),
     ],
   };
 }

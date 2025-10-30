@@ -9,7 +9,7 @@ import { calculateScore } from './calculateScore';
 import { cellUtils, type Cell } from './cells';
 import { effectUtils, type Effect } from './effects';
 import { getSelectedPartyMembers } from './getSelectedPartyMembers';
-import type { PartyMembers } from './pkmn';
+import type { Color, PartyMembers } from './pkmn';
 import { PlayRecorder } from './play-recorder';
 import { PlainRNG, type PRNG, type Seed } from './rng';
 import {
@@ -35,7 +35,7 @@ export class SameGame {
   private _gameState: GameStatus = 'NOT-STARTED';
   private _stateChangeListeners: Array<(gameState: GameState) => void> = [];
 
-  private _debug: typeof console.log = () => {};
+  private _debug: DebugFn = () => {};
 
   constructor(rng: PRNG = new PlainRNG()) {
     this._rng = rng;
@@ -166,6 +166,7 @@ export class SameGame {
       this._debug('Clicked on cell with Pokémon', cellKey);
       const effects = effectUtils.getEffectsForCell(
         cell.color,
+        cell.hasM,
         this._allGroups,
         this._party,
         this._rng
@@ -177,7 +178,7 @@ export class SameGame {
         const affectedGroup = effects.groupFn(this._board, {
           rowIdx,
           columnIdx,
-        });
+        }, this._debug);
         effectUtils
           .runEffects(
             effects.stages,
@@ -188,11 +189,11 @@ export class SameGame {
               cellUpdate: (board, group, updatedCell) =>
                 this.updateCellsInBoard(board, group, updatedCell),
               cellRemove: (board, group) => this.removeGroup(board, group),
-              debug: this._debug,
+              _debug: this._debug,
             }
           )
           .then(() => {
-            this._scoreCard.pkmn.push(cell.color);
+            this._scoreCard.pkmn.push(cell.hasM ? 'M' : cell.color as Color);
             this.recalculateGameState();
             this.notifyStateChange();
           });

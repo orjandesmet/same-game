@@ -2,7 +2,7 @@ import { boardUtils } from '../board';
 import { cellUtils, type CellKey } from '../cells';
 import type { EffectGroupFn } from './types';
 
-export const getBurningGroup: EffectGroupFn = (
+export const getBurningGroup = (cellHasM: boolean): EffectGroupFn => (
   board,
   { rowIdx: sourceRowIdx, columnIdx: sourceColumnIdx }
 ) => {
@@ -16,7 +16,7 @@ export const getBurningGroup: EffectGroupFn = (
             columnIdx,
             sourceRowIdx,
             sourceColumnIdx,
-            2
+            cellHasM ? 4 : 2
           )
         ) {
           return null;

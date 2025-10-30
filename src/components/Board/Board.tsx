@@ -38,8 +38,9 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
           }
           const classNames = clsx(
             styles.cell,
-            styles[cell.color.toLowerCase()],
             cell.hasPkmn && styles.withPkmn,
+            cell.hasM && styles.m,
+            styles[cell.color.toLowerCase()],
             styles[`${cell.color.toLowerCase()}-${pkmnUtils.getEvolutionIdx(cell.color as Color, cell.level)}`],
             cell.cellState === 'BURNING' && styles.isBurning,
             cell.cellState === 'FLOODED' && styles.isFlooded,

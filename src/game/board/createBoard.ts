@@ -22,6 +22,7 @@ export function createBoard(
           rng.nextFloat(),
           partyMembers
         ),
+        hasM: cellUtils.hasPkmn('M', rng.nextFloat(), partyMembers),
         level: partyMembers[color] ?? 1,
         cellState: 'NORMAL' as const,
       };

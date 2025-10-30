@@ -43,4 +43,8 @@
   &.w {
     background-image: var(--i-img-w, url('/pkmn/W-0.png'));
   }
+
+  &.m {
+    background-image: var(--i-img-m, url('/pkmn/M-0.png')) !important;
+  }
 }

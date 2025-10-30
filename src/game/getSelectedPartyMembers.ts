@@ -1,4 +1,4 @@
-import type { Color, PartyMembers } from './pkmn';
+import { MEW, type Color, type PartyMembers } from './pkmn';
 
 export function getSelectedPartyMembers(partyMembers: PartyMembers): {
   selectedPartyMembers: Partial<PartyMembers>;
@@ -13,5 +13,5 @@ export function getSelectedPartyMembers(partyMembers: PartyMembers): {
 }
 
 export function getSelectedColors(partyMembers: Partial<PartyMembers>) {
-  return Object.keys(partyMembers) as Color[];
+  return Object.keys(partyMembers).filter((color) => color !== MEW) as Color[];
 }

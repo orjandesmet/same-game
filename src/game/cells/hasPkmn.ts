@@ -1,7 +1,7 @@
-import { BASE_PKMN_PROBABILITY, type Color, type PartyMembers } from '@game/pkmn';
+import { BASE_PKMN_PROBABILITY, type ExtendedColor, type PartyMembers } from '@game/pkmn';
 
 export function hasPkmn(
-  color: Color,
+  color: ExtendedColor,
   rngValue: Readonly<number>,
   probability: Partial<PartyMembers> = BASE_PKMN_PROBABILITY
 ): Readonly<boolean> {

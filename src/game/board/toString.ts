@@ -1,7 +1,6 @@
 import type { CellColor } from '../cells';
 import type { Board } from './types';
 
-// TODO: add indexes
 export function toString(board: Board): Readonly<string | string[]> {
   const flippedBoard: CellColor[][] = Array.from({ length: board[0].length }).map(
     (_, rowIdx) => Array.from({ length: board.length }).map(

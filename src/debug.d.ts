@@ -1,0 +1,1 @@
+type DebugFn = typeof console.log;

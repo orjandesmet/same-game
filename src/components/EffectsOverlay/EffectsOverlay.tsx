@@ -4,13 +4,15 @@ import {
   TRANSFORM_DURATION_MS,
   type Effect,
 } from '@game/effects';
+import { pkmnUtils } from '@game/pkmn';
 import clsx from 'clsx';
 import { Fragment } from 'react/jsx-runtime';
 import styles from './EffectsOverlay.module.scss';
-import { pkmnUtils } from '@game/pkmn';
+
+export type EffectList = Array<Pick<Effect, 'color' | 'effectName' | 'level' | 'hasM'>>;
 
 type EffectsOverlayProps = {
-  effects: Array<Pick<Effect, 'color' | 'effectName' | 'level'>>;
+  effects: EffectList;
 };
 
 const cssVariables: React.CSSProperties = {
@@ -46,6 +48,7 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
                 styles.effectImg,
                 styles[`effect-${idx + 1}`],
                 styles[effect.color.toLowerCase()],
+                effect.hasM && styles.m,
                 styles[`${effect.color.toLowerCase()}-${pkmnUtils.getEvolutionIdx(effect.color, effect.level)}`]
               )}
             ></div>
