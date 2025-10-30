@@ -70,7 +70,7 @@ function App() {
           '--i-img-y': "url('/pkmn/pi/Y.png')",
           '--i-img-p': "url('/pkmn/pi/P.png')",
           '--i-img-w': "url('/pkmn/pi/W.png')",
-          '--i-img-m': "url('/pkmn/pi/M.png')", // TODO: this image does not exist yet
+          '--i-img-m': "url('/pkmn/pi/M.png')",
         } as CSSProperties);
       }
       handleStart(startingSeed);
