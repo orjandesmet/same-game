@@ -1,17 +1,18 @@
 import type { CellColor } from '@game/cells';
-import type { Color, PartyMembers, PkmnScore } from './types';
-import { COLORS } from './constants';
+import { COLORS, MEW } from './constants';
+import type { Color, ExtendedColor, PartyMembers, PkmnScore } from './types';
 
-const PKMN_SCORES: Record<Color, number> = {
+const PKMN_SCORES: Record<ExtendedColor, number> = {
   R: 100,
   B: 100,
   Y: 120,
   G: 100,
   P: 150,
   W: 200,
+  M: 500,
 }
 
-export function calculatePkmnScores(pkmnList: CellColor[], party: Partial<PartyMembers>): Array<PkmnScore> {
+export function calculatePkmnScores(pkmnList: (CellColor | typeof MEW)[], party: Partial<PartyMembers>): Array<PkmnScore> {
   return Object.entries(PKMN_SCORES)
     .map(([color, score]) => ({color, score}))
     .filter(isValidPkmnScore)
@@ -25,5 +26,5 @@ export function calculatePkmnScores(pkmnList: CellColor[], party: Partial<PartyM
 }
 
 function isValidPkmnScore(input: {color: string, score: number}): input is PkmnScore {
-  return COLORS.includes(input.color as Color);
+  return COLORS.includes(input.color as Color) || input.color === MEW;
 }

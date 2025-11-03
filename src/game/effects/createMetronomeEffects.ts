@@ -7,19 +7,21 @@ import type { Effects } from './types';
 
 type GetEffectsFn = (
   cellColor: CellColor,
-    allGroups: Group[],
+  cellHasM: boolean,
+  allGroups: Group[],
     party: Partial<PartyMembers>,
-    rng: Readonly<PRNG>
+    rng: Readonly<PRNG>,
   ) => Effects | null;
 
-export function createMetronomeEffects(allGroups: Group[], party: Partial<PartyMembers>, rng: Readonly<PRNG>, getEffectsForCell: GetEffectsFn) {
+export function createMetronomeEffects(allGroups: Group[], party: Partial<PartyMembers>, rng: Readonly<PRNG>, getEffectsForCell: GetEffectsFn, cellHasM: boolean) {
   const metronomeTargetColors = COLORS.filter(isMetronomeTarget);
   const metronomeTarget = metronomeTargetColors[rng.nextRange(0, metronomeTargetColors.length)];
   const randomResult = getEffectsForCell(
     metronomeTarget,
+    cellHasM,
     allGroups,
     party,
-    rng
+    rng,
   );
   if (!randomResult) {
     return null;
@@ -28,6 +30,7 @@ export function createMetronomeEffects(allGroups: Group[], party: Partial<PartyM
     color: 'W',
     level: party['W'] ?? 1,
     effectName: 'METRONOME',
+    hasM: cellHasM,
     fn: (board) => board,
     duration: METRONOME_DURATION_MS,
   });

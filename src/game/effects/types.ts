@@ -6,7 +6,8 @@ export type EffectName = 'EMBER' | 'WATER GUN' | 'VINE WHIP' | 'THUNDER SHOCK' |
 
 export type EffectGroupFn = (
   board: Board,
-  source: { rowIdx: RowIdx; columnIdx: ColumnIdx }
+  source: { rowIdx: RowIdx; columnIdx: ColumnIdx },
+  _debug: DebugFn,
 ) => Group;
 
 export type EffectTools = Readonly<{
@@ -16,12 +17,13 @@ export type EffectTools = Readonly<{
     updatedCell: Partial<Pick<Cell, 'color' | 'cellState' | 'hasPkmn' | 'level'>>
   ) => Board;
   cellRemove: (board: Board, group: Group) => Board;
-  debug: (...args: unknown[]) => void;
+  _debug: DebugFn;
 }>;
 export type Effect = Readonly<{
   color: Color;
   level: number;
   effectName?: Readonly<EffectName>;
+  hasM?: boolean;
   fn: (
     board: Board,
     group: Group,
