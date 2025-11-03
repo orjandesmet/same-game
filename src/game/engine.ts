@@ -9,6 +9,7 @@ import { calculateScore } from './calculateScore';
 import { cellUtils, type Cell } from './cells';
 import { effectUtils, type Effect } from './effects';
 import { getSelectedPartyMembers } from './getSelectedPartyMembers';
+import { mAppears } from './mAppears';
 import type { Color, PartyMembers } from './pkmn';
 import { PlayRecorder } from './play-recorder';
 import { PlainRNG, type PRNG, type Seed } from './rng';
@@ -26,6 +27,7 @@ export class SameGame {
   private _board: Board = [];
   private _allGroups: Group[] = [];
   private _movesLeft = 0;
+  private _mAppeared = false;
   private _scoreCard: ScoreCard = {
     allCleared: false,
     cellsRemoved: 0,
@@ -97,6 +99,7 @@ export class SameGame {
     );
     const { colors, selectedPartyMembers } = getSelectedPartyMembers(partyMembers);
     this._party = selectedPartyMembers;
+    this._mAppeared = false;
     this._scoreCard = {
       allCleared: false,
       cellsRemoved: 0,
@@ -129,6 +132,13 @@ export class SameGame {
   }
 
   private recalculateGameState() {
+    if (!this._mAppeared) {
+      const m = mAppears(this.board, this._rng, this._party, this._debug);
+      if (m.appeared) {
+        this._mAppeared = true;
+        this._board = m.board;
+      }
+    }
     this.recalculateMovesLeft();
     this._gameState = this._movesLeft > 0 ? 'IN-PROGRESS' : 'GAME-OVER';
     if (this._gameState === 'GAME-OVER') {

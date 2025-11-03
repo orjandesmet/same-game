@@ -30,6 +30,7 @@ export function createMetronomeEffects(allGroups: Group[], party: Partial<PartyM
     color: 'W',
     level: party['W'] ?? 1,
     effectName: 'METRONOME',
+    hasM: cellHasM,
     fn: (board) => board,
     duration: METRONOME_DURATION_MS,
   });

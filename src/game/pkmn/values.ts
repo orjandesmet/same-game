@@ -7,7 +7,7 @@ export const BASE_PKMN_PROBABILITY: PartyMembers = {
   Y: 6,
   P: 3,
   W: 1,
-  M: 0.1,
+  M: 0.75,
 };
 
 export const PKMN_NAMES: Record<ExtendedColor, string[]> = {

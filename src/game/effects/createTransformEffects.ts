@@ -26,7 +26,7 @@ export function createTransformEffects(allGroups: Group[], party: Partial<PartyM
       {
         color: transformTarget,
         level: party[transformTarget] ?? 1,
-        hasM: cellHasM,
+        hasM: false,
         fn: (board, group, { cellUpdate }) => {
           return cellUpdate(board, group, {
             color: transformTarget,
