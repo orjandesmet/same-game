@@ -47,6 +47,17 @@ The time I was afk, I clumsily fiddled with CSS animations on my phone.
 In the meantime I worked out ideas to improve on this game and to give it a special twist.
 These eventually got implemented into the project or at least became an issue on the GitHub project.
 
+## Settings
+
+Add query parameters:
+
+- `seed`: number
+- `columns`: number
+- `rows`: number
+- `party`: Array<`${Color}:${number}`>
+- `debug`: boolean
+- `pi`: Nonkel Pi
+
 ## Disclaimer
 
 Pokémon, the Pokémon logo, and the names of all Pokémon characters are trademarks of Nintendo, The Pokémon Company, and/or Game Freak.

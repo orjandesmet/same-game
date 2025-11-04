@@ -1,0 +1,17 @@
+.party {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 1em;
+  justify-content: space-between;
+}
+
+.hr {
+  width: 4em;
+}
+
+.seed {
+  display: flex;
+  align-items: start;
+  gap: 0.5em;
+}
