@@ -4,18 +4,23 @@ import {
   type Color,
   type PartyMembers,
 } from '@game/pkmn';
+import type { Seed } from '@game/rng';
 import { clamp } from '@utils/clamp';
 import { useCallback, useEffect, useState } from 'react';
 
+const BASE_NR_OF_COLUMNS = 10;
+const BASE_NR_OF_ROWS = 10;
+
 export function useGameOptions() {
   const [canAccessSettings, setCanAccessSettings] = useState(true);
+  const [isDebugging, setIsDebugging] = useState(false);
   const [isPi, setIsPi] = useState(false);
-  const [nrOfColumns, setNrOfColumns] = useState(10);
-  const [nrOfRows, setNrOfRows] = useState(10);
+  const [nrOfColumns, setNrOfColumns] = useState(BASE_NR_OF_COLUMNS);
+  const [nrOfRows, setNrOfRows] = useState(BASE_NR_OF_ROWS);
   const [partyMembers, setPartyMembers] = useState<PartyMembers>(
     buildBasePartyMembers()
   );
-  const [seed, setSeed] = useState(newSeed())
+  const [seed, setSeed] = useState<Seed>(newSeed())
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -25,36 +30,58 @@ export function useGameOptions() {
       if (searchParamSettings.dimensions) {
         setNrOfColumns(searchParamSettings.dimensions.cols);
         setNrOfRows(searchParamSettings.dimensions.rows);
-        setCanAccessSettings(false);
       }
 
       if (searchParamSettings.party) {
         setPartyMembers(searchParamSettings.party);
-        setCanAccessSettings(false);
       }
 
       if (searchParamSettings.seed && !isNaN(searchParamSettings.seed)) {
         setSeed(searchParamSettings.seed);
-        setCanAccessSettings(false);
+      }
+
+      if (searchParamSettings.debug) {
+        setIsDebugging(true);
       }
     }
   }, []);
 
-  const createNewSeed = useCallback(() => {
+  const resetDebugger = useCallback(() => {
+    setCanAccessSettings(true);
+    setIsDebugging(false);
+    setNrOfColumns(BASE_NR_OF_COLUMNS);
+    setNrOfRows(BASE_NR_OF_ROWS);
+    setPartyMembers(buildBasePartyMembers());
     setSeed(newSeed());
-  }, []);
+    if (isPi) {
+      window.location.search = '?pi=true'
+    } else {
+      window.location.search = '';
+    }
+  }, [isPi]);
+
+  const createNewSeed = useCallback(() => {
+    if (isDebugging) {
+      setSeed(newSeed());
+    } else {
+      resetDebugger();
+    }
+
+  }, [isDebugging, resetDebugger]);
 
   return {
     canAccessSettings,
     nrOfColumns,
     nrOfRows,
     partyMembers,
+    isDebugging,
     isPi,
     seed,
     setNrOfColumns,
     setNrOfRows,
     setPartyMembers,
     createNewSeed,
+    resetDebugger,
   };
 }
 
@@ -87,8 +114,10 @@ function handleSearchParams() {
   } : null;
   const party = handleParty(searchParams.getAll('party'));
   const seed = Number(searchParams.get('seed'));
+  const debug = searchParams.has('debug');
 
   return {
+    debug,
     dimensions,
     isPi,
     party,
@@ -101,7 +130,7 @@ function handleParty(partySearchParams: string[]): PartyMembers | null {
     return partySearchParams.reduce((acc, current) => {
       const [color, level] = current.split(':');
       if (COLORS.includes(color as Color) || color === 'M' && level && !isNaN(Number(level))) {
-        return {...acc, [color]: clamp(1, Number(level), 100)};
+        return {...acc, [color]: clamp(color === 'M' ? 0.25 : 1, Number(level), 100)};
       }
       return acc;
   }, BASE_PKMN_PROBABILITY);

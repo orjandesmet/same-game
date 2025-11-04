@@ -13,6 +13,7 @@ import { useCallback, useEffect, useMemo, useState, type CSSProperties } from 'r
 import styles from './App.module.css';
 import type { EffectList } from './components/EffectsOverlay';
 import { Octicon } from './components/Octicon/Octicon';
+import { DebugBanner } from '@components/DebugBanner';
 
 const game = new SameGame(new Xorshift32());
 
@@ -24,12 +25,14 @@ function App() {
     nrOfColumns,
     nrOfRows,
     partyMembers,
+    isDebugging,
     isPi,
     seed,
     setNrOfColumns,
     setNrOfRows,
     setPartyMembers,
     createNewSeed,
+    resetDebugger,
   } = useGameOptions();
   const { board, gameState, movesLeft, pkmnScores, score, scoreCard } = useGameState(game, partyMembers);
 
@@ -49,10 +52,7 @@ function App() {
   );
 
   useEffect(() => {
-    if (!canAccessSettings) {
-      game.enableDebugMode();
-    }
-
+    game.enableDebugMode(!canAccessSettings);
     game.startGame(nrOfRows, nrOfColumns, partyMembers, seed);
   }, [nrOfRows, nrOfColumns, partyMembers, seed, canAccessSettings]);
 
@@ -73,28 +73,29 @@ function App() {
 
   return (
     <div className={styles.appRoot} style={cssVars}>
-      {canAccessSettings ? (<OptionsForm
+      {canAccessSettings && (<OptionsForm
         nrOfRows={nrOfRows}
         nrOfColumns={nrOfColumns}
         partyMembers={partyMembers}
         onNrOfRowsChange={setNrOfRows}
         onNrOfColumnsChange={setNrOfColumns}
         onPartyMembersChange={setPartyMembers}
-        onStartGame={() => createNewSeed()}
-      />) : (<div>{nrOfRows}x{nrOfColumns} - {JSON.stringify(partyMembers)}</div>)}
+        onStartGame={createNewSeed}
+      />)}
       <Board
         board={board}
         onCellClick={handleCellClick}
         isGameOver={gameState === 'GAME-OVER'}
       >
         <GameOverScreen
-          onRestartClick={() => createNewSeed()}
+          onRestartClick={createNewSeed}
           score={score}
           pkmnScores={pkmnScores}
           scoreCard={scoreCard}
         />
       </Board>
       <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed} />
+       {isDebugging && (<DebugBanner nrOfRows={nrOfRows} nrOfColumns={nrOfColumns} partyMembers={partyMembers} seed={seed} onResetClicked={resetDebugger} />)}
       <EffectsOverlay effects={effects} />
       <div className={styles.githubLink}>
         <Octicon className={styles.githubLogo} />

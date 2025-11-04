@@ -47,7 +47,7 @@ The time I was afk, I clumsily fiddled with CSS animations on my phone.
 In the meantime I worked out ideas to improve on this game and to give it a special twist.
 These eventually got implemented into the project or at least became an issue on the GitHub project.
 
-## Debug
+## Settings
 
 Add query parameters:
 
@@ -55,6 +55,8 @@ Add query parameters:
 - `columns`: number
 - `rows`: number
 - `party`: Array<`${Color}:${number}`>
+- `debug`: boolean
+- `pi`: Nonkel Pi
 
 ## Disclaimer
 

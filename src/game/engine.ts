@@ -80,9 +80,14 @@ export class SameGame {
     this._stateChangeListeners.forEach((listener) => listener(gameState));
   }
 
-  public enableDebugMode() {
-    this._debug = (...args) => console.log('SameGame', ...args);
-    this._debug('Debug mode enabled');
+  public enableDebugMode(enabled: boolean) {
+    if (enabled) {
+      this._debug = (...args) => console.log('SameGame', ...args);
+      this._debug('Debug mode enabled');
+    } else {
+      this._debug('Debug mode disabled');
+      this._debug = () => {};
+    }
   }
 
   public startGame(
