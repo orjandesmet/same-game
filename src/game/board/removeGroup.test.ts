@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { createTestBoard } from './createTestBoard';
 import { getGroup } from './getGroup';
 import { removeGroup } from './removeGroup';
-import { EMPTY, type Color } from '@game/pkmn';
-import type { Board } from './types';
 
 describe('removeGroup', () => {
     it('removes specified group and applies gravity', () => {
@@ -44,16 +43,3 @@ describe('removeGroup', () => {
       });
     });
   });
-
-  function createTestBoard(pattern: string[]): Board {
-  return pattern[0].split('').map((_, columnIdx) => 
-    pattern.map((row) => ({
-      key: `${row.length - 1 - pattern.indexOf(row)}:${columnIdx}`,
-      color: row[columnIdx] === '.' ? EMPTY : (row[columnIdx] as Color),
-      hasPkmn: false,
-      hasM: false,
-      level: 1,
-      cellState: 'NORMAL' as const
-    }))
-  ) as Board;
-}
