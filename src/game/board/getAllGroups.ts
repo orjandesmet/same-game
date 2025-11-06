@@ -16,5 +16,6 @@ export function getAllGroups(board: Board): Group[] {
         visited
       );
       return [...all, groupForCell];
-    }, []);
+    }, [])
+    .filter((group) => group.length > 0);
 }

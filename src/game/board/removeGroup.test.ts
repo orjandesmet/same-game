@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createTestBoard } from './createTestBoard';
+import { createTestBoard } from './createTestBoard.test-util';
 import { getGroup } from './getGroup';
 import { removeGroup } from './removeGroup';
 

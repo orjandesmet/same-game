@@ -1,7 +1,7 @@
 import { countCellsWithPkmn } from './countCellsWithPkmn';
 import { createBoard } from './createBoard';
+import { getAllCellsWithColors } from './getAllCellsWithColors';
 import { getAllGroups } from './getAllGroups';
-import { getCellsWithColors } from './getCellsWithColors';
 import { getGroup } from './getGroup';
 import { getNonEmptyCells } from './getNonEmptyCells';
 import { isNearSource } from './isNearSource';
@@ -14,8 +14,8 @@ export * from './types';
 export const boardUtils = {
   countCellsWithPkmn,
   createBoard,
+  getAllCellsWithColors,
   getAllGroups,
-  getCellsWithColors,
   getGroup,
   getNonEmptyCells,
   isNearSource,

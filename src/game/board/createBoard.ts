@@ -17,7 +17,7 @@ export function createBoard(
       return {
         key: cellUtils.createCellKey(rowIdx, columnIdx),
         color,
-        hasPkmn: cellUtils.hasPkmn(
+        hasPkmn: cellUtils.determineHasPkmn(
           color,
           rng.nextFloat(),
           partyMembers

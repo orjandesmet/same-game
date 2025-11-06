@@ -45,7 +45,7 @@ function getTransformingGroup(allGroups: Group[], cellHasM: boolean): EffectGrou
     if (cellHasM) {
       const sourceColor = board[columnIdx][rowIdx].color;
       _debug('TRANSFORM will affect all cells with color', sourceColor);
-      return boardUtils.getCellsWithColors(board, [sourceColor]);
+      return boardUtils.getAllCellsWithColors(board, [sourceColor]);
     }
     const cellKey = cellUtils.createCellKey(rowIdx, columnIdx);
     const group = allGroups.find((g) => g.includes(cellKey));

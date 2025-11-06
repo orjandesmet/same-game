@@ -1,7 +1,7 @@
 import { cellUtils, type CellColor, type CellKey } from '@game/cells';
 import type { Board } from './types';
 
-export function getCellsWithColors(board: Board, colors: CellColor[]): CellKey[] {
+export function getAllCellsWithColors(board: Board, colors: CellColor[]): CellKey[] {
 return board
     .flatMap((column, columnIdx) =>
       column.map((cell, rowIdx) => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getGroup } from './getGroup';
-import { createTestBoard } from './createTestBoard';
+import { createTestBoard } from './createTestBoard.test-util';
 
 describe('getGroup', () => {
 
