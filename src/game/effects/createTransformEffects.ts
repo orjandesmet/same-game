@@ -6,10 +6,16 @@ import type { PRNG } from '../rng';
 import { EFFECT_DURATION_MS, TRANSFORM_DURATION_MS } from './constants';
 import type { EffectGroupFn, Effects } from './types';
 
-export function createTransformEffects(allGroups: Group[], party: Partial<PartyMembers>, rng: PRNG, cellHasM: boolean): Effects {
+export function createTransformEffects(
+  allGroups: Group[],
+  party: Partial<PartyMembers>,
+  rng: PRNG,
+  cellHasM: boolean
+): Effects {
   const colors = getSelectedColors(party);
   const transformTargetColors = colors.filter(isTransformTarget);
-  const transformTarget = transformTargetColors[rng.nextRange(0, transformTargetColors.length)];
+  const transformTarget =
+    transformTargetColors[rng.nextRange(0, transformTargetColors.length)];
   return {
     groupFn: getTransformingGroup(allGroups, cellHasM),
     stages: [
@@ -40,7 +46,10 @@ export function createTransformEffects(allGroups: Group[], party: Partial<PartyM
   };
 }
 
-function getTransformingGroup(allGroups: Group[], cellHasM: boolean): EffectGroupFn {
+function getTransformingGroup(
+  allGroups: Group[],
+  cellHasM: boolean
+): EffectGroupFn {
   return (board, { rowIdx, columnIdx }, _debug) => {
     if (cellHasM) {
       const sourceColor = board[columnIdx][rowIdx].color;
@@ -52,7 +61,6 @@ function getTransformingGroup(allGroups: Group[], cellHasM: boolean): EffectGrou
     return group || [cellKey];
   };
 }
-
 
 function isTransformTarget(color: Color) {
   return color !== 'P' && color !== 'W';

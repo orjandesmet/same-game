@@ -6,11 +6,11 @@ describe('calculatePkmnScores', () => {
   it('should calculate scores for basic pokemon catches', () => {
     const party: Partial<PartyMembers> = {
       R: 1,
-      B: 1
+      B: 1,
     };
-    
+
     const scores = pkmnUtils.calculatePkmnScores(['R', 'R', 'B'], party);
-    
+
     expect(scores).toHaveLength(2); // Two types of pokemon
     expect(scores).toContainEqual({
       color: 'R',
@@ -29,11 +29,11 @@ describe('calculatePkmnScores', () => {
   it('should apply level multipliers from party members', () => {
     const party: Partial<PartyMembers> = {
       R: 2, // Level 2
-      B: 3  // Level 3
+      B: 3, // Level 3
     };
-    
+
     const scores = pkmnUtils.calculatePkmnScores(['R', 'B'], party);
-    
+
     expect(scores).toContainEqual({
       color: 'R',
       level: 2,
@@ -50,11 +50,11 @@ describe('calculatePkmnScores', () => {
 
   it('should handle special pokemon (MEW) with higher base score', () => {
     const party: Partial<PartyMembers> = {
-      M: 1
+      M: 1,
     };
-    
+
     const scores = pkmnUtils.calculatePkmnScores(['M'], party);
-    
+
     expect(scores).toHaveLength(1);
     expect(scores[0]).toEqual({
       color: 'M',
@@ -71,22 +71,22 @@ describe('calculatePkmnScores', () => {
 
   it('should use default level 1 for pokemon not in party', () => {
     const party: Partial<PartyMembers> = {
-      R: 2 // Only R has a custom level
+      R: 2, // Only R has a custom level
     };
-    
+
     const scores = pkmnUtils.calculatePkmnScores(['R', 'B'], party);
-    
+
     expect(scores).toContainEqual({
       color: 'R',
       level: 2, // Custom level from party
       baseScore: 100,
-      score: 100
+      score: 100,
     });
     expect(scores).toContainEqual({
       color: 'B',
       level: 1, // Default level
       baseScore: 100,
-      score: 100
+      score: 100,
     });
   });
 });

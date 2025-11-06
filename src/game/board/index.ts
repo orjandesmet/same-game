@@ -4,7 +4,6 @@ import { getAllCellsWithColors } from './getAllCellsWithColors';
 import { getAllGroups } from './getAllGroups';
 import { getGroup } from './getGroup';
 import { getNonEmptyCells } from './getNonEmptyCells';
-import { isNearSource } from './isNearSource';
 import { removeGroup } from './removeGroup';
 import { toString } from './toString';
 import { updateCellsInBoard } from './updateCellsInBoard';
@@ -18,7 +17,6 @@ export const boardUtils = {
   getAllGroups,
   getGroup,
   getNonEmptyCells,
-  isNearSource,
   removeGroup,
   toString,
   updateCellsInBoard,

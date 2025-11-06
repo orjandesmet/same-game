@@ -1,4 +1,8 @@
-import { BASE_PKMN_PROBABILITY, type ExtendedColor, type PartyMembers } from '@game/pkmn';
+import {
+  BASE_PKMN_PROBABILITY,
+  type ExtendedColor,
+  type PartyMembers,
+} from '@game/pkmn';
 
 export function determineHasPkmn(
   color: ExtendedColor,

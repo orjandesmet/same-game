@@ -10,7 +10,7 @@ describe('calculateScore', () => {
         cellsRemoved: 10,
         multiplier: 2,
         allCleared: false,
-        pkmn: []
+        pkmn: [],
       },
       {}
     );
@@ -23,7 +23,7 @@ describe('calculateScore', () => {
         cellsRemoved: 10,
         multiplier: 1,
         allCleared: true,
-        pkmn: []
+        pkmn: [],
       },
       {}
     );
@@ -33,15 +33,15 @@ describe('calculateScore', () => {
   it('should calculate pokemon scores based on party members', () => {
     const party: Partial<PartyMembers> = {
       R: 2, // Level 2 red pokemon
-      B: 1  // Level 1 blue pokemon
+      B: 1, // Level 1 blue pokemon
     };
-    
+
     const score = calculateScore(
       {
         cellsRemoved: 5,
         multiplier: 1,
         allCleared: false,
-        pkmn: ['R', 'R', 'B'] // 2 red pokemon and 1 blue pokemon
+        pkmn: ['R', 'R', 'B'], // 2 red pokemon and 1 blue pokemon
       },
       party
     );

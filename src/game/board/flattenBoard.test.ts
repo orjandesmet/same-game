@@ -4,17 +4,9 @@ import { flattenBoard } from './flattenBoard';
 import { EMPTY } from '@game/pkmn';
 
 describe('flattenBoard', () => {
-  it('returns a flat representation of the board', () => {
-    const board = createTestBoard([
-      '.GB',
-      'RBB',
-      'BGG',
-    ], [
-      '..*',
-      '*..',
-      '.M.',
-    ]);
+  const board = createTestBoard(['.GB', 'RBB', 'BGG'], ['..*', '*..', '.M.']);
 
+  it('returns a flat representation of the board', () => {
     const flatBoard = flattenBoard(board);
 
     expect(flatBoard).toHaveLength(9);

@@ -1,10 +1,8 @@
-import type { ColumnIdx, RowIdx } from './types';
-
 export function isNearSource(
-  rowIdx: RowIdx,
-  columnIdx: ColumnIdx,
-  sourceRowIdx: RowIdx,
-  sourceColumnIdx: ColumnIdx,
+  rowIdx: number,
+  columnIdx: number,
+  sourceRowIdx: number,
+  sourceColumnIdx: number,
   distance: Readonly<number>
 ): Readonly<boolean> {
   const calculatedDistance = Math.sqrt(
