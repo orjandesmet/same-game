@@ -39,7 +39,7 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
           const classNames = clsx(
             styles.cell,
             cell.hasCreature && styles.withCreature,
-            cell.hasM && styles.m,
+            cell.hasSpecialCreature && styles.m,
             styles[cell.color.toLowerCase()],
             styles[`${cell.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(cell.color as Color, cell.level)}`],
             cell.cellState === 'BURNING' && styles.isBurning,

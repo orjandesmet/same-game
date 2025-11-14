@@ -7,18 +7,18 @@ import type { Effects } from './types';
 
 type GetEffectsFn = (
   cellColor: CellColor,
-  cellHasM: boolean,
+  cellHasSpecialCreature: boolean,
   allGroups: Group[],
     party: Partial<PartyMembers>,
     rng: Readonly<PRNG>,
   ) => Effects | null;
 
-export function createMetronomeEffects(allGroups: Group[], party: Partial<PartyMembers>, rng: Readonly<PRNG>, getEffectsForCell: GetEffectsFn, cellHasM: boolean) {
+export function createMetronomeEffects(allGroups: Group[], party: Partial<PartyMembers>, rng: Readonly<PRNG>, getEffectsForCell: GetEffectsFn, cellHasSpecialCreature: boolean) {
   const metronomeTargetColors = COLORS.filter(isMetronomeTarget);
   const metronomeTarget = metronomeTargetColors[rng.nextRange(0, metronomeTargetColors.length)];
   const randomResult = getEffectsForCell(
     metronomeTarget,
-    cellHasM,
+    cellHasSpecialCreature,
     allGroups,
     party,
     rng,
@@ -26,17 +26,17 @@ export function createMetronomeEffects(allGroups: Group[], party: Partial<PartyM
   if (!randomResult) {
     return null;
   }
-  randomResult.stages.unshift({
+  const stages: Effects['stages'] = [{
     color: 'W',
     level: party['W'] ?? 1,
     effectName: 'METRONOME',
-    hasM: cellHasM,
+    hasSpecialCreature: cellHasSpecialCreature,
     fn: (board) => board,
     duration: METRONOME_DURATION_MS,
-  });
+  }, ...randomResult.stages];
   return {
     groupFn: randomResult.groupFn,
-    stages: randomResult.stages,
+    stages,
   };
 }
 

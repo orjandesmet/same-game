@@ -5,10 +5,10 @@ import { createBasicEffects } from './createBasicEffects';
 import { getShockedGroup } from './getShockedGroup';
 import type { Effects } from './types';
 
-export function createShockedEffects(party: Partial<PartyMembers>, rng: PRNG, cellHasM: boolean): Effects {
-  const additionalColors = cellHasM ? getAdditionalColors(party, rng) : [];
+export function createShockedEffects(party: Partial<PartyMembers>, rng: PRNG, cellHasSpecialCreature: boolean): Effects {
+  const additionalColors = cellHasSpecialCreature ? getAdditionalColors(party, rng) : [];
   
-  return createBasicEffects(getShockedGroup(additionalColors), 'Y', 'THUNDER SHOCK', 'SHOCKED', party['G'], cellHasM);
+  return createBasicEffects(getShockedGroup(additionalColors), 'Y', 'THUNDER SHOCK', 'SHOCKED', party['G'], cellHasSpecialCreature);
 }
 
 function getAdditionalColors(party: Partial<PartyMembers>, rng: PRNG): Color[] {

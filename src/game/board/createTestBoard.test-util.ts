@@ -14,7 +14,7 @@ export function createTestBoard(
       key: keys ? keys[rowIdx][columnIdx] : `${rowIdx}:${columnIdx}`,
       color: row[columnIdx] === '.' ? EMPTY : (row[columnIdx] as Color),
       hasCreature: !!creatures && !!creatures[rowIdx]?.[columnIdx] && creatures[rowIdx]?.[columnIdx] !== '.',
-      hasM: !!creatures && creatures[rowIdx]?.[columnIdx] === 'M',
+      hasSpecialCreature: !!creatures && creatures[rowIdx]?.[columnIdx] === 'M',
       level: 1,
       cellState: 'NORMAL' as const,
     }))

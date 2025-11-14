@@ -22,7 +22,7 @@ export function createBoard(
           rng.nextFloat(),
           partyMembers
         ),
-        hasM: false,
+        hasSpecialCreature: false,
         level: partyMembers[color] ?? 1,
         cellState: 'NORMAL' as const,
       };

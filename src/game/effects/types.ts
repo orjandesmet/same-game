@@ -23,7 +23,7 @@ export type Effect = Readonly<{
   color: Color;
   level: number;
   effectName?: Readonly<EffectName>;
-  hasM?: boolean;
+  hasSpecialCreature?: boolean;
   fn: (
     board: Board,
     group: Group,

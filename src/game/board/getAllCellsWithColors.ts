@@ -14,5 +14,5 @@ export function getAllCellsWithColors(
         return cellUtils.createCellKey(rowIdx, columnIdx);
       })
     )
-    .filter((cellKey): cellKey is CellKey => cellKey !== null);
+    .filter(cellUtils.isValidKey);
 }

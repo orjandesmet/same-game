@@ -42,7 +42,7 @@ function App() {
       setEffects(
         effects
           .filter(effectUtils.isVisibleEffectStage)
-          .map(({color, effectName, level, hasM}) => ({color, effectName, level, hasM}))
+          .map(({color, effectName, level, hasSpecialCreature}) => ({color, effectName, level, hasSpecialCreature}))
       );
       setTimeout(() => {
         setEffects([]);

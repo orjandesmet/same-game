@@ -10,20 +10,20 @@ export function createTransformEffects(
   allGroups: Group[],
   party: Partial<PartyMembers>,
   rng: PRNG,
-  cellHasM: boolean
+  cellHasSpecialCreature: boolean
 ): Effects {
   const colors = getSelectedColors(party);
   const transformTargetColors = colors.filter(isTransformTarget);
   const transformTarget =
     transformTargetColors[rng.nextRange(0, transformTargetColors.length)];
   return {
-    groupFn: getTransformingGroup(allGroups, cellHasM),
+    groupFn: getTransformingGroup(allGroups, cellHasSpecialCreature),
     stages: [
       {
         color: 'P',
         level: party['P'] ?? 1,
         effectName: 'TRANSFORM',
-        hasM: cellHasM,
+        hasSpecialCreature: cellHasSpecialCreature,
         fn: (board, group, { cellUpdate }) => {
           return cellUpdate(board, group, { cellState: 'TRANSFORMING' });
         },
@@ -32,7 +32,7 @@ export function createTransformEffects(
       {
         color: transformTarget,
         level: party[transformTarget] ?? 1,
-        hasM: false,
+        hasSpecialCreature: false,
         fn: (board, group, { cellUpdate }) => {
           return cellUpdate(board, group, {
             color: transformTarget,
@@ -48,10 +48,10 @@ export function createTransformEffects(
 
 function getTransformingGroup(
   allGroups: Group[],
-  cellHasM: boolean
+  cellHasSpecialCreature: boolean
 ): EffectGroupFn {
   return (board, { rowIdx, columnIdx }, _debug) => {
-    if (cellHasM) {
+    if (cellHasSpecialCreature) {
       const sourceColor = board[columnIdx][rowIdx].color;
       _debug('TRANSFORM will affect all cells with color', sourceColor);
       return boardUtils.getAllCellsWithColors(board, [sourceColor]);

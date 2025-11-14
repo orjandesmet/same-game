@@ -181,7 +181,7 @@ export class SameGame {
       this._debug('Clicked on cell with Pokémon', cellKey);
       const effects = effectUtils.getEffectsForCell(
         cell.color,
-        cell.hasM,
+        cell.hasSpecialCreature,
         this._allGroups,
         this._party,
         this._rng
@@ -208,7 +208,7 @@ export class SameGame {
             }
           )
           .then(() => {
-            this._scoreCard.creatures.push(cell.hasM ? 'M' : cell.color as Color);
+            this._scoreCard.creatures.push(cell.hasSpecialCreature ? 'M' : cell.color as Color);
             this.recalculateGameState();
             this.notifyStateChange();
           });

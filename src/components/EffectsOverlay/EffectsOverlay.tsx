@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { Fragment } from 'react/jsx-runtime';
 import styles from './EffectsOverlay.module.scss';
 
-export type EffectList = Array<Pick<Effect, 'color' | 'effectName' | 'level' | 'hasM'>>;
+export type EffectList = Array<Pick<Effect, 'color' | 'effectName' | 'level' | 'hasSpecialCreature'>>;
 
 type EffectsOverlayProps = {
   effects: EffectList;
@@ -48,7 +48,7 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
                 styles.effectImg,
                 styles[`effect-${idx + 1}`],
                 styles[effect.color.toLowerCase()],
-                effect.hasM && styles.m,
+                effect.hasSpecialCreature && styles.m,
                 styles[`${effect.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(effect.color, effect.level)}`]
               )}
             ></div>

@@ -1,13 +1,13 @@
-import { cellUtils, type CellKey } from '../cells';
+import { cellUtils } from '../cells';
 import type { EffectGroupFn } from './types';
 
 
-export const getFloodedGroup = (cellHasM: boolean): EffectGroupFn => (
+export const getFloodedGroup = (cellHasSpecialCreature: boolean): EffectGroupFn => (
   board,
   { columnIdx: sourceColumnIdx },
   _debug
 ) => {
-  const columns = getColumns(board.length, sourceColumnIdx, cellHasM, _debug);
+  const columns = getColumns(board.length, sourceColumnIdx, cellHasSpecialCreature, _debug);
   return columns
     .flatMap((columnIdx) => board[columnIdx].map((cell, rowIdx) => {
         if (cellUtils.isEmptyCell(cell)) {
@@ -15,13 +15,13 @@ export const getFloodedGroup = (cellHasM: boolean): EffectGroupFn => (
         }
         return cellUtils.createCellKey(rowIdx, columnIdx);
       })
-      .filter((cellKey): cellKey is CellKey => cellKey !== null)
+      .filter(cellUtils.isValidKey)
     )
 };
 
-function getColumns(nrOfColumns: number, columnIdx: number, cellHasM: boolean, _debug: DebugFn): number[] {
+function getColumns(nrOfColumns: number, columnIdx: number, cellHasSpecialCreature: boolean, _debug: DebugFn): number[] {
   const columns = [columnIdx];
-  if (!cellHasM) {
+  if (!cellHasSpecialCreature) {
     return columns;
   }
   if (columnIdx > 0) {

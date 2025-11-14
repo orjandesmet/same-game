@@ -9,7 +9,7 @@ describe('isEmptyCell', () => {
       cellState: 'NORMAL',
       color: EMPTY,
       hasCreature: true,
-      hasM: false,
+      hasSpecialCreature: false,
       key: '1:2',
       level: 30,
     };
@@ -22,7 +22,7 @@ describe('isEmptyCell', () => {
       cellState: 'NORMAL',
       color: 'B',
       hasCreature: false,
-      hasM: false,
+      hasSpecialCreature: false,
       key: '1:2',
       level: 30,
     };

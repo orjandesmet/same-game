@@ -9,7 +9,7 @@ export type Cell = Readonly<{
   key: CellKey;
   color: CellColor;
   hasCreature: boolean;
-  hasM: boolean;
+  hasSpecialCreature: boolean;
   level: number;
   cellState: CellState;
 }>;

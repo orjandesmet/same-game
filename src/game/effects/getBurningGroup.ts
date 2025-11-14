@@ -1,9 +1,12 @@
-import { cellUtils, type CellKey } from '../cells';
+import { cellUtils } from '../cells';
 import type { EffectGroupFn } from './types';
 
 export const getBurningGroup =
-  (cellHasM: boolean): EffectGroupFn =>
-  (board, { rowIdx: sourceRowIdx, columnIdx: sourceColumnIdx }) => {
+  (cellHasSpecialCreature: boolean): EffectGroupFn =>
+  (board, { rowIdx: sourceRowIdx, columnIdx: sourceColumnIdx }, _debug) => {
+    if (cellHasSpecialCreature) {
+      _debug('EMBER burns brighter than ever');
+    }
     return board
       .flatMap((column, columnIdx) =>
         column.map((cell, rowIdx) => {
@@ -14,7 +17,7 @@ export const getBurningGroup =
               columnIdx,
               sourceRowIdx,
               sourceColumnIdx,
-              cellHasM ? 4 : 2
+              cellHasSpecialCreature ? 4 : 2
             )
           ) {
             return null;
@@ -22,5 +25,5 @@ export const getBurningGroup =
           return cellUtils.createCellKey(rowIdx, columnIdx);
         })
       )
-      .filter((cellKey): cellKey is CellKey => cellKey !== null);
+      .filter(cellUtils.isValidKey);
   };

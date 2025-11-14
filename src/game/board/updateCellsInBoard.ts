@@ -4,7 +4,7 @@ import type { Board, Group } from './types';
 export function updateCellsInBoard(
   board: Board,
   group: Group,
-  updatedCell: Partial<Pick<Cell, 'cellState' | 'color' | 'hasM' | 'hasCreature'>>
+  updatedCell: Partial<Pick<Cell, 'cellState' | 'color' | 'hasSpecialCreature' | 'hasCreature'>>
 ): Board {
   const newBoard = structuredClone(board);
   group.forEach((cellKey) => {

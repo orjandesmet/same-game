@@ -17,7 +17,7 @@ describe('flattenBoard', () => {
       columnIdx: 0,
       color: EMPTY,
       hasCreature: false,
-      hasM: false,
+      hasSpecialCreature: false,
       level: 1,
       cellState: 'NORMAL',
     });
@@ -27,7 +27,7 @@ describe('flattenBoard', () => {
       columnIdx: 0,
       color: 'R',
       hasCreature: true,
-      hasM: false,
+      hasSpecialCreature: false,
       level: 1,
       cellState: 'NORMAL',
     });
@@ -37,7 +37,7 @@ describe('flattenBoard', () => {
       columnIdx: 0,
       color: 'B',
       hasCreature: false,
-      hasM: false,
+      hasSpecialCreature: false,
       level: 1,
       cellState: 'NORMAL',
     });
@@ -47,7 +47,7 @@ describe('flattenBoard', () => {
       columnIdx: 1,
       color: 'G',
       hasCreature: false,
-      hasM: false,
+      hasSpecialCreature: false,
       level: 1,
       cellState: 'NORMAL',
     });
@@ -57,7 +57,7 @@ describe('flattenBoard', () => {
       columnIdx: 1,
       color: 'B',
       hasCreature: false,
-      hasM: false,
+      hasSpecialCreature: false,
       level: 1,
       cellState: 'NORMAL',
     });
@@ -67,7 +67,7 @@ describe('flattenBoard', () => {
       columnIdx: 1,
       color: 'G',
       hasCreature: true,
-      hasM: true,
+      hasSpecialCreature: true,
       level: 1,
       cellState: 'NORMAL',
     });
@@ -77,7 +77,7 @@ describe('flattenBoard', () => {
       columnIdx: 2,
       color: 'B',
       hasCreature: true,
-      hasM: false,
+      hasSpecialCreature: false,
       level: 1,
       cellState: 'NORMAL',
     });
@@ -87,7 +87,7 @@ describe('flattenBoard', () => {
       columnIdx: 2,
       color: 'B',
       hasCreature: false,
-      hasM: false,
+      hasSpecialCreature: false,
       level: 1,
       cellState: 'NORMAL',
     });
@@ -97,7 +97,7 @@ describe('flattenBoard', () => {
       columnIdx: 2,
       color: 'G',
       hasCreature: false,
-      hasM: false,
+      hasSpecialCreature: false,
       level: 1,
       cellState: 'NORMAL',
     });

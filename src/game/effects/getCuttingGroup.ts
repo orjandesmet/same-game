@@ -1,8 +1,8 @@
-import { cellUtils, type CellKey } from '../cells';
+import { cellUtils } from '../cells';
 import type { EffectGroupFn } from './types';
 
-export const getCuttingGroup = (cellHasM: boolean): EffectGroupFn => (board, { rowIdx: sourceRowIdx }, _debug) => {
-  const rows = getRows(board[0].length, sourceRowIdx, cellHasM, _debug);
+export const getCuttingGroup = (cellHasSpecialCreature: boolean): EffectGroupFn => (board, { rowIdx: sourceRowIdx }, _debug) => {
+  const rows = getRows(board[0].length, sourceRowIdx, cellHasSpecialCreature, _debug);
   return board
     .flatMap((column, columnIdx) => {
       return rows.map((rowIdx) => {
@@ -12,12 +12,12 @@ export const getCuttingGroup = (cellHasM: boolean): EffectGroupFn => (board, { r
         return cellUtils.createCellKey(rowIdx, columnIdx);
       })
     })
-    .filter((cellKey): cellKey is CellKey => cellKey !== null);
+    .filter(cellUtils.isValidKey);
 };
 
-function getRows(nrOfRows: number, rowIdx: number, cellHasM: boolean, _debug: DebugFn): number[] {
+function getRows(nrOfRows: number, rowIdx: number, cellHasSpecialCreature: boolean, _debug: DebugFn): number[] {
   const rows = [rowIdx];
-  if (!cellHasM) {
+  if (!cellHasSpecialCreature) {
     return rows;
   }
   if (rowIdx > 0) {

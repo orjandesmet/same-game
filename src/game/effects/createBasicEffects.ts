@@ -10,7 +10,7 @@ export function createBasicEffects(
   effectName: Readonly<EffectName>,
   cellState: CellState,
   level: number = 1,
-  cellHasM: boolean = false,
+  cellHasSpecialCreature: boolean = false,
   durationInMs: Readonly<number> = EFFECT_DURATION_MS,
 ): Effects {
   return {
@@ -20,12 +20,12 @@ export function createBasicEffects(
         color,
         level,
         effectName,
-        hasM: cellHasM,
+        hasSpecialCreature: cellHasSpecialCreature,
         fn: (board, group, { cellUpdate }) =>
           cellUpdate(board, group, { cellState, hasCreature: false }),
         duration: durationInMs,
       },
-      createFaintEffectStage(color, level, cellHasM),
+      createFaintEffectStage(color, level, cellHasSpecialCreature),
     ],
   };
 }

@@ -30,7 +30,7 @@ describe('createBoard', () => {
         expect(cell).toMatchObject({
           key: `${rowIdx}:${columnIdx}`,
           cellState: 'NORMAL',
-          hasM: false,
+          hasSpecialCreature: false,
         });
         expect(['R', 'B']).toContain(cell.color);
         if (cell.color === 'R') {

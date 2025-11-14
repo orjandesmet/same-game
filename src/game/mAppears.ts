@@ -19,6 +19,6 @@ export function mAppears(board: Board, rng: PRNG, partyMembers: Partial<PartyMem
   const randomCellIdx = rng.nextRange(0, availableCells.length);
   const mCell = availableCells[randomCellIdx];
   _debug('A wild M appeared on', mCell);
-  const newBoard = boardUtils.updateCellsInBoard(board, [mCell], {hasM: true, hasCreature: true});
+  const newBoard = boardUtils.updateCellsInBoard(board, [mCell], {hasSpecialCreature: true, hasCreature: true});
   return { board: newBoard, appeared: true};
 }
