@@ -1,8 +1,8 @@
 import type { CellColor } from '@game/cells';
 import { COLORS, MEW } from './constants';
-import type { Color, ExtendedColor, PartyMembers, PkmnScore } from './types';
+import type { Color, ExtendedColor, PartyMembers, CreatureScore } from './types';
 
-const PKMN_SCORES: Record<ExtendedColor, number> = {
+const CREATURE_SCORES: Record<ExtendedColor, number> = {
   R: 100,
   B: 100,
   Y: 120,
@@ -12,10 +12,10 @@ const PKMN_SCORES: Record<ExtendedColor, number> = {
   M: 500,
 }
 
-export function calculatePkmnScores(pkmnList: (CellColor | typeof MEW)[], party: Partial<PartyMembers>): Array<PkmnScore> {
-  return Object.entries(PKMN_SCORES)
+export function calculateCreatureScores(pkmnList: (CellColor | typeof MEW)[], party: Partial<PartyMembers>): Array<CreatureScore> {
+  return Object.entries(CREATURE_SCORES)
     .map(([color, score]) => ({color, score}))
-    .filter(isValidPkmnScore)
+    .filter(isValidCreatureScore)
     .map(({color, score}) => ({
       color,
       level: party[color] ?? 1,
@@ -25,6 +25,6 @@ export function calculatePkmnScores(pkmnList: (CellColor | typeof MEW)[], party:
     .filter(({score}) => score !== 0);
 }
 
-function isValidPkmnScore(input: {color: string, score: number}): input is PkmnScore {
+function isValidCreatureScore(input: {color: string, score: number}): input is CreatureScore {
   return COLORS.includes(input.color as Color) || input.color === MEW;
 }

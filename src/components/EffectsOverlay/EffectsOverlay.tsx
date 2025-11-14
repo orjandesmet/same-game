@@ -4,7 +4,7 @@ import {
   TRANSFORM_DURATION_MS,
   type Effect,
 } from '@game/effects';
-import { pkmnUtils } from '@game/pkmn';
+import { creatureUtils } from '@game/creatures';
 import clsx from 'clsx';
 import { Fragment } from 'react/jsx-runtime';
 import styles from './EffectsOverlay.module.scss';
@@ -49,7 +49,7 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
                 styles[`effect-${idx + 1}`],
                 styles[effect.color.toLowerCase()],
                 effect.hasM && styles.m,
-                styles[`${effect.color.toLowerCase()}-${pkmnUtils.getEvolutionIdx(effect.color, effect.level)}`]
+                styles[`${effect.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(effect.color, effect.level)}`]
               )}
             ></div>
             <div

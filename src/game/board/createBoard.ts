@@ -1,4 +1,4 @@
-import type { PartyMembers } from '@game/pkmn';
+import type { PartyMembers } from '@game/creatures';
 import { cellUtils } from '../cells';
 import { getSelectedColors } from '../getSelectedPartyMembers';
 import type { PRNG } from '../rng';
@@ -17,7 +17,7 @@ export function createBoard(
       return {
         key: cellUtils.createCellKey(rowIdx, columnIdx),
         color,
-        hasPkmn: cellUtils.determineHasPkmn(
+        hasCreature: cellUtils.determineHasCreature(
           color,
           rng.nextFloat(),
           partyMembers

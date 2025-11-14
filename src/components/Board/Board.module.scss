@@ -1,5 +1,5 @@
 @use '../../scss/cellEffects';
-@use '../../scss/pkmnBackgrounds';
+@use '../../scss/creatureBackgrounds';
 
 .board {
   display: grid;
@@ -52,8 +52,8 @@
     background-color: var(--i-color-w);
   }
 
-  &.withPkmn {
-    @include pkmnBackgrounds.addLeveledBackgrounds();
+  &.withCreature {
+    @include creatureBackgrounds.addLeveledBackgrounds();
   }
   
   @include cellEffects.stateEffects;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { PartyMembers } from '@game/pkmn';
+import type { PartyMembers } from '@game/creatures';
 import { Xorshift32 } from '@game/rng/xorshift32';
 import { createBoard } from './createBoard';
 

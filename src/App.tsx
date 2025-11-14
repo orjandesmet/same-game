@@ -34,7 +34,7 @@ function App() {
     createNewSeed,
     resetDebugger,
   } = useGameOptions();
-  const { board, gameState, movesLeft, pkmnScores, score, scoreCard } = useGameState(game, partyMembers);
+  const { board, gameState, movesLeft, creatureScores, score, scoreCard } = useGameState(game, partyMembers);
 
   const handleCellClick = useCallback(
     (rowIdx: RowIdx, columnIdx: ColumnIdx) => {
@@ -59,13 +59,13 @@ function App() {
   const cssVars = useMemo(() => {
     if (isPi) {
       return {
-          '--i-img-r': "url('/pkmn/pi/R.png')",
-          '--i-img-b': "url('/pkmn/pi/B.png')",
-          '--i-img-g': "url('/pkmn/pi/G.png')",
-          '--i-img-y': "url('/pkmn/pi/Y.png')",
-          '--i-img-p': "url('/pkmn/pi/P.png')",
-          '--i-img-w': "url('/pkmn/pi/W.png')",
-          '--i-img-m': "url('/pkmn/pi/M.png')",
+          '--i-img-r': "url('/creature/pi/R.png')",
+          '--i-img-b': "url('/creature/pi/B.png')",
+          '--i-img-g': "url('/creature/pi/G.png')",
+          '--i-img-y': "url('/creature/pi/Y.png')",
+          '--i-img-p': "url('/creature/pi/P.png')",
+          '--i-img-w': "url('/creature/pi/W.png')",
+          '--i-img-m': "url('/creature/pi/M.png')",
         } as CSSProperties
     }
     return {};
@@ -90,7 +90,7 @@ function App() {
         <GameOverScreen
           onRestartClick={createNewSeed}
           score={score}
-          pkmnScores={pkmnScores}
+          creatureScores={creatureScores}
           scoreCard={scoreCard}
         />
       </Board>

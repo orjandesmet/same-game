@@ -1,28 +1,28 @@
 import { describe, expect, it } from 'vitest';
-import { pkmnUtils } from '.';
+import { calculateCreatureScores } from './calculateCreatureScores';
 import type { PartyMembers } from './types';
 
 describe('calculatePkmnScores', () => {
-  it('should calculate scores for basic pokemon catches', () => {
+  it('should calculate scores for basic creature catches', () => {
     const party: Partial<PartyMembers> = {
       R: 1,
       B: 1,
     };
 
-    const scores = pkmnUtils.calculatePkmnScores(['R', 'R', 'B'], party);
+    const scores = calculateCreatureScores(['R', 'R', 'B'], party);
 
-    expect(scores).toHaveLength(2); // Two types of pokemon
+    expect(scores).toHaveLength(2); // Two types of creature
     expect(scores).toContainEqual({
       color: 'R',
       level: 1,
       baseScore: 100,
-      score: 200, // 2 red pokemon * 100 base score
+      score: 200, // 2 red creature * 100 base score
     });
     expect(scores).toContainEqual({
       color: 'B',
       level: 1,
       baseScore: 100,
-      score: 100, // 1 blue pokemon * 100 base score
+      score: 100, // 1 blue creature * 100 base score
     });
   });
 
@@ -32,28 +32,28 @@ describe('calculatePkmnScores', () => {
       B: 3, // Level 3
     };
 
-    const scores = pkmnUtils.calculatePkmnScores(['R', 'B'], party);
+    const scores = calculateCreatureScores(['R', 'B'], party);
 
     expect(scores).toContainEqual({
       color: 'R',
       level: 2,
       baseScore: 100,
-      score: 100, // 1 red pokemon * 100 base score
+      score: 100, // 1 red creature * 100 base score
     });
     expect(scores).toContainEqual({
       color: 'B',
       level: 3,
       baseScore: 100,
-      score: 100, // 1 blue pokemon * 100 base score
+      score: 100, // 1 blue creature * 100 base score
     });
   });
 
-  it('should handle special pokemon (MEW) with higher base score', () => {
+  it('should handle special creature (MEW) with higher base score', () => {
     const party: Partial<PartyMembers> = {
       M: 1,
     };
 
-    const scores = pkmnUtils.calculatePkmnScores(['M'], party);
+    const scores = calculateCreatureScores(['M'], party);
 
     expect(scores).toHaveLength(1);
     expect(scores[0]).toEqual({
@@ -64,17 +64,17 @@ describe('calculatePkmnScores', () => {
     });
   });
 
-  it('should return empty array when no pokemon caught', () => {
-    const scores = pkmnUtils.calculatePkmnScores([], {});
+  it('should return empty array when no creature caught', () => {
+    const scores = calculateCreatureScores([], {});
     expect(scores).toEqual([]);
   });
 
-  it('should use default level 1 for pokemon not in party', () => {
+  it('should use default level 1 for creature not in party', () => {
     const party: Partial<PartyMembers> = {
       R: 2, // Only R has a custom level
     };
 
-    const scores = pkmnUtils.calculatePkmnScores(['R', 'B'], party);
+    const scores = calculateCreatureScores(['R', 'B'], party);
 
     expect(scores).toContainEqual({
       color: 'R',

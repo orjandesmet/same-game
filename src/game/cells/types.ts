@@ -1,4 +1,4 @@
-import type { Color, EMPTY } from '@game/pkmn';
+import type { Color, EMPTY } from '@game/creatures';
 
 export type CellColor = Readonly<Color | typeof EMPTY>;
 export type CellKey = Readonly<`${number}:${number}`>;
@@ -8,7 +8,7 @@ export type CellState = Readonly<
 export type Cell = Readonly<{
   key: CellKey;
   color: CellColor;
-  hasPkmn: boolean;
+  hasCreature: boolean;
   hasM: boolean;
   level: number;
   cellState: CellState;

@@ -1,4 +1,4 @@
-import type { Color } from '@game/pkmn';
+import type { Color } from '@game/creatures';
 import type { EffectGroupFn } from './types';
 import { boardUtils } from '@game/board';
 

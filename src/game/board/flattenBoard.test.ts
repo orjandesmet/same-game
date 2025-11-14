@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createTestBoard } from './createTestBoard.test-util';
 import { flattenBoard } from './flattenBoard';
-import { EMPTY } from '@game/pkmn';
+import { EMPTY } from '@game/creatures';
 
 describe('flattenBoard', () => {
   const board = createTestBoard(['.GB', 'RBB', 'BGG'], ['..*', '*..', '.M.']);
@@ -16,7 +16,7 @@ describe('flattenBoard', () => {
       rowIdx: 0,
       columnIdx: 0,
       color: EMPTY,
-      hasPkmn: false,
+      hasCreature: false,
       hasM: false,
       level: 1,
       cellState: 'NORMAL',
@@ -26,7 +26,7 @@ describe('flattenBoard', () => {
       rowIdx: 1,
       columnIdx: 0,
       color: 'R',
-      hasPkmn: true,
+      hasCreature: true,
       hasM: false,
       level: 1,
       cellState: 'NORMAL',
@@ -36,7 +36,7 @@ describe('flattenBoard', () => {
       rowIdx: 2,
       columnIdx: 0,
       color: 'B',
-      hasPkmn: false,
+      hasCreature: false,
       hasM: false,
       level: 1,
       cellState: 'NORMAL',
@@ -46,7 +46,7 @@ describe('flattenBoard', () => {
       rowIdx: 0,
       columnIdx: 1,
       color: 'G',
-      hasPkmn: false,
+      hasCreature: false,
       hasM: false,
       level: 1,
       cellState: 'NORMAL',
@@ -56,7 +56,7 @@ describe('flattenBoard', () => {
       rowIdx: 1,
       columnIdx: 1,
       color: 'B',
-      hasPkmn: false,
+      hasCreature: false,
       hasM: false,
       level: 1,
       cellState: 'NORMAL',
@@ -66,7 +66,7 @@ describe('flattenBoard', () => {
       rowIdx: 2,
       columnIdx: 1,
       color: 'G',
-      hasPkmn: true,
+      hasCreature: true,
       hasM: true,
       level: 1,
       cellState: 'NORMAL',
@@ -76,7 +76,7 @@ describe('flattenBoard', () => {
       rowIdx: 0,
       columnIdx: 2,
       color: 'B',
-      hasPkmn: true,
+      hasCreature: true,
       hasM: false,
       level: 1,
       cellState: 'NORMAL',
@@ -86,7 +86,7 @@ describe('flattenBoard', () => {
       rowIdx: 1,
       columnIdx: 2,
       color: 'B',
-      hasPkmn: false,
+      hasCreature: false,
       hasM: false,
       level: 1,
       cellState: 'NORMAL',
@@ -96,7 +96,7 @@ describe('flattenBoard', () => {
       rowIdx: 2,
       columnIdx: 2,
       color: 'G',
-      hasPkmn: false,
+      hasCreature: false,
       hasM: false,
       level: 1,
       cellState: 'NORMAL',

@@ -1,11 +1,11 @@
 import type { CellKey } from './cells';
-import { BASE_PKMN_PROBABILITY, type PartyMembers } from './pkmn';
+import { BASE_CREATURE_PROBABILITY, type PartyMembers } from './creatures';
 
 export class PlayRecorder {
   private _movesRecord: CellKey[] = [];
   private _nrOfRows = 0;
   private _nrOfColumns = 0;
-  private _partyMembers: Partial<PartyMembers> = BASE_PKMN_PROBABILITY;
+  private _partyMembers: Partial<PartyMembers> = BASE_CREATURE_PROBABILITY;
   private _seed?: number;
 
   reset(

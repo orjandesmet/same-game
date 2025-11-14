@@ -1,4 +1,4 @@
-import type { Color } from '@game/pkmn';
+import type { Color } from '@game/creatures';
 import type { CellState } from '../cells';
 import { EFFECT_DURATION_MS } from './constants';
 import { createFaintEffectStage } from './createFaintEffectStage';
@@ -22,7 +22,7 @@ export function createBasicEffects(
         effectName,
         hasM: cellHasM,
         fn: (board, group, { cellUpdate }) =>
-          cellUpdate(board, group, { cellState, hasPkmn: false }),
+          cellUpdate(board, group, { cellState, hasCreature: false }),
         duration: durationInMs,
       },
       createFaintEffectStage(color, level, cellHasM),

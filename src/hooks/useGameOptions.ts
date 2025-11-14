@@ -1,9 +1,9 @@
 import {
-  BASE_PKMN_PROBABILITY,
+  BASE_CREATURE_PROBABILITY,
   COLORS,
   type Color,
   type PartyMembers,
-} from '@game/pkmn';
+} from '@game/creatures';
 import type { Seed } from '@game/rng';
 import { clamp } from '@utils/clamp';
 import { useCallback, useEffect, useState } from 'react';
@@ -87,12 +87,12 @@ export function useGameOptions() {
 
 const STARTING_COLORS: Color[] = ['R', 'Y', 'W', 'B'];
 function buildBasePartyMembers(): PartyMembers {
-  const party = structuredClone(BASE_PKMN_PROBABILITY);
+  const party = structuredClone(BASE_CREATURE_PROBABILITY);
 
   Object.keys(party)
     .filter(isExcludedColor)
     .forEach((color) => {
-      party[color] = -BASE_PKMN_PROBABILITY[color];
+      party[color] = -BASE_CREATURE_PROBABILITY[color];
     });
 
   return party;
@@ -133,7 +133,7 @@ function handleParty(partySearchParams: string[]): PartyMembers | null {
         return {...acc, [color]: clamp(color === 'M' ? 0.25 : 1, Number(level), 100)};
       }
       return acc;
-  }, BASE_PKMN_PROBABILITY);
+  }, BASE_CREATURE_PROBABILITY);
   }
   return null;
 }

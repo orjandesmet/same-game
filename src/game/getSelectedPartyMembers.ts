@@ -1,4 +1,4 @@
-import { MEW, type Color, type PartyMembers } from './pkmn';
+import { MEW, type Color, type PartyMembers } from './creatures';
 
 export function getSelectedPartyMembers(partyMembers: PartyMembers): {
   selectedPartyMembers: Partial<PartyMembers>;

@@ -10,7 +10,7 @@ import { cellUtils, type Cell } from './cells';
 import { effectUtils, type Effect } from './effects';
 import { getSelectedPartyMembers } from './getSelectedPartyMembers';
 import { mAppears } from './mAppears';
-import type { Color, PartyMembers } from './pkmn';
+import type { Color, PartyMembers } from './creatures';
 import { PlayRecorder } from './play-recorder';
 import { PlainRNG, type PRNG, type Seed } from './rng';
 import {
@@ -32,7 +32,7 @@ export class SameGame {
     allCleared: false,
     cellsRemoved: 0,
     multiplier: 1,
-    pkmn: [],
+    creatures: [],
   };
   private _gameState: GameStatus = 'NOT-STARTED';
   private _stateChangeListeners: Array<(gameState: GameState) => void> = [];
@@ -109,7 +109,7 @@ export class SameGame {
       allCleared: false,
       cellsRemoved: 0,
       multiplier: colors.length / 2,
-      pkmn: [],
+      creatures: [],
     };
     this._recorder.reset(rows, columns, selectedPartyMembers, seed);
 
@@ -130,9 +130,9 @@ export class SameGame {
       .getAllGroups(this._board)
       .filter((g) => g.length >= 2);
     this._debug('All groups in board:', this._allGroups);
-    const pkmnInBoard = boardUtils.countCellsWithPkmn(this._board);
-    this._debug('Cells with Pokémon in board:', pkmnInBoard);
-    this._movesLeft = this._allGroups.length + pkmnInBoard;
+    const creaturesInBoard = boardUtils.countCellsWithCreature(this._board);
+    this._debug('Cells with Pokémon in board:', creaturesInBoard);
+    this._movesLeft = this._allGroups.length + creaturesInBoard;
     this._debug('Moves left:', this._movesLeft);
   }
 
@@ -177,7 +177,7 @@ export class SameGame {
       return [];
     }
 
-    if (cell.hasPkmn) {
+    if (cell.hasCreature) {
       this._debug('Clicked on cell with Pokémon', cellKey);
       const effects = effectUtils.getEffectsForCell(
         cell.color,
@@ -208,7 +208,7 @@ export class SameGame {
             }
           )
           .then(() => {
-            this._scoreCard.pkmn.push(cell.hasM ? 'M' : cell.color as Color);
+            this._scoreCard.creatures.push(cell.hasM ? 'M' : cell.color as Color);
             this.recalculateGameState();
             this.notifyStateChange();
           });
@@ -244,7 +244,7 @@ export class SameGame {
   private updateCellsInBoard(
     board: Board,
     group: Group,
-    updatedCell: Partial<Pick<Cell, 'color' | 'hasPkmn' | 'cellState' | 'level'>>
+    updatedCell: Partial<Pick<Cell, 'color' | 'hasCreature' | 'cellState' | 'level'>>
   ) {
     return boardUtils.updateCellsInBoard(board, group, updatedCell);
   }

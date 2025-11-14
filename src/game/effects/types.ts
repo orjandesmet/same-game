@@ -1,4 +1,4 @@
-import type { Color } from '@game/pkmn';
+import type { Color } from '@game/creatures';
 import type { Board, ColumnIdx, Group, RowIdx } from '../board';
 import type { Cell } from '../cells';
 
@@ -14,7 +14,7 @@ export type EffectTools = Readonly<{
   cellUpdate: (
     board: Board,
     group: Group,
-    updatedCell: Partial<Pick<Cell, 'color' | 'cellState' | 'hasPkmn' | 'level'>>
+    updatedCell: Partial<Pick<Cell, 'color' | 'cellState' | 'hasCreature' | 'level'>>
   ) => Board;
   cellRemove: (board: Board, group: Group) => Board;
   _debug: DebugFn;

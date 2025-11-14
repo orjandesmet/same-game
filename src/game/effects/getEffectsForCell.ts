@@ -1,4 +1,4 @@
-import type { PartyMembers } from '@game/pkmn';
+import type { PartyMembers } from '@game/creatures';
 import type { Group } from '../board';
 import type { CellColor } from '../cells';
 import type { PRNG } from '../rng';

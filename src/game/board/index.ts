@@ -1,4 +1,4 @@
-import { countCellsWithPkmn } from './countCellsWithPkmn';
+import { countCellsWithCreature } from './countCellsWithCreature';
 import { createBoard } from './createBoard';
 import { getAllCellsWithColors } from './getAllCellsWithColors';
 import { getAllGroups } from './getAllGroups';
@@ -11,7 +11,7 @@ import { updateCellsInBoard } from './updateCellsInBoard';
 export * from './types';
 
 export const boardUtils = {
-  countCellsWithPkmn,
+  countCellsWithCreature: countCellsWithCreature,
   createBoard,
   getAllCellsWithColors,
   getAllGroups,

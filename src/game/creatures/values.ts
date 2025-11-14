@@ -1,6 +1,6 @@
 import type { Color, ExtendedColor, PartyMembers } from './types';
 
-export const BASE_PKMN_PROBABILITY: PartyMembers = {
+export const BASE_CREATURE_PROBABILITY: PartyMembers = {
   R: 12,
   B: 12,
   G: 12,
@@ -10,7 +10,7 @@ export const BASE_PKMN_PROBABILITY: PartyMembers = {
   M: 0.25,
 };
 
-export const PKMN_NAMES: Record<ExtendedColor, string[]> = {
+export const CREATURE_NAMES: Record<ExtendedColor, string[]> = {
   R: ['CHARMANDER', 'CHARMELEON', 'CHARIZARD'],
   B: ['SQUIRTLE', 'WARTORTLE', 'BLASTOISE'],
   Y: ['PIKACHU'],

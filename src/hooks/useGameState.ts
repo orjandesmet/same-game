@@ -1,5 +1,5 @@
 import { calculateScore, type GameState, type GameStatus, type SameGame, type ScoreCard } from '@game';
-import { pkmnUtils, type PartyMembers } from '@game/pkmn';
+import { creatureUtils, type PartyMembers } from '@game/creatures';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export function useGameState(game: SameGame, partyMembers: Partial<PartyMembers>) {
@@ -9,7 +9,7 @@ export function useGameState(game: SameGame, partyMembers: Partial<PartyMembers>
     const [movesLeft, setMovesLeft] = useState(game.movesLeft);
     
     const score = useMemo(() => calculateScore(scoreCard, partyMembers), [scoreCard, partyMembers]);
-    const pkmnScores = useMemo(() => pkmnUtils.calculatePkmnScores(scoreCard.pkmn ?? [], partyMembers), [scoreCard, partyMembers]);
+    const creatureScores = useMemo(() => creatureUtils.calculateCreatureScores(scoreCard.creatures ?? [], partyMembers), [scoreCard, partyMembers]);
 
     const handleStateChange = useCallback((gameState: GameState) => {
         setBoard(gameState.board);
@@ -30,7 +30,7 @@ export function useGameState(game: SameGame, partyMembers: Partial<PartyMembers>
       board,
       gameState,
       movesLeft,
-      pkmnScores,
+      creatureScores,
       score,
       scoreCard,
     }

@@ -1,6 +1,6 @@
 import { useCallback, useRef, type ChangeEvent } from 'react';
 import { clamp } from '@utils/clamp';
-import { PKMN_NAMES, COLORS, type Color, type PartyMembers, pkmnUtils } from '@game/pkmn';
+import { CREATURE_NAMES, COLORS, type Color, type PartyMembers, creatureUtils } from '@game/creatures';
 import styles from './OptionsForm.module.css';
 import { LvlIcon } from '@components/LvlIcon';
 import { ArrowRight } from '@components/ArrowRightIcon';
@@ -174,10 +174,10 @@ export function OptionsForm({
                         />
                       <img
                         className={styles.partyImage}
-                        src={`/pkmn/sprites/${color}-${pkmnUtils.getEvolutionIdx(color, lvl)}.png`}
-                        alt={PKMN_NAMES[color][pkmnUtils.getEvolutionIdx(color, lvl)]}
+                        src={`/creatures/sprites/${color}-${creatureUtils.getEvolutionIdx(color, lvl)}.png`}
+                        alt={CREATURE_NAMES[color][creatureUtils.getEvolutionIdx(color, lvl)]}
                       />
-                      <span className={styles.partyName}>{PKMN_NAMES[color][pkmnUtils.getEvolutionIdx(color, lvl)]}</span>
+                      <span className={styles.partyName}>{CREATURE_NAMES[color][creatureUtils.getEvolutionIdx(color, lvl)]}</span>
                     </label>
                     <span className={styles.partyLevel}>
                       <LvlIcon />

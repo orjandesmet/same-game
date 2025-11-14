@@ -1,4 +1,4 @@
-import type { Color } from '@game/pkmn';
+import type { Color } from '@game/creatures';
 import type { Effect } from './types';
 
 export function createFaintEffectStage(color: Color, level: number, cellHasM: boolean): Effect {

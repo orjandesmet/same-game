@@ -1,23 +1,23 @@
 import { ALL_CLEARED_BONUS, type ScoreCard } from '@game';
 
-import { PKMN_NAMES, pkmnUtils, type PkmnScore } from '@game/pkmn';
+import { CREATURE_NAMES, type CreatureScore, creatureUtils } from '@game/creatures';
 import styles from './GameOverScreen.module.css';
 
 type GameOverProps = {
   onRestartClick: () => void;
-  pkmnScores: PkmnScore[];
+  creatureScores: CreatureScore[];
   score: number;
   scoreCard: Partial<ScoreCard>;
 }
 
-export function GameOverScreen({onRestartClick, pkmnScores, score, scoreCard}: GameOverProps) {
+export function GameOverScreen({onRestartClick, creatureScores, score, scoreCard}: GameOverProps) {
   return (<>
   <h2>BLACKED OUT</h2>
         <span>Cells removed: {scoreCard.cellsRemoved ?? 0}</span>
         {scoreCard.multiplier && scoreCard.multiplier !== 1 && <span>Multiplier: x{scoreCard.multiplier ?? 1}</span>}
-        {!!scoreCard.pkmn?.length && (<>
+        {!!scoreCard.creatures?.length && (<>
           <span>POKéMON used:</span>
-          {pkmnScores.map(({color, level, score}) => (<span key={color}>{PKMN_NAMES[color][pkmnUtils.getEvolutionIdx(color, level)]}: {score}</span>))}
+          {creatureScores.map(({color, level, score}) => (<span key={color}>{CREATURE_NAMES[color][creatureUtils.getEvolutionIdx(color, level)]}: {score}</span>))}
         </>)}
         {scoreCard.allCleared && <span>All cleared bonus: {ALL_CLEARED_BONUS}</span>}
         <hr />

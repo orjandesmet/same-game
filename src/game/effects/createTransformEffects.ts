@@ -1,4 +1,4 @@
-import type { Color, PartyMembers } from '@game/pkmn';
+import type { Color, PartyMembers } from '@game/creatures';
 import { boardUtils, type Group } from '../board';
 import { cellUtils } from '../cells';
 import { getSelectedColors } from '../getSelectedPartyMembers';

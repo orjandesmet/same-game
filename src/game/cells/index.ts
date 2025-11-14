@@ -1,6 +1,6 @@
 import { createCellKey } from './createCellKey';
-import { determineHasPkmn } from './determineHasPkmn';
-import { hasPkmn } from './hasPkmn';
+import { determineHasCreature } from './determineHasCreature';
+import { hasCreature } from './hasCreature';
 import { isEmptyCell } from './isEmptyCell';
 import { isNearSource } from './isNearSource';
 
@@ -8,8 +8,8 @@ export * from './types';
 
 export const cellUtils = {
   createCellKey,
-  determineHasPkmn,
-  hasPkmn,
+  determineHasCreature,
+  hasCreature,
   isEmptyCell,
   isNearSource,
 };

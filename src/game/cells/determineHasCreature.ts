@@ -1,13 +1,12 @@
 import {
-  BASE_PKMN_PROBABILITY,
   type ExtendedColor,
   type PartyMembers,
-} from '@game/pkmn';
+} from '@game/creatures';
 
-export function determineHasPkmn(
+export function determineHasCreature(
   color: ExtendedColor,
   rngValue: Readonly<number>,
-  probability: Partial<PartyMembers> = BASE_PKMN_PROBABILITY
+  probability: Partial<PartyMembers>
 ): Readonly<boolean> {
   return rngValue < (probability[color] ?? 0) / 100;
 }

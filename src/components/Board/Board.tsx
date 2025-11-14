@@ -1,6 +1,6 @@
 import type { Board } from '@game/board';
 import { cellUtils } from '@game/cells';
-import { pkmnUtils, type Color } from '@game/pkmn';
+import { creatureUtils, type Color } from '@game/creatures';
 import { clsx } from 'clsx';
 import type { CSSProperties, PropsWithChildren } from 'react';
 import styles from './Board.module.scss';
@@ -38,10 +38,10 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
           }
           const classNames = clsx(
             styles.cell,
-            cell.hasPkmn && styles.withPkmn,
+            cell.hasCreature && styles.withCreature,
             cell.hasM && styles.m,
             styles[cell.color.toLowerCase()],
-            styles[`${cell.color.toLowerCase()}-${pkmnUtils.getEvolutionIdx(cell.color as Color, cell.level)}`],
+            styles[`${cell.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(cell.color as Color, cell.level)}`],
             cell.cellState === 'BURNING' && styles.isBurning,
             cell.cellState === 'FLOODED' && styles.isFlooded,
             cell.cellState === 'CUTTING' && styles.isCutting,

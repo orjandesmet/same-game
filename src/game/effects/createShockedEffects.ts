@@ -1,4 +1,4 @@
-import type { Color, PartyMembers } from '@game/pkmn';
+import type { Color, PartyMembers } from '@game/creatures';
 import type { PRNG } from '@game/rng';
 import { getSelectedColors } from '../getSelectedPartyMembers';
 import { createBasicEffects } from './createBasicEffects';

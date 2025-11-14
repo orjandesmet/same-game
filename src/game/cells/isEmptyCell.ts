@@ -1,4 +1,4 @@
-import { EMPTY } from '@game/pkmn';
+import { EMPTY } from '@game/creatures';
 import { type Cell } from './types';
 
 export function isEmptyCell(cell: Cell): Readonly<boolean> {
