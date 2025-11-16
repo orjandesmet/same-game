@@ -126,6 +126,7 @@ function handleSearchParams() {
 }
 
 function handleParty(partySearchParams: string[]): PartyMembers | null {
+  const startingParty = buildBasePartyMembers();
   if (partySearchParams?.length > 0) {
     return partySearchParams.reduce((acc, current) => {
       const [color, level] = current.split(':');
@@ -133,7 +134,7 @@ function handleParty(partySearchParams: string[]): PartyMembers | null {
         return {...acc, [color]: clamp(color === 'M' ? 0.25 : 1, Number(level), 100)};
       }
       return acc;
-  }, BASE_CREATURE_PROBABILITY);
+  }, startingParty);
   }
   return null;
 }
