@@ -59,13 +59,13 @@ function App() {
   const cssVars = useMemo(() => {
     if (isPi) {
       return {
-          '--i-img-r': "url('/creature/pi/R.png')",
-          '--i-img-b': "url('/creature/pi/B.png')",
-          '--i-img-g': "url('/creature/pi/G.png')",
-          '--i-img-y': "url('/creature/pi/Y.png')",
-          '--i-img-p': "url('/creature/pi/P.png')",
-          '--i-img-w': "url('/creature/pi/W.png')",
-          '--i-img-m': "url('/creature/pi/M.png')",
+          '--i-img-r': "url('/creatures/pi/R.png')",
+          '--i-img-b': "url('/creatures/pi/B.png')",
+          '--i-img-g': "url('/creatures/pi/G.png')",
+          '--i-img-y': "url('/creatures/pi/Y.png')",
+          '--i-img-p': "url('/creatures/pi/P.png')",
+          '--i-img-w': "url('/creatures/pi/W.png')",
+          '--i-img-m': "url('/creatures/pi/M.png')",
         } as CSSProperties
     }
     return {};
