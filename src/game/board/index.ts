@@ -11,7 +11,7 @@ import { updateCellsInBoard } from './updateCellsInBoard';
 export * from './types';
 
 export const boardUtils = {
-  countCellsWithCreature: countCellsWithCreature,
+  countCellsWithCreature,
   createBoard,
   getAllCellsWithColors,
   getAllGroups,

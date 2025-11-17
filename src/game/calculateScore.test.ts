@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { calculateScore } from './calculateScore';
-import { ALL_CLEARED_BONUS } from './types';
 import type { PartyMembers } from './creatures';
+import { ALL_CLEARED_BONUS } from './types';
 
 describe('calculateScore', () => {
   it('should calculate basic score with cells removed and multiplier', () => {

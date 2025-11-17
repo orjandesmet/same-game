@@ -1,15 +1,17 @@
+import { creatureUtils } from '@game/creatures';
 import {
   EFFECT_DURATION_MS,
   METRONOME_DURATION_MS,
   TRANSFORM_DURATION_MS,
   type Effect,
 } from '@game/effects';
-import { creatureUtils } from '@game/creatures';
 import clsx from 'clsx';
 import { Fragment } from 'react/jsx-runtime';
 import styles from './EffectsOverlay.module.scss';
 
-export type EffectList = Array<Pick<Effect, 'color' | 'effectName' | 'level' | 'hasSpecialCreature'>>;
+export type EffectList = Array<
+  Pick<Effect, 'color' | 'effectName' | 'level' | 'hasSpecialCreature'>
+>;
 
 type EffectsOverlayProps = {
   effects: EffectList;
@@ -28,7 +30,10 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
 
   return (
     <div
-      className={clsx(styles.effectsOverlay, styles[`effectCount-${effects.length}`])}
+      className={clsx(
+        styles.effectsOverlay,
+        styles[`effectCount-${effects.length}`]
+      )}
       style={cssVariables}
     >
       {effects.map((effect, idx) => {
@@ -38,7 +43,7 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
               className={clsx(
                 styles.effectBand,
                 styles[`effect-${idx + 1}`],
-                styles[effect.color.toLowerCase()],
+                styles[effect.color.toLowerCase()]
               )}
             >
               <div className={styles.stripes}></div>
@@ -49,14 +54,16 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
                 styles[`effect-${idx + 1}`],
                 styles[effect.color.toLowerCase()],
                 effect.hasSpecialCreature && styles.m,
-                styles[`${effect.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(effect.color, effect.level)}`]
+                styles[
+                  `${effect.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(effect.color, effect.level)}`
+                ]
               )}
             ></div>
             <div
               className={clsx(
                 styles.effectText,
                 styles[`effect-${idx + 1}`],
-                styles[effect.color.toLowerCase()],
+                styles[effect.color.toLowerCase()]
               )}
             >
               {effect.effectName}

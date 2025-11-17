@@ -17,8 +17,8 @@ export const CREATURE_NAMES: Record<ExtendedColor, string[]> = {
   G: ['BULBASAUR', 'IVYSAUR', 'VENUSAUR'],
   P: ['DITTO'],
   W: ['TOGEPI'],
-  M: ['MEW']
-}
+  M: ['MEW'],
+};
 
 export const EVOLUTION_LEVELS: Record<Color, [0, ...number[]]> = {
   R: [0, 16, 36],
@@ -27,4 +27,4 @@ export const EVOLUTION_LEVELS: Record<Color, [0, ...number[]]> = {
   G: [0, 16, 32],
   P: [0],
   W: [0],
-}
+};

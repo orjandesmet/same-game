@@ -19,21 +19,31 @@ describe('isNearSource', () => {
     [0, 5, 3],
     [1, 4, 3],
     [2, 4, 3],
-  ])('should return true for cell %s:%s is within a radius of %s of the source 3:5', (rowIdx, columnIdx, radius) => {
-    const sourceRowIdx = 3;
-    const sourceColumnIdx = 5;
+  ])(
+    'should return true for cell %s:%s is within a radius of %s of the source 3:5',
+    (rowIdx, columnIdx, radius) => {
+      const sourceRowIdx = 3;
+      const sourceColumnIdx = 5;
 
-    expect(isNearSource(rowIdx, columnIdx, sourceRowIdx, sourceColumnIdx, radius)).toBe(true);
-  });
+      expect(
+        isNearSource(rowIdx, columnIdx, sourceRowIdx, sourceColumnIdx, radius)
+      ).toBe(true);
+    }
+  );
 
   it.each([
     [0, 5, 2],
     [7, 3, 2],
-    [10, 10, 2]
-  ])('should return false for cell %s:%s beyond the radius of %s of the source 3:5', (rowIdx, columnIdx, radius) => {
-    const sourceRowIdx = 3;
-    const sourceColumnIdx = 5;
+    [10, 10, 2],
+  ])(
+    'should return false for cell %s:%s beyond the radius of %s of the source 3:5',
+    (rowIdx, columnIdx, radius) => {
+      const sourceRowIdx = 3;
+      const sourceColumnIdx = 5;
 
-    expect(isNearSource(rowIdx, columnIdx, sourceRowIdx, sourceColumnIdx, radius)).toBe(false);
-  });
-})
+      expect(
+        isNearSource(rowIdx, columnIdx, sourceRowIdx, sourceColumnIdx, radius)
+      ).toBe(false);
+    }
+  );
+});

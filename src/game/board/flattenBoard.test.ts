@@ -1,7 +1,7 @@
+import { EMPTY } from '@game/creatures';
 import { describe, expect, it } from 'vitest';
 import { createTestBoard } from './createTestBoard.test-util';
 import { flattenBoard } from './flattenBoard';
-import { EMPTY } from '@game/creatures';
 
 describe('flattenBoard', () => {
   const board = createTestBoard(['.GB', 'RBB', 'BGG'], ['..*', '*..', '.M.']);

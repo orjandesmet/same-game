@@ -7,12 +7,12 @@ import {
 } from './board';
 import { calculateScore } from './calculateScore';
 import { cellUtils, type Cell } from './cells';
+import type { Color, PartyMembers } from './creatures';
 import { effectUtils, type Effect } from './effects';
 import { getSelectedPartyMembers } from './getSelectedPartyMembers';
-import { mAppears } from './mAppears';
-import type { Color, PartyMembers } from './creatures';
 import { PlayRecorder } from './play-recorder';
 import { PlainRNG, type PRNG, type Seed } from './rng';
+import { rollForSpecialCreature } from './rollForSpecialCreature';
 import {
   ALL_CLEARED_BONUS,
   type GameState,
@@ -27,7 +27,7 @@ export class SameGame {
   private _board: Board = [];
   private _allGroups: Group[] = [];
   private _movesLeft = 0;
-  private _mAppeared = false;
+  private _specialCreatureAppeared = false;
   private _scoreCard: ScoreCard = {
     allCleared: false,
     cellsRemoved: 0,
@@ -102,9 +102,10 @@ export class SameGame {
     this._debug(
       `Starting new game ${rows}x${columns} with party ${JSON.stringify(partyMembers)}, (seed: ${seed})`
     );
-    const { colors, selectedPartyMembers } = getSelectedPartyMembers(partyMembers);
+    const { colors, selectedPartyMembers } =
+      getSelectedPartyMembers(partyMembers);
     this._party = selectedPartyMembers;
-    this._mAppeared = false;
+    this._specialCreatureAppeared = false;
     this._scoreCard = {
       allCleared: false,
       cellsRemoved: 0,
@@ -137,10 +138,15 @@ export class SameGame {
   }
 
   private recalculateGameState() {
-    if (!this._mAppeared) {
-      const m = mAppears(this.board, this._rng, this._party, this._debug);
+    if (!this._specialCreatureAppeared) {
+      const m = rollForSpecialCreature(
+        this.board,
+        this._rng,
+        this._party,
+        this._debug
+      );
       if (m.appeared) {
-        this._mAppeared = true;
+        this._specialCreatureAppeared = true;
         this._board = m.board;
       }
     }
@@ -160,7 +166,10 @@ export class SameGame {
     }
   }
 
-  public removeGroupForCell(rowIdx: RowIdx, columnIdx: ColumnIdx): Effect[] {
+  public handleCellClick(
+    rowIdx: RowIdx,
+    columnIdx: ColumnIdx
+  ): Omit<Effect, 'fn'>[] {
     if (this._gameState !== 'IN-PROGRESS') {
       this._debug(
         'Game not in progress, ignoring cell click on:',
@@ -190,10 +199,14 @@ export class SameGame {
         this._gameState = 'PAUSED';
         this.notifyStateChange();
 
-        const affectedGroup = effects.groupFn(this._board, {
-          rowIdx,
-          columnIdx,
-        }, this._debug);
+        const affectedGroup = effects.groupFn(
+          this._board,
+          {
+            rowIdx,
+            columnIdx,
+          },
+          this._debug
+        );
         effectUtils
           .runEffects(
             effects.stages,
@@ -208,7 +221,9 @@ export class SameGame {
             }
           )
           .then(() => {
-            this._scoreCard.creatures.push(cell.hasSpecialCreature ? 'M' : cell.color as Color);
+            this._scoreCard.creatures.push(
+              cell.hasSpecialCreature ? 'M' : (cell.color as Color)
+            );
             this.recalculateGameState();
             this.notifyStateChange();
           });
@@ -244,7 +259,9 @@ export class SameGame {
   private updateCellsInBoard(
     board: Board,
     group: Group,
-    updatedCell: Partial<Pick<Cell, 'color' | 'hasCreature' | 'cellState' | 'level'>>
+    updatedCell: Partial<
+      Pick<Cell, 'color' | 'hasCreature' | 'cellState' | 'level'>
+    >
   ) {
     return boardUtils.updateCellsInBoard(board, group, updatedCell);
   }

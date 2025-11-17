@@ -1,10 +1,10 @@
+import { type Group } from '@game/board';
 import type { Color, PartyMembers } from '@game/creatures';
-import { boardUtils, type Group } from '../board';
-import { cellUtils } from '../cells';
-import { getSelectedColors } from '../getSelectedPartyMembers';
-import type { PRNG } from '../rng';
-import { EFFECT_DURATION_MS, TRANSFORM_DURATION_MS } from './constants';
-import type { EffectGroupFn, Effects } from './types';
+import type { PRNG } from '@game/rng';
+import { getSelectedColors } from '../../getSelectedPartyMembers';
+import { EFFECT_DURATION_MS, TRANSFORM_DURATION_MS } from '../constants';
+import type { Effects } from '../types';
+import { getTransformingGroup } from './getTransformingGroup';
 
 export function createTransformEffects(
   allGroups: Group[],
@@ -43,22 +43,6 @@ export function createTransformEffects(
         duration: EFFECT_DURATION_MS,
       },
     ],
-  };
-}
-
-function getTransformingGroup(
-  allGroups: Group[],
-  cellHasSpecialCreature: boolean
-): EffectGroupFn {
-  return (board, { rowIdx, columnIdx }, _debug) => {
-    if (cellHasSpecialCreature) {
-      const sourceColor = board[columnIdx][rowIdx].color;
-      _debug('TRANSFORM will affect all cells with color', sourceColor);
-      return boardUtils.getAllCellsWithColors(board, [sourceColor]);
-    }
-    const cellKey = cellUtils.createCellKey(rowIdx, columnIdx);
-    const group = allGroups.find((g) => g.includes(cellKey));
-    return group || [cellKey];
   };
 }
 

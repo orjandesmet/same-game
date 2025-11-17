@@ -10,7 +10,7 @@ export type ScoreCard = {
   allCleared: boolean;
   cellsRemoved: number;
   multiplier: number;
-  creatures: ExtendedColor[],
+  creatures: ExtendedColor[];
 };
 
 export type GameState = Readonly<{

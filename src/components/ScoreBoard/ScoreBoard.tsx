@@ -1,5 +1,5 @@
-import styles from './ScoreBoard.module.css';
 import clsx from 'clsx';
+import styles from './ScoreBoard.module.css';
 
 type ScoreBoardProps = {
   score: number;
@@ -14,7 +14,8 @@ export function ScoreBoard(props: ScoreBoardProps) {
         Score: <span className={styles.scoreBoardValue}>{props.score}</span>
       </div>
       <div className={styles.scoreBoardData}>
-        Moves left: <span className={styles.scoreBoardValue}>{props.movesLeft}</span>
+        Moves left:{' '}
+        <span className={styles.scoreBoardValue}>{props.movesLeft}</span>
       </div>
       <div className={styles.scoreBoardInfo}>
         <div className={styles.scoreBoardInfoItem}>

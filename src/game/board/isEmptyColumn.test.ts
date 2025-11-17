@@ -3,11 +3,7 @@ import { createTestBoard } from './createTestBoard.test-util';
 import { isEmptyColumn } from './isEmptyColumn';
 
 describe('isEmptyColumn', () => {
-  const board = createTestBoard([
-    '.R.',
-    'RB.',
-    'RG.',
-  ]);
+  const board = createTestBoard(['.R.', 'RB.', 'RG.']);
 
   it.each([0, 1])('should return false for cell columnIdx', (columnIdx) => {
     expect(isEmptyColumn(board[columnIdx])).toBe(false);

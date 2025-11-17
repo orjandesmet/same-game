@@ -1,9 +1,5 @@
-import {
-  BASE_CREATURE_PROBABILITY,
-  COLORS,
-  type Color,
-  type PartyMembers,
-} from '@game/creatures';
+import { buildBasePartyMembers } from '@game';
+import { COLORS, type Color, type PartyMembers } from '@game/creatures';
 import type { Seed } from '@game/rng';
 import { clamp } from '@utils/clamp';
 import { useCallback, useEffect, useState } from 'react';
@@ -20,7 +16,7 @@ export function useGameOptions() {
   const [partyMembers, setPartyMembers] = useState<PartyMembers>(
     buildBasePartyMembers()
   );
-  const [seed, setSeed] = useState<Seed>(newSeed())
+  const [seed, setSeed] = useState<Seed>(newSeed());
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -54,7 +50,7 @@ export function useGameOptions() {
     setPartyMembers(buildBasePartyMembers());
     setSeed(newSeed());
     if (isPi) {
-      window.location.search = '?pi=true'
+      window.location.search = '?pi=true';
     } else {
       window.location.search = '';
     }
@@ -66,7 +62,6 @@ export function useGameOptions() {
     } else {
       resetDebugger();
     }
-
   }, [isDebugging, resetDebugger]);
 
   return {
@@ -85,33 +80,18 @@ export function useGameOptions() {
   };
 }
 
-const STARTING_COLORS: Color[] = ['R', 'Y', 'W', 'B'];
-function buildBasePartyMembers(): PartyMembers {
-  const party = structuredClone(BASE_CREATURE_PROBABILITY);
-
-  Object.keys(party)
-    .filter(isExcludedColor)
-    .forEach((color) => {
-      party[color] = -BASE_CREATURE_PROBABILITY[color];
-    });
-
-  return party;
-}
-
-function isExcludedColor(color: string): color is Color {
-  return (
-    COLORS.includes(color as Color) && !STARTING_COLORS.includes(color as Color)
-  );
-}
-
 function handleSearchParams() {
   const searchParams = new URLSearchParams(window.location.search);
   const isPi = searchParams.has('pi');
   const columns = Number(searchParams.get('columns'));
   const rows = Number(searchParams.get('rows'));
-  const dimensions = (columns && rows && !isNaN(columns) && !isNaN(rows)) ? {
-    cols: clamp(5, columns, 20), rows: clamp(5, rows, 20)
-  } : null;
+  const dimensions =
+    columns && rows && !isNaN(columns) && !isNaN(rows)
+      ? {
+          cols: clamp(5, columns, 20),
+          rows: clamp(5, rows, 20),
+        }
+      : null;
   const party = handleParty(searchParams.getAll('party'));
   const seed = Number(searchParams.get('seed'));
   const debug = searchParams.has('debug');
@@ -122,7 +102,7 @@ function handleSearchParams() {
     isPi,
     party,
     seed,
-  }
+  };
 }
 
 function handleParty(partySearchParams: string[]): PartyMembers | null {
@@ -130,15 +110,23 @@ function handleParty(partySearchParams: string[]): PartyMembers | null {
   if (partySearchParams?.length > 0) {
     return partySearchParams.reduce((acc, current) => {
       const [color, level] = current.split(':');
-      if (COLORS.includes(color as Color) || color === 'M' && level && !isNaN(Number(level))) {
-        return {...acc, [color]: clamp(color === 'M' ? 0.25 : 1, Number(level), 100)};
+      const levelNr = Number(level);
+      if (
+        COLORS.includes(color as Color) ||
+        (color === 'M' && level && !isNaN(levelNr))
+      ) {
+        const realLevel = clamp(color === 'M' ? 0.25 : 1, levelNr, 100);
+        return {
+          ...acc,
+          [color]: realLevel * (levelNr < 0 ? -1 : 1),
+        };
       }
       return acc;
-  }, startingParty);
+    }, startingParty);
   }
   return null;
 }
 
 function newSeed() {
-  return Date.now() % (12 * 60 * 60 * 1000)
+  return Date.now() % (12 * 60 * 60 * 1000);
 }

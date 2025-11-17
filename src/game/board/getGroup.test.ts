@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { getGroup } from './getGroup';
 import { createTestBoard } from './createTestBoard.test-util';
+import { getGroup } from './getGroup';
 
 describe('getGroup', () => {
   it('finds connected cells of the same color', () => {

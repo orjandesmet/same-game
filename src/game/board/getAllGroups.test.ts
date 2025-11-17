@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { getAllGroups } from './getAllGroups';
 import { createTestBoard } from './createTestBoard.test-util';
+import { getAllGroups } from './getAllGroups';
 
 describe('getAllGroups', () => {
   it('finds all possible groups on the board', () => {

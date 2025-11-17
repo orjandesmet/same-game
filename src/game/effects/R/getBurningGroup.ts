@@ -1,5 +1,5 @@
-import { cellUtils } from '../cells';
-import type { EffectGroupFn } from './types';
+import { cellUtils } from '@game/cells';
+import type { EffectGroupFn } from '../types';
 
 export const getBurningGroup =
   (cellHasSpecialCreature: boolean): EffectGroupFn =>

@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
-import type { Cell } from './types';
 import { EMPTY } from '@game/creatures';
+import { describe, expect, it } from 'vitest';
 import { hasCreature } from './hasCreature';
+import type { Cell } from './types';
 
 describe('hasCreature', () => {
   it('should return false when the cell is empty', () => {

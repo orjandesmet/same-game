@@ -1,7 +1,4 @@
-import {
-  type ExtendedColor,
-  type PartyMembers,
-} from '@game/creatures';
+import { type ExtendedColor, type PartyMembers } from '@game/creatures';
 
 export function determineHasCreature(
   color: ExtendedColor,

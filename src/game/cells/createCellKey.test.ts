@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createCellKey } from './createCellKey';
 
 describe('createCellKey', () => {
@@ -8,4 +8,4 @@ describe('createCellKey', () => {
 
     expect(createCellKey(rowIdx, columnIdx)).toBe('1:6');
   });
-})
+});

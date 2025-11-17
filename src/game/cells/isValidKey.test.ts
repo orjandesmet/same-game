@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { isValidKey } from './isValidKey';
 
 describe('isValidKey', () => {
@@ -6,7 +6,7 @@ describe('isValidKey', () => {
     '',
     null,
     undefined,
-    {rowIdx: 1, columnIdx: 2},
+    { rowIdx: 1, columnIdx: 2 },
     'a',
     'a:b',
     '1:a',
@@ -14,7 +14,7 @@ describe('isValidKey', () => {
     '1:2:a',
     '1:',
     '1:undefined',
-  ])('should return false for value \'%s\'', (invalidValue) => {
+  ])("should return false for value '%s'", (invalidValue) => {
     expect(isValidKey(invalidValue)).toBe(false);
   });
 

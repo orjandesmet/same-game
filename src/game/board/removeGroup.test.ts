@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createTestBoard } from './createTestBoard.test-util';
 import { removeGroup } from './removeGroup';
-import type { CellKey } from '@game/cells';
+import type { Group } from './types';
 
 describe('removeGroup', () => {
   const board = createTestBoard(
@@ -17,7 +17,7 @@ describe('removeGroup', () => {
       ['423', '756', '189']
     );
 
-    const group: CellKey[] = ['1:0', '2:0'];
+    const group: Group = ['1:0', '2:0'];
     const updatedBoard = removeGroup(board, group);
 
     expect(updatedBoard).toEqual(expectedBoard);
@@ -30,7 +30,7 @@ describe('removeGroup', () => {
       ['132', '465', '798']
     );
 
-    const group: CellKey[] = ['0:1', '1:1', '2:1'];
+    const group: Group = ['0:1', '1:1', '2:1'];
     const updatedBoard = removeGroup(board, group);
 
     expect(updatedBoard).toEqual(expectedBoard);

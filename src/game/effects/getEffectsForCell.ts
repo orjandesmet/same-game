@@ -1,15 +1,14 @@
+import type { Group } from '@game/board';
+import type { CellColor } from '@game/cells';
 import type { PartyMembers } from '@game/creatures';
-import type { Group } from '../board';
-import type { CellColor } from '../cells';
-import type { PRNG } from '../rng';
-import { createBasicEffects } from './createBasicEffects';
-import { createMetronomeEffects } from './createMetronomeEffects';
-import { createShockedEffects } from './createShockedEffects';
-import { createTransformEffects } from './createTransformEffects';
-import { getBurningGroup } from './getBurningGroup';
-import { getCuttingGroup } from './getCuttingGroup';
-import { getFloodedGroup } from './getFloodedGroup';
+import type { PRNG } from '@game/rng';
+import { createFloodedEffects } from './B/createFloodedEffects';
+import { createCuttingEffects } from './G/createCuttingEffects';
+import { createTransformEffects } from './P/createTransformEffects';
+import { createBurningEffects } from './R/createBurningEffects';
 import type { Effects } from './types';
+import { createMetronomeEffects } from './W/createMetronomeEffects';
+import { createShockedEffects } from './Y/createShockedEffects';
 
 export function getEffectsForCell(
   cellColor: CellColor,
@@ -20,18 +19,29 @@ export function getEffectsForCell(
 ): Effects | null {
   switch (cellColor) {
     case 'R':
-      return createBasicEffects(getBurningGroup(cellHasSpecialCreature), 'R', 'EMBER', 'BURNING', party['R'], cellHasSpecialCreature);
+      return createBurningEffects(party, cellHasSpecialCreature);
     case 'B':
-      return createBasicEffects(getFloodedGroup(cellHasSpecialCreature), 'B', 'WATER GUN', 'FLOODED', party['B'], cellHasSpecialCreature);
+      return createFloodedEffects(party, cellHasSpecialCreature);
     case 'G':
-      return createBasicEffects(getCuttingGroup(cellHasSpecialCreature), 'G', 'VINE WHIP', 'CUTTING', party['G'], cellHasSpecialCreature);
+      return createCuttingEffects(party, cellHasSpecialCreature);
     case 'Y': {
       return createShockedEffects(party, rng, cellHasSpecialCreature);
     }
     case 'P':
-      return createTransformEffects(allGroups, party, rng, cellHasSpecialCreature);
-    case 'W': 
-      return createMetronomeEffects(allGroups, party, rng, getEffectsForCell, cellHasSpecialCreature);
+      return createTransformEffects(
+        allGroups,
+        party,
+        rng,
+        cellHasSpecialCreature
+      );
+    case 'W':
+      return createMetronomeEffects(
+        allGroups,
+        party,
+        rng,
+        getEffectsForCell,
+        cellHasSpecialCreature
+      );
     default:
       return null;
   }

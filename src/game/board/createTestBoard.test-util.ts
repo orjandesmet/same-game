@@ -13,7 +13,10 @@ export function createTestBoard(
     pattern.map((row, rowIdx) => ({
       key: keys ? keys[rowIdx][columnIdx] : `${rowIdx}:${columnIdx}`,
       color: row[columnIdx] === '.' ? EMPTY : (row[columnIdx] as Color),
-      hasCreature: !!creatures && !!creatures[rowIdx]?.[columnIdx] && creatures[rowIdx]?.[columnIdx] !== '.',
+      hasCreature:
+        !!creatures &&
+        !!creatures[rowIdx]?.[columnIdx] &&
+        creatures[rowIdx]?.[columnIdx] !== '.',
       hasSpecialCreature: !!creatures && creatures[rowIdx]?.[columnIdx] === 'M',
       level: 1,
       cellState: 'NORMAL' as const,
