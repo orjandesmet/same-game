@@ -1,6 +1,6 @@
 import { boardUtils } from '@game/board';
 import type { Color } from '@game/creatures';
-import type { EffectGroupFn } from './types';
+import type { EffectGroupFn } from '../types';
 
 export const getShockedGroup =
   (additionalColors: Color[]): EffectGroupFn =>
