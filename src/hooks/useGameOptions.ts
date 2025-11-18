@@ -11,6 +11,7 @@ export function useGameOptions() {
   const [canAccessSettings, setCanAccessSettings] = useState(true);
   const [isDebugging, setIsDebugging] = useState(false);
   const [isPi, setIsPi] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const [nrOfColumns, setNrOfColumns] = useState(BASE_NR_OF_COLUMNS);
   const [nrOfRows, setNrOfRows] = useState(BASE_NR_OF_ROWS);
   const [partyMembers, setPartyMembers] = useState<PartyMembers>(
@@ -40,6 +41,7 @@ export function useGameOptions() {
         setIsDebugging(true);
       }
     }
+    setIsReady(true);
   }, []);
 
   const resetDebugger = useCallback(() => {
@@ -71,6 +73,7 @@ export function useGameOptions() {
     partyMembers,
     isDebugging,
     isPi,
+    isReady,
     seed,
     setNrOfColumns,
     setNrOfRows,

@@ -33,6 +33,7 @@ function App() {
     partyMembers,
     isDebugging,
     isPi,
+    isReady,
     seed,
     setNrOfColumns,
     setNrOfRows,
@@ -65,8 +66,10 @@ function App() {
 
   useEffect(() => {
     game.enableDebugMode(isDebugging);
-    game.startGame(nrOfRows, nrOfColumns, partyMembers, seed);
-  }, [nrOfRows, nrOfColumns, partyMembers, seed, canAccessSettings]);
+    if (isReady) {
+      game.startGame(nrOfRows, nrOfColumns, partyMembers, seed);
+    }
+  }, [nrOfRows, nrOfColumns, partyMembers, seed, isDebugging, isReady]);
 
   const cssVars = useMemo(() => {
     if (isPi) {
@@ -84,7 +87,7 @@ function App() {
   }, [isPi]);
 
   return (
-    <div className={styles.appRoot} style={cssVars}>
+    <div className={styles['game-root']} style={cssVars}>
       {canAccessSettings && (
         <OptionsForm
           nrOfRows={nrOfRows}
@@ -108,7 +111,18 @@ function App() {
           scoreCard={scoreCard}
         />
       </Board>
-      <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed} />
+      <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed}>
+        <div className={styles['github-link']}>
+          <Octicon className={styles['github-logo']} />
+          <a
+            href="https://github.com/orjandesmet/same-game"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+        </div>
+      </ScoreBoard>
       {isDebugging && (
         <DebugBanner
           multiplier={scoreCard?.multiplier}
@@ -120,16 +134,6 @@ function App() {
         />
       )}
       <EffectsOverlay effects={effects} />
-      <div className={styles.githubLink}>
-        <Octicon className={styles.githubLogo} />
-        <a
-          href="https://github.com/orjandesmet/same-game"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
-      </div>
     </div>
   );
 }

@@ -1,7 +1,9 @@
 /** @type {import('stylelint').Config} */
 export default {
   extends: ['stylelint-config-standard-scss'],
+  plugins: ['stylelint-prettier'],
   rules: {
+    'prettier/prettier': true,
     // 'color-named': ["never"],
     'font-family-name-quotes': 'always-where-required',
     'font-weight-notation': 'named-where-possible',
@@ -22,5 +24,6 @@ export default {
       true,
       { ignorePseudoClasses: ['global'] },
     ],
+    'scss/operator-no-newline-after': null,
   },
 };

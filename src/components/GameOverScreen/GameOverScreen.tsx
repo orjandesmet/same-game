@@ -22,33 +22,39 @@ export function GameOverScreen({
 }: GameOverProps) {
   return (
     <>
-      <h2>BLACKED OUT</h2>
-      <span>Cells removed: {scoreCard.cellsRemoved ?? 0}</span>
+      <h2>GAME OVER</h2>
+      <span>Cells removed: ${scoreCard.cellsRemoved ?? 0}</span>
       {scoreCard.multiplier && scoreCard.multiplier !== 1 && (
         <span>Multiplier: x{scoreCard.multiplier ?? 1}</span>
       )}
       {!!scoreCard.creatures?.length && (
         <>
           <span>POKéMON used:</span>
-          {creatureScores.map(({ color, level, score }) => (
-            <span key={color}>
-              {
-                CREATURE_NAMES[color][
-                  creatureUtils.getEvolutionIdx(color, level)
-                ]
-              }
-              : {score}
-            </span>
-          ))}
+          <ul className={styles['creature-list']}>
+            {creatureScores.map(({ color, level, score }) => {
+              const evolutionIdx = creatureUtils.getEvolutionIdx(color, level);
+
+              return (
+                <li className={styles['creature-list-item']} key={color}>
+                  <img
+                    className={styles['creature-list-image']}
+                    src={`/creatures/sprites/${color}-${evolutionIdx}.png`}
+                    alt={CREATURE_NAMES[color][evolutionIdx]}
+                  />
+                  ${score}
+                </li>
+              );
+            })}
+          </ul>
         </>
       )}
       {scoreCard.allCleared && (
-        <span>All cleared bonus: {ALL_CLEARED_BONUS}</span>
+        <span>All cleared bonus: ${ALL_CLEARED_BONUS}</span>
       )}
       <hr />
-      <span>Final score: {score}</span>
+      <span>Final score: ${score}</span>
       <button
-        className={styles.restartButton}
+        className={styles['restart-button']}
         type="button"
         onClick={onRestartClick}
       >
