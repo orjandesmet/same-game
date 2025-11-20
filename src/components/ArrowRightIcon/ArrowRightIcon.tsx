@@ -1,5 +1,5 @@
-import styles from './ArrowRightIcon.module.css';
 import clsx from 'clsx';
+import styles from './ArrowRightIcon.module.css';
 
 type ArrowRightIconProps = {
   solid?: boolean;

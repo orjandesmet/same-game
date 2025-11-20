@@ -1,5 +1,5 @@
 @use '../../scss/cellEffects';
-@use '../../scss/pkmnBackgrounds';
+@use '../../scss/creatureBackgrounds';
 
 .board {
   display: grid;
@@ -29,6 +29,7 @@
   &.empty {
     pointer-events: none;
   }
+
   &:not(.empty):hover {
     border: 1px solid light-dark(red, blue);
   }
@@ -36,33 +37,38 @@
   &.r {
     background-color: var(--i-color-r);
   }
+
   &.b {
     background-color: var(--i-color-b);
   }
+
   &.g {
     background-color: var(--i-color-g);
   }
+
   &.y {
     background-color: var(--i-color-y);
   }
+
   &.p {
     background-color: var(--i-color-p);
   }
+
   &.w {
     background-color: var(--i-color-w);
   }
 
-  &.withPkmn {
-    @include pkmnBackgrounds.addLeveledBackgrounds();
+  &.with-creature {
+    @include creatureBackgrounds.addLeveledBackgrounds;
   }
-  
+
   @include cellEffects.stateEffects;
 }
 
-.gameOverDialog {
+.game-over-dialog {
   grid-row: 1 / -1;
   grid-column: 1 / -1;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgb(0 0 0 / 75%);
   color: white;
   border-radius: calc(50% / var(--i-nr-of-columns));
   z-index: 500;

@@ -1,5 +1,5 @@
 import type { Board } from './board';
-import type { ExtendedColor } from './pkmn';
+import type { ExtendedColor } from './creatures';
 
 export const ALL_CLEARED_BONUS = 1000;
 
@@ -8,10 +8,11 @@ export type GameStatus = Readonly<
 >;
 export type ScoreCard = {
   allCleared: boolean;
-    cellsRemoved: number;
-    multiplier: number;
-    pkmn: ExtendedColor[],
-  };
+  cellsRemoved: number;
+  multiplier: number;
+  creatures: ExtendedColor[];
+};
+
 export type GameState = Readonly<{
   board: Board;
   movesLeft: number;

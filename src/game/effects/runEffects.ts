@@ -1,30 +1,48 @@
 import type { Board, Group } from '../board';
 import type { Effect, EffectTools } from './types';
 
-export async function runEffects(
+type CallBackFn = (board: Board) => void;
+
+export function runEffects(
   effects: Effect[],
   initialBoard: Board,
   group: Group,
-  callback: (board: Board) => void,
+  callback: CallBackFn,
   effectTools: EffectTools
 ): Promise<Board> {
-  return await effects.reduce((previousPromise, effect) => {
-    return previousPromise.then((newBoard) => {
-      if (effect.effectName) {
-        effectTools._debug(
-          'Running effect:',
-          effect.effectName,
-          'on group',
-          group
-        );
-      }
-      const updatedBoard = effect.fn(newBoard, group, effectTools);
-      callback(updatedBoard);
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(updatedBoard);
-        }, effect.duration);
-      });
-    });
-  }, Promise.resolve(initialBoard));
+  const effectReducer = runEffect(group, callback, effectTools);
+  return effects.reduce(effectReducer, Promise.resolve(initialBoard));
+}
+
+function runEffect(
+  group: Group,
+  callback: CallBackFn,
+  effectTools: EffectTools
+) {
+  return async (
+    boardPromise: Promise<Board>,
+    effect: Effect
+  ): Promise<Board> => {
+    const board = await boardPromise;
+    if (effect.effectName) {
+      effectTools._debug(
+        'Running effect:',
+        effect.effectName,
+        'on group',
+        group
+      );
+    }
+    const updatedBoard = effect.fn(board, group, effectTools);
+    callback(updatedBoard);
+    await timeout(effect.duration);
+    return updatedBoard;
+  };
+}
+
+function timeout(duration: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(undefined);
+    }, duration);
+  });
 }

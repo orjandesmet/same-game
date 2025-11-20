@@ -1,12 +1,18 @@
-import { useCallback, useRef, type ChangeEvent } from 'react';
-import { clamp } from '@utils/clamp';
-import { PKMN_NAMES, COLORS, type Color, type PartyMembers, pkmnUtils } from '@game/pkmn';
-import styles from './OptionsForm.module.css';
-import { LvlIcon } from '@components/LvlIcon';
 import { ArrowRight } from '@components/ArrowRightIcon';
 import { BallIcon } from '@components/BallIcon';
-import { createPortal } from 'react-dom';
+import { LvlIcon } from '@components/LvlIcon';
+import {
+  COLORS,
+  CREATURE_NAMES,
+  creatureUtils,
+  type Color,
+  type PartyMembers,
+} from '@game/creatures';
+import { clamp } from '@utils/clamp';
 import clsx from 'clsx';
+import { useCallback, useRef, type ChangeEvent } from 'react';
+import { createPortal } from 'react-dom';
+import styles from './OptionsForm.module.css';
 
 type OptionsFormProps = {
   nrOfRows: number;
@@ -110,100 +116,109 @@ export function OptionsForm({
 
   return (
     <>
-      {createPortal(<dialog
-        className={styles.optionsFormDialog}
-        ref={dialog}
-      >
-        <form method="dialog" className={styles.optionsForm} onClick={(e) => e.stopPropagation()}>
-          <fieldset className={styles.optionsFieldset}>
-            <legend>OPTION</legend>
-            <label className={styles.optionsLabel} htmlFor="fldNrOfRows">
-              <ArrowRight className={styles.optionsArrow} solid />
-              <span>Nr of Rows</span>
-              <span>({props.nrOfRows})</span>
-            </label>
-            <input
-              id="fldNrOfRows"
-              type="range"
-              min={5}
-              max={20}
-              value={props.nrOfRows}
-              onChange={handleNrOfRowsChange}
-            />
-            <label className={styles.optionsLabel} htmlFor="fldNrOfColumns">
-              <ArrowRight className={styles.optionsArrow} solid />
-              <span>Nr of Columns</span>
-              <span>({props.nrOfColumns})</span>
-            </label>
-            <input
-              id="fldNrOfColumns"
-              type="range"
-              min={5}
-              max={20}
-              value={props.nrOfColumns}
-              onChange={handleNrOfColumnsChange}
-            />
-          </fieldset>
-          <fieldset>
-            <legend>POKéMON (minimum: 2)</legend>
-            <div className={styles.partyMembers}>
-              {COLORS.map((color) => {
-                const lvl = Math.abs(partyMembers[color]);
-                return (
-                  <div className={styles.partyMember} key={color}>
-                    <input
-                      id={`chk${color}`}
-                      name="fldParty"
-                      type="checkbox"
-                      value={color}
-                      checked={partyMembersInclude(color)}
-                      disabled={isDisabled(color)}
-                      onChange={handlePartyMemberChange}
-                    />
-                      <ArrowRight
-                        className={styles.optionsArrow}
-                        solid
-                      />
-                    <label
-                      className={clsx(styles.optionsLabel, styles.party)}
-                      htmlFor={`chk${color}`}
-                    >
-                      <BallIcon
-                        solid={partyMembersInclude(color)}
-                        aria-hidden
-                        />
-                      <img
-                        className={styles.partyImage}
-                        src={`/pkmn/sprites/${color}-${pkmnUtils.getEvolutionIdx(color, lvl)}.png`}
-                        alt={PKMN_NAMES[color][pkmnUtils.getEvolutionIdx(color, lvl)]}
-                      />
-                      <span className={styles.partyName}>{PKMN_NAMES[color][pkmnUtils.getEvolutionIdx(color, lvl)]}</span>
-                    </label>
-                    <span className={styles.partyLevel}>
-                      <LvlIcon />
+      {createPortal(
+        <dialog className={styles.optionsFormDialog} ref={dialog}>
+          <form
+            method="dialog"
+            className={styles.optionsForm}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <fieldset className={styles.optionsFieldset}>
+              <legend>OPTION</legend>
+              <label className={styles.optionsLabel} htmlFor="fldNrOfRows">
+                <ArrowRight className={styles.optionsArrow} solid />
+                <span>Nr of Rows</span>
+                <span>({props.nrOfRows})</span>
+              </label>
+              <input
+                id="fldNrOfRows"
+                type="range"
+                min={5}
+                max={20}
+                value={props.nrOfRows}
+                onChange={handleNrOfRowsChange}
+              />
+              <label className={styles.optionsLabel} htmlFor="fldNrOfColumns">
+                <ArrowRight className={styles.optionsArrow} solid />
+                <span>Nr of Columns</span>
+                <span>({props.nrOfColumns})</span>
+              </label>
+              <input
+                id="fldNrOfColumns"
+                type="range"
+                min={5}
+                max={20}
+                value={props.nrOfColumns}
+                onChange={handleNrOfColumnsChange}
+              />
+            </fieldset>
+            <fieldset>
+              <legend>POKéMON (minimum: 2)</legend>
+              <div className={styles.partyMembers}>
+                {COLORS.map((color) => {
+                  const lvl = Math.abs(partyMembers[color]);
+                  return (
+                    <div className={styles.partyMember} key={color}>
                       <input
-                        type="number"
-                        className={styles.lvlInput}
-                        inputMode="numeric"
-                        value={lvl}
-                        onChange={(e) =>
-                          handlePartyMemberLevelChange(
-                            color,
-                            Number(e.target.value)
-                          )
-                        }
+                        id={`chk${color}`}
+                        name="fldParty"
+                        type="checkbox"
+                        value={color}
+                        checked={partyMembersInclude(color)}
+                        disabled={isDisabled(color)}
+                        onChange={handlePartyMemberChange}
                       />
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </fieldset>
-          <button type="submit">
-            CLOSE
-          </button>
-        </form>
-      </dialog>, document.body)}
+                      <ArrowRight className={styles.optionsArrow} solid />
+                      <label
+                        className={clsx(styles.optionsLabel, styles.party)}
+                        htmlFor={`chk${color}`}
+                      >
+                        <BallIcon
+                          solid={partyMembersInclude(color)}
+                          aria-hidden
+                        />
+                        <img
+                          className={styles.partyImage}
+                          src={`/creatures/sprites/${color}-${creatureUtils.getEvolutionIdx(color, lvl)}.png`}
+                          alt={
+                            CREATURE_NAMES[color][
+                              creatureUtils.getEvolutionIdx(color, lvl)
+                            ]
+                          }
+                        />
+                        <span className={styles.partyName}>
+                          {
+                            CREATURE_NAMES[color][
+                              creatureUtils.getEvolutionIdx(color, lvl)
+                            ]
+                          }
+                        </span>
+                      </label>
+                      <span className={styles.partyLevel}>
+                        <LvlIcon />
+                        <input
+                          type="number"
+                          className={styles.lvlInput}
+                          inputMode="numeric"
+                          value={lvl}
+                          onChange={(e) =>
+                            handlePartyMemberLevelChange(
+                              color,
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </fieldset>
+            <button type="submit">CLOSE</button>
+          </form>
+        </dialog>,
+        document.body
+      )}
       <div className={styles.optionsFormButtons}>
         <button type="button" onClick={() => props.onStartGame()}>
           NEW GAME

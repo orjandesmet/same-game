@@ -1,5 +1,5 @@
-import styles from './BallIcon.module.css';
 import clsx from 'clsx';
+import styles from './BallIcon.module.css';
 
 type BallIconProps = {
   solid?: boolean;
@@ -23,29 +23,157 @@ export function BallIcon({ solid, className }: BallIconProps) {
       <rect width="1" height="1" x="2" y="6" fill="currentColor"></rect>
       <rect width="1" height="1" x="6" y="6" fill="currentColor"></rect>
       <rect width="3" height="1" x="3" y="7" fill="currentColor"></rect>
-      {solid && (<>
-        <rect width="1" height="1" x="3" y="2" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="4" y="2" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="5" y="2" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="2" y="3" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="3" y="3" fill="hsl(39, 100%, 89%)"></rect>
-        <rect width="1" height="1" x="4" y="3" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="5" y="3" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="6" y="3" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="2" y="4" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="3" y="4" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="4" y="4" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="5" y="4" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="6" y="4" fill="hsl(30, 100%, 40%)"></rect>
-        <rect width="1" height="1" x="2" y="5" fill="hsl(39, 100%, 89%)"></rect>
-        <rect width="1" height="1" x="3" y="5" fill="hsl(39, 100%, 89%)"></rect>
-        <rect width="1" height="1" x="4" y="5" fill="hsl(39, 100%, 89%)"></rect>
-        <rect width="1" height="1" x="5" y="5" fill="hsl(39, 100%, 89%)"></rect>
-        <rect width="1" height="1" x="6" y="5" fill="hsl(39, 100%, 89%)"></rect>
-        <rect width="1" height="1" x="3" y="6" fill="hsl(39, 100%, 89%)"></rect>
-        <rect width="1" height="1" x="4" y="6" fill="hsl(39, 100%, 89%)"></rect>
-        <rect width="1" height="1" x="5" y="6" fill="hsl(39, 100%, 89%)"></rect>
-      </>)}
-    </svg >
+      {solid && (
+        <>
+          <rect
+            width="1"
+            height="1"
+            x="3"
+            y="2"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="4"
+            y="2"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="5"
+            y="2"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="2"
+            y="3"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="3"
+            y="3"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="4"
+            y="3"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="5"
+            y="3"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="6"
+            y="3"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="2"
+            y="4"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="3"
+            y="4"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="4"
+            y="4"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="5"
+            y="4"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="6"
+            y="4"
+            fill="hsl(30, 100%, 40%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="2"
+            y="5"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="3"
+            y="5"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="4"
+            y="5"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="5"
+            y="5"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="6"
+            y="5"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="3"
+            y="6"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="4"
+            y="6"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+          <rect
+            width="1"
+            height="1"
+            x="5"
+            y="6"
+            fill="hsl(39, 100%, 89%)"
+          ></rect>
+        </>
+      )}
+    </svg>
   );
 }

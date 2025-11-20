@@ -1,4 +1,4 @@
-@use '../../scss/pkmnBackgrounds';
+@use '../../scss/creatureBackgrounds';
 
 .effectsOverlay {
   --i-band-height: 10vh;
@@ -76,7 +76,7 @@
     filter: var(--i-img-border-filter);
     z-index: 100;
 
-    @include pkmnBackgrounds.addLeveledBackgrounds;
+    @include creatureBackgrounds.addLeveledBackgrounds;
 
     .effect-2,
     .effect-3 {

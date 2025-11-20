@@ -1,18 +1,22 @@
 import type { Board } from '@game/board';
 import { cellUtils } from '@game/cells';
-import { pkmnUtils, type Color } from '@game/pkmn';
+import { creatureUtils, type Color } from '@game/creatures';
 import { clsx } from 'clsx';
 import type { CSSProperties, PropsWithChildren } from 'react';
 import styles from './Board.module.scss';
 
-;
 type BoardProps = PropsWithChildren<{
   board: Board;
   onCellClick: (rowIdx: number, columnIdx: number) => void;
   isGameOver: boolean;
 }>;
 
-export function Board({ board, onCellClick, isGameOver, children }: BoardProps) {
+export function Board({
+  board,
+  onCellClick,
+  isGameOver,
+  children,
+}: BoardProps) {
   if (board.length === 0 || board[0].length === 0) {
     return <div className="board empty-board">No board to display</div>;
   }
@@ -31,17 +35,22 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
             '--i-column-idx': columnIdx,
           } as CSSProperties;
           if (cellUtils.isEmptyCell(cell)) {
-            return <div key={cell.key}
-            className={clsx(styles.cell, styles.empty)}
-              style={cellStyles}
+            return (
+              <div
+                key={cell.key}
+                className={clsx(styles.cell, styles.empty)}
+                style={cellStyles}
               ></div>
+            );
           }
           const classNames = clsx(
             styles.cell,
-            cell.hasPkmn && styles.withPkmn,
-            cell.hasM && styles.m,
+            cell.hasCreature && styles['with-creature'],
+            cell.hasSpecialCreature && styles.m,
             styles[cell.color.toLowerCase()],
-            styles[`${cell.color.toLowerCase()}-${pkmnUtils.getEvolutionIdx(cell.color as Color, cell.level)}`],
+            styles[
+              `${cell.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(cell.color as Color, cell.level)}`
+            ],
             cell.cellState === 'BURNING' && styles.isBurning,
             cell.cellState === 'FLOODED' && styles.isFlooded,
             cell.cellState === 'CUTTING' && styles.isCutting,
@@ -59,9 +68,9 @@ export function Board({ board, onCellClick, isGameOver, children }: BoardProps) 
           );
         })
       )}
-      {isGameOver ? (<div className={styles.gameOverDialog}>
-        {children}
-      </div>) : null}
+      {isGameOver ? (
+        <div className={styles['game-over-dialog']}>{children}</div>
+      ) : null}
     </div>
   );
 }
