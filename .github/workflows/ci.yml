@@ -29,7 +29,7 @@ jobs:
       
       - name: Clean project (needed for bugfix)
         run: |
-          rm -rf node_modules pnpm-lock.yaml
+          rm -rf node_modules package-lock.json
 
       - name: Install dependencies with pnpm
         run: pnpm install --dev
