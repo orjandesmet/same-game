@@ -26,13 +26,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      
-      - name: Clean project (needed for bugfix)
-        run: |
-          rm -rf node_modules package-lock.json
 
       - name: Install dependencies with pnpm
-        run: pnpm install --dev
+        run: pnpm install --os=linux --cpu=x64 --shamefully-hoist=true --dev
 
       - name: Run tests
         run: pnpm test:ci
