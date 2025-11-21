@@ -4,7 +4,7 @@ import { EffectsOverlay } from '@components/EffectsOverlay';
 import { GameOverScreen } from '@components/GameOverScreen';
 import { OptionsForm } from '@components/OptionsForm';
 import { ScoreBoard } from '@components/ScoreBoard';
-import { SameGame } from '@game';
+import { PlayRecorder, SameGame, type HighScore, type Recording } from '@game';
 import type { ColumnIdx, RowIdx } from '@game/board';
 import { effectUtils } from '@game/effects';
 import { Xorshift32 } from '@game/rng/xorshift32';
@@ -21,10 +21,13 @@ import styles from './App.module.css';
 import type { EffectList } from './components/EffectsOverlay';
 import { Octicon } from './components/Octicon/Octicon';
 
-const game = new SameGame(new Xorshift32());
+const recorder = new PlayRecorder();
+const game = new SameGame(new Xorshift32(), recorder);
 
 function App() {
   const [effects, setEffects] = useState<EffectList>([]);
+  const [recording, setRecording] = useState<Recording | null>(null);
+  const [highScores, setHighScores] = useState<HighScore[]>([]);
 
   const {
     canAccessSettings,
@@ -66,6 +69,8 @@ function App() {
 
   useEffect(() => {
     game.enableDebugMode(isDebugging);
+    setRecording(recorder.readRecording());
+
     if (isReady) {
       game.startGame(nrOfRows, nrOfColumns, partyMembers, seed);
     }

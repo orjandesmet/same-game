@@ -10,7 +10,7 @@ import { cellUtils, type Cell } from './cells';
 import type { Color, PartyMembers } from './creatures';
 import { effectUtils, type Effect } from './effects';
 import { getSelectedPartyMembers } from './getSelectedPartyMembers';
-import { PlayRecorder } from './play-recorder';
+import { type Recorder } from './play-recorder';
 import { PlainRNG, type PRNG, type Seed } from './rng';
 import { rollForSpecialCreature } from './rollForSpecialCreature';
 import {
@@ -23,7 +23,7 @@ import {
 export class SameGame {
   private _rng: Readonly<PRNG>;
   private _party: Partial<PartyMembers> = {};
-  private _recorder: Readonly<PlayRecorder>;
+  private _recorder?: Readonly<Recorder>;
   private _board: Board = [];
   private _allGroups: Group[] = [];
   private _movesLeft = 0;
@@ -39,9 +39,9 @@ export class SameGame {
 
   private _debug: DebugFn = () => {};
 
-  constructor(rng: PRNG = new PlainRNG()) {
+  constructor(rng: PRNG = new PlainRNG(), recorder?: Recorder) {
     this._rng = rng;
-    this._recorder = new PlayRecorder();
+    this._recorder = recorder;
   }
 
   public get board() {
@@ -112,7 +112,7 @@ export class SameGame {
       multiplier: colors.length / 2,
       creatures: [],
     };
-    this._recorder.reset(rows, columns, selectedPartyMembers, seed);
+    this._recorder?.reset(rows, columns, partyMembers, seed);
 
     this._board = boardUtils.createBoard(
       rows,
@@ -162,7 +162,8 @@ export class SameGame {
         this._scoreCard.allCleared = true;
         this._debug('All cleared, bonus', ALL_CLEARED_BONUS, '->', this.score);
       }
-      this._recorder.store();
+      this._recorder?.store();
+      this._recorder?.storeHighScore(this._scoreCard);
     }
   }
 
@@ -179,7 +180,7 @@ export class SameGame {
       return [];
     }
     const cellKey = cellUtils.createCellKey(rowIdx, columnIdx);
-    this._recorder.addMove(cellKey);
+    this._recorder?.addMove(cellKey);
     const cell = this._board[columnIdx][rowIdx];
     if (cellUtils.isEmptyCell(cell)) {
       this._debug('Clicked on empty cell', cellKey);

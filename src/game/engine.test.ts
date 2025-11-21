@@ -9,20 +9,29 @@ import { Xorshift32 } from './rng/xorshift32';
 
 const MockPlayRecorder = vi.fn(
   class {
-    reset = vi.fn();
     addMove = vi.fn();
+    readHighScores = vi.fn();
+    readRecording = vi.fn();
+    reset = vi.fn();
     store = vi.fn();
+    storeHighScore = vi.fn();
   }
 );
 
 describe('engine', () => {
   const INITIAL_SEED = 74673;
   let sameGame: SameGame;
+  let mockRecorder = new MockPlayRecorder();
 
   beforeEach(() => {
     const rng = new Xorshift32(INITIAL_SEED);
-    sameGame = new SameGame(rng);
-    sameGame['_recorder'] = new MockPlayRecorder();
+    mockRecorder.addMove.mockClear();
+    mockRecorder.reset.mockClear();
+    mockRecorder.readHighScores.mockClear();
+    mockRecorder.readRecording.mockClear();
+    mockRecorder.store.mockClear();
+    mockRecorder.storeHighScore.mockClear();
+    sameGame = new SameGame(rng, mockRecorder);
   });
 
   it('should have state "NOT-STARTED" if the game has not started yet', () => {
@@ -339,6 +348,13 @@ describe('engine', () => {
           creatures: ['B', 'B'],
         },
         gameState: 'GAME-OVER',
+      });
+      expect(mockRecorder.store).toHaveBeenCalled();
+      expect(mockRecorder.storeHighScore).toHaveBeenCalledWith({
+        allCleared: false,
+        cellsRemoved: 135,
+        multiplier: 2,
+        creatures: ['B', 'B'],
       });
     });
 
