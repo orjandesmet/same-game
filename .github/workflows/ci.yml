@@ -16,6 +16,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Prepare pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
@@ -23,12 +28,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies with pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: |
-            - recursive: true
-              args: [--frozen-lockfile, --dev]
+        run: pnpm install --frozen-lockfile --dev
 
       - name: Run tests
         run: pnpm test:ci
