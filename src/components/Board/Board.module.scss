@@ -1,30 +1,77 @@
 @use '../../scss/cellEffects';
 @use '../../scss/creatureBackgrounds';
 
+$border-width: 1px;
+$double-border-width: $border-width * 2;
+$gap: 0.25rem;
+$padding: 0.25rem;
+$double-padding: $padding * 2;
+
+.board-container {
+  container-type: size;
+}
+
 .board {
   display: grid;
-  grid-template-rows: repeat(var(--i-nr-of-rows), 1fr);
-  grid-template-columns: repeat(var(--i-nr-of-columns), 1fr);
-  width: 100%;
-  max-width: calc(100vh - 150px);
-  border: 1px solid var(--i-foreground-color);
-  border-radius: calc(50% / var(--i-nr-of-columns));
+
+  --cell-w-by-width: calc(
+    (100cqw - #{$double-border-width} - #{$double-padding}) /
+      var(--i-nr-of-columns, 10)
+  );
+  --cell-w-by-height: calc(
+    (100cqh - #{$double-border-width} - #{$double-padding}) /
+      var(--i-nr-of-rows, 10)
+  );
+  --cell-size: min(var(--cell-w-by-width), var(--cell-w-by-height));
+
+  /* Compute cell size considering gap */
+  gap: #{$gap};
+  padding: #{$padding};
+
+  --total-cell-width: calc(var(--cell-size) * var(--i-nr-of-columns, 10));
+  --total-cell-height: calc(var(--cell-size) * var(--i-nr-of-rows, 10));
+  --total-gap-width: calc(#{$gap} * (var(--i-nr-of-columns, 10) - 1));
+  --cell-size-with-gap: calc(
+    (var(--total-cell-width) - var(--total-gap-width)) /
+      var(--i-nr-of-columns, 10)
+  );
+
+  /* Use the computed cell size for columns and rows so each track is square. */
+  grid-template-columns: repeat(
+    var(--i-nr-of-columns, 10),
+    var(--cell-size-with-gap)
+  );
+  grid-auto-rows: var(--cell-size-with-gap);
+
+  /* Board dimensions derived from cell size */
+  width: calc(
+    var(--total-cell-width) + #{$double-border-width} + #{$double-padding}
+  );
+  height: calc(
+    var(--total-cell-height) + #{$double-border-width} + #{$double-padding}
+  );
   box-sizing: border-box;
-  gap: 0.25em;
-  padding: 0.25em;
+  border: #{$border-width} solid var(--i-foreground-color);
+
+  /* keep a subtle rounded shape that scales with columns/rows */
+  border-radius: calc(50% / var(--i-nr-of-columns)) /
+    calc(50% / var(--i-nr-of-rows));
+  margin-inline: auto;
 }
 
 .cell {
+  box-sizing: border-box;
   padding: 0;
-  aspect-ratio: 1 / 1;
+
+  /* Place cell in the grid explicitly */
+  width: var(--cell-size-with-gap);
+  height: var(--cell-size-with-gap);
   grid-row: calc(var(--i-row-idx) + 1);
   grid-column: calc(var(--i-column-idx) + 1);
   background-size: 65%;
   background-repeat: no-repeat;
   background-position: 50% 50%;
-  position: relative;
   border-radius: 50%;
-  box-sizing: content-box;
 
   &.empty {
     pointer-events: none;
@@ -62,19 +109,19 @@
     @include creatureBackgrounds.addLeveledBackgrounds;
   }
 
-  @include cellEffects.stateEffects;
+  @include cellEffects.state-effects;
 }
 
 .game-over-dialog {
-  grid-row: 1 / -1;
-  grid-column: 1 / -1;
+  position: absolute;
+  inset: 0;
   background-color: rgb(0 0 0 / 75%);
   color: white;
-  border-radius: calc(50% / var(--i-nr-of-columns));
   z-index: 500;
   backdrop-filter: blur(2px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.25em;
 }

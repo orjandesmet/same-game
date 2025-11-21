@@ -27,47 +27,49 @@ export function Board({
   } as CSSProperties;
 
   return (
-    <div className={styles.board} style={boardStyles}>
-      {board.map((column, columnIdx) =>
-        column.map((cell, rowIdx) => {
-          const cellStyles = {
-            '--i-row-idx': rowIdx,
-            '--i-column-idx': columnIdx,
-          } as CSSProperties;
-          if (cellUtils.isEmptyCell(cell)) {
-            return (
-              <div
-                key={cell.key}
-                className={clsx(styles.cell, styles.empty)}
-                style={cellStyles}
-              ></div>
+    <div className={styles['board-container']}>
+      <div className={styles.board} style={boardStyles}>
+        {board.map((column, columnIdx) =>
+          column.map((cell, rowIdx) => {
+            const cellStyles = {
+              '--i-row-idx': rowIdx,
+              '--i-column-idx': columnIdx,
+            } as CSSProperties;
+            if (cellUtils.isEmptyCell(cell)) {
+              return (
+                <div
+                  key={cell.key}
+                  className={clsx(styles.cell, styles.empty)}
+                  style={cellStyles}
+                ></div>
+              );
+            }
+            const classNames = clsx(
+              styles.cell,
+              cell.hasCreature && styles['with-creature'],
+              cell.hasSpecialCreature && styles.m,
+              styles[cell.color.toLowerCase()],
+              styles[
+                `${cell.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(cell.color as Color, cell.level)}`
+              ],
+              cell.cellState === 'BURNING' && styles.burning,
+              cell.cellState === 'FLOODED' && styles.flooded,
+              cell.cellState === 'CUTTING' && styles.cutting,
+              cell.cellState === 'SHOCKED' && styles.shocked,
+              cell.cellState === 'TRANSFORMING' && styles.transforming,
             );
-          }
-          const classNames = clsx(
-            styles.cell,
-            cell.hasCreature && styles['with-creature'],
-            cell.hasSpecialCreature && styles.m,
-            styles[cell.color.toLowerCase()],
-            styles[
-              `${cell.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(cell.color as Color, cell.level)}`
-            ],
-            cell.cellState === 'BURNING' && styles.isBurning,
-            cell.cellState === 'FLOODED' && styles.isFlooded,
-            cell.cellState === 'CUTTING' && styles.isCutting,
-            cell.cellState === 'SHOCKED' && styles.isShocked,
-            cell.cellState === 'TRANSFORMING' && styles.isTransforming
-          );
-          return (
-            <button
-              key={cell.key}
-              type="button"
-              className={classNames}
-              style={cellStyles}
-              onClick={() => onCellClick(rowIdx, columnIdx)}
-            ></button>
-          );
-        })
-      )}
+            return (
+              <button
+                key={cell.key}
+                type="button"
+                className={classNames}
+                style={cellStyles}
+                onClick={() => onCellClick(rowIdx, columnIdx)}
+              ></button>
+            );
+          })
+        )}
+      </div>
       {isGameOver ? (
         <div className={styles['game-over-dialog']}>{children}</div>
       ) : null}

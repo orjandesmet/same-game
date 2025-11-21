@@ -1,20 +1,22 @@
 import clsx from 'clsx';
+import type { PropsWithChildren } from 'react';
 import styles from './ScoreBoard.module.css';
 
-type ScoreBoardProps = {
+type ScoreBoardProps = PropsWithChildren<{
   score: number;
   movesLeft: number;
   seed: number;
-};
+}>;
 
 export function ScoreBoard(props: ScoreBoardProps) {
   return (
     <div className={styles.scoreBoard}>
       <div className={clsx(styles.scoreBoardData, styles.score)}>
-        Score: <span className={styles.scoreBoardValue}>{props.score}</span>
+        Score:&nbsp;
+        <span className={styles.scoreBoardValue}>${props.score}</span>
       </div>
       <div className={styles.scoreBoardData}>
-        Moves left:{' '}
+        Moves left:&nbsp;
         <span className={styles.scoreBoardValue}>{props.movesLeft}</span>
       </div>
       <div className={styles.scoreBoardInfo}>
@@ -22,6 +24,7 @@ export function ScoreBoard(props: ScoreBoardProps) {
           <span>🌱</span>
           <span className={styles.scoreBoardValue}>{props.seed}</span>
         </div>
+        {props.children}
       </div>
     </div>
   );

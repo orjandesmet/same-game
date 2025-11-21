@@ -72,6 +72,9 @@ importers:
       stylelint-config-standard-scss:
         specifier: ^16.0.0
         version: 16.0.0(postcss@8.5.6)(stylelint@16.25.0(typescript@5.9.3))
+      stylelint-prettier:
+        specifier: ^5.0.3
+        version: 5.0.3(prettier@3.6.2)(stylelint@16.25.0(typescript@5.9.3))
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -2028,6 +2031,9 @@ packages:
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
+  fast-diff@1.3.0:
+    resolution: {integrity: sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw==}
+
   fast-fifo@1.3.2:
     resolution: {integrity: sha512-/d9sfos4yxzpwkDkuN7k2SqFKtYNmCTzgfEpz82x34IM9/zc8KGxQoXg1liNC/izpRM/MBdt44Nmx41ZWqk+FQ==}
 
@@ -2996,6 +3002,10 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
+  prettier-linter-helpers@1.0.0:
+    resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
+    engines: {node: '>=6.0.0'}
+
   prettier@3.6.2:
     resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
     engines: {node: '>=14'}
@@ -3407,6 +3417,13 @@ packages:
     engines: {node: '>=18.12.0'}
     peerDependencies:
       stylelint: ^16.23.0
+
+  stylelint-prettier@5.0.3:
+    resolution: {integrity: sha512-B6V0oa35ekRrKZlf+6+jA+i50C4GXJ7X1PPmoCqSUoXN6BrNF6NhqqhanvkLjqw2qgvrS0wjdpeC+Tn06KN3jw==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      prettier: '>=3.0.0'
+      stylelint: '>=16.0.0'
 
   stylelint-scss@6.12.1:
     resolution: {integrity: sha512-UJUfBFIvXfly8WKIgmqfmkGKPilKB4L5j38JfsDd+OCg2GBdU0vGUV08Uw82tsRZzd4TbsUURVVNGeOhJVF7pA==}
@@ -5972,6 +5989,8 @@ snapshots:
 
   fast-deep-equal@3.1.3: {}
 
+  fast-diff@1.3.0: {}
+
   fast-fifo@1.3.2: {}
 
   fast-glob@3.3.3:
@@ -6920,6 +6939,10 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
+  prettier-linter-helpers@1.0.0:
+    dependencies:
+      fast-diff: 1.3.0
+
   prettier@3.6.2: {}
 
   process-nextick-args@2.0.1: {}
@@ -7342,6 +7365,12 @@ snapshots:
     dependencies:
       stylelint: 16.25.0(typescript@5.9.3)
       stylelint-config-recommended: 17.0.0(stylelint@16.25.0(typescript@5.9.3))
+
+  stylelint-prettier@5.0.3(prettier@3.6.2)(stylelint@16.25.0(typescript@5.9.3)):
+    dependencies:
+      prettier: 3.6.2
+      prettier-linter-helpers: 1.0.0
+      stylelint: 16.25.0(typescript@5.9.3)
 
   stylelint-scss@6.12.1(stylelint@16.25.0(typescript@5.9.3)):
     dependencies:

@@ -157,6 +157,10 @@ export function OptionsForm({
               <div className={styles.partyMembers}>
                 {COLORS.map((color) => {
                   const lvl = Math.abs(partyMembers[color]);
+                  const evolutionIdx = creatureUtils.getEvolutionIdx(
+                    color,
+                    lvl
+                  );
                   return (
                     <div className={styles.partyMember} key={color}>
                       <input
@@ -179,19 +183,11 @@ export function OptionsForm({
                         />
                         <img
                           className={styles.partyImage}
-                          src={`/creatures/sprites/${color}-${creatureUtils.getEvolutionIdx(color, lvl)}.png`}
-                          alt={
-                            CREATURE_NAMES[color][
-                              creatureUtils.getEvolutionIdx(color, lvl)
-                            ]
-                          }
+                          src={`/creatures/sprites/${color}-${evolutionIdx}.png`}
+                          alt={CREATURE_NAMES[color][evolutionIdx]}
                         />
                         <span className={styles.partyName}>
-                          {
-                            CREATURE_NAMES[color][
-                              creatureUtils.getEvolutionIdx(color, lvl)
-                            ]
-                          }
+                          {CREATURE_NAMES[color][evolutionIdx]}
                         </span>
                       </label>
                       <span className={styles.partyLevel}>

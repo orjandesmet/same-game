@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { calculateCreatureScores } from './calculateCreatureScores';
 import type { PartyMembers } from './types';
 
-describe('calculatePkmnScores', () => {
+describe('calculateCreatureScores', () => {
   it('should calculate scores for basic creature catches', () => {
     const party: Partial<PartyMembers> = {
       R: 1,

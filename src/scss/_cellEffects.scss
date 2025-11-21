@@ -1,6 +1,11 @@
-@mixin stateEffects() {
-  &.isBurning, &.isFlooded, &.isCutting, &.isShocked {
-    &:after {
+@mixin state-effects() {
+  position: relative;
+
+  &.burning,
+  &.flooded,
+  &.cutting,
+  &.shocked {
+    &::after {
       position: absolute;
       content: ' ';
       width: 100%;
@@ -8,7 +13,8 @@
       inset: 0;
     }
   }
-  &.isBurning::after {
+
+  &.burning::after {
     background: linear-gradient(
         180deg,
         var(--i-color-r-accent-2),
@@ -17,35 +23,39 @@
       bottom no-repeat;
     background-size: 100% 0;
     border-radius: 10% 10% 50% 50%;
-    animation: burning 2s ease-in forwards;
+    animation: anim-burning 2s ease-in forwards;
   }
-  &.isFlooded::after {
+
+  &.flooded::after {
     background: linear-gradient(180deg, white, var(--i-color-b-accent-2)) top
       no-repeat;
     border-radius: 50% 50% 0 0;
-    animation: flooded 2s ease-in forwards;
+    animation: anim-flooded 2s ease-in forwards;
   }
-  &.isCutting::after {
+
+  &.cutting::after {
     background: linear-gradient(90deg, var(--i-background-color) 0 0) right 50%
       no-repeat border-box;
     background-size: 100% 0;
     border-radius: 50%;
-    animation: cutting 2s ease-in-out forwards;
+    animation: anim-cutting 2s ease-in-out forwards;
   }
-  &.isShocked::after {
+
+  &.shocked::after {
     background:
       linear-gradient(90deg, white, white) calc(40% + 3px) 70% no-repeat,
       linear-gradient(90deg, white, white) 40% top no-repeat;
     background-size: 3px 55%;
     border-radius: 50%;
-    animation: shocked 2s ease-in-out forwards;
+    animation: anim-shocked 2s ease-in-out forwards;
   }
-  &.isTransforming {
-    animation: transforming 1s ease-in forwards;
+
+  &.transforming {
+    animation: anim-transforming 1s ease-in forwards;
   }
 }
 
-@keyframes burning {
+@keyframes anim-burning {
   from {
     background-size: 100% 0;
   }
@@ -55,7 +65,7 @@
   }
 }
 
-@keyframes flooded {
+@keyframes anim-flooded {
   0% {
     background-size: 100% 0;
   }
@@ -69,7 +79,7 @@
   }
 }
 
-@keyframes cutting {
+@keyframes anim-cutting {
   0% {
     background-size: 0% 4px;
   }
@@ -91,7 +101,7 @@
   }
 }
 
-@keyframes shocked {
+@keyframes anim-shocked {
   0% {
     opacity: 0;
     background-size: 3px 55%;
@@ -124,7 +134,7 @@
   }
 }
 
-@keyframes transforming {
+@keyframes anim-transforming {
   0% {
     transform: unset;
   }
