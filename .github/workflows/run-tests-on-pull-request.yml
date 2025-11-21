@@ -1,4 +1,4 @@
-name: CI
+name: Run Tests on Pull Request
 
 on:
   pull_request:
@@ -22,10 +22,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies with npm
-        run: npm install
+        run: npm install --only=dev
 
       - name: Run tests
-        run: npm test:ci
+        run: npm run test:ci
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v5
