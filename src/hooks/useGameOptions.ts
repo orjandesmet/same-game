@@ -60,9 +60,9 @@ export function useGameOptions() {
 
   const createNewSeed = useCallback(() => {
     if (isDebugging) {
-      setSeed(newSeed());
-    } else {
       resetDebugger();
+    } else {
+      setSeed(newSeed());
     }
   }, [isDebugging, resetDebugger]);
 
