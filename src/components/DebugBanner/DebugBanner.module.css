@@ -1,7 +1,6 @@
 .party {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   column-gap: 1em;
   justify-content: space-between;
 }
