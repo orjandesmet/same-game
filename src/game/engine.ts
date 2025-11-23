@@ -197,7 +197,6 @@ export class SameGame {
       return [];
     }
     const cellKey = cellUtils.createCellKey(rowIdx, columnIdx);
-    this._eventListeners['MOVE-ADDED'].forEach((listener) => listener(cellKey));
     const cell = this._board[columnIdx][rowIdx];
     if (cellUtils.isEmptyCell(cell)) {
       this._debug('Clicked on empty cell', cellKey);
@@ -206,6 +205,9 @@ export class SameGame {
 
     if (cell.hasCreature) {
       this._debug('Clicked on cell with Pokémon', cellKey);
+      this._eventListeners['MOVE-ADDED'].forEach((listener) =>
+        listener(cellKey)
+      );
       const effects = effectUtils.getEffectsForCell(
         cell.color,
         cell.hasSpecialCreature,
@@ -253,6 +255,9 @@ export class SameGame {
     // Normal behaviour
     const group = this._allGroups.find((g) => g.includes(cellKey));
     if (group && group.length >= 2) {
+      this._eventListeners['MOVE-ADDED'].forEach((listener) =>
+        listener(cellKey)
+      );
       this._board = this.removeGroup(this._board, group);
       this.recalculateGameState();
       this.notifyStateChange();
