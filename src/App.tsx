@@ -4,9 +4,10 @@ import { EffectsOverlay } from '@components/EffectsOverlay';
 import { GameOverScreen } from '@components/GameOverScreen';
 import { OptionsForm } from '@components/OptionsForm';
 import { ScoreBoard } from '@components/ScoreBoard';
-import { PlayRecorder, SameGame, type HighScore, type Recording } from '@game';
+import { SameGame } from '@game';
 import type { ColumnIdx, RowIdx } from '@game/board';
 import { effectUtils } from '@game/effects';
+import { PlayRecorder, type Recording } from '@game/recorder';
 import { Xorshift32 } from '@game/rng/xorshift32';
 import { useGameOptions } from '@hooks/useGameOptions';
 import { useGameState } from '@hooks/useGameState';
@@ -21,13 +22,12 @@ import styles from './App.module.css';
 import type { EffectList } from './components/EffectsOverlay';
 import { Octicon } from './components/Octicon/Octicon';
 
-const recorder = new PlayRecorder();
-const game = new SameGame(new Xorshift32(), recorder);
+const game = new SameGame(new Xorshift32());
+const recorder = new PlayRecorder(game);
 
 function App() {
   const [effects, setEffects] = useState<EffectList>([]);
   const [recording, setRecording] = useState<Recording | null>(null);
-  const [highScores, setHighScores] = useState<HighScore[]>([]);
 
   const {
     canAccessSettings,
@@ -72,7 +72,7 @@ function App() {
     setRecording(recorder.readRecording());
 
     if (isReady) {
-      game.startGame(nrOfRows, nrOfColumns, partyMembers, seed);
+      game.startGame({ nrOfRows, nrOfColumns, partyMembers, seed });
     }
   }, [nrOfRows, nrOfColumns, partyMembers, seed, isDebugging, isReady]);
 

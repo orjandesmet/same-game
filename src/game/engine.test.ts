@@ -7,31 +7,13 @@ import { SameGame } from './engine';
 import type { Seed } from './rng';
 import { Xorshift32 } from './rng/xorshift32';
 
-const MockPlayRecorder = vi.fn(
-  class {
-    addMove = vi.fn();
-    readHighScores = vi.fn();
-    readRecording = vi.fn();
-    reset = vi.fn();
-    store = vi.fn();
-    storeHighScore = vi.fn();
-  }
-);
-
 describe('engine', () => {
   const INITIAL_SEED = 74673;
   let sameGame: SameGame;
-  let mockRecorder = new MockPlayRecorder();
 
   beforeEach(() => {
     const rng = new Xorshift32(INITIAL_SEED);
-    mockRecorder.addMove.mockClear();
-    mockRecorder.reset.mockClear();
-    mockRecorder.readHighScores.mockClear();
-    mockRecorder.readRecording.mockClear();
-    mockRecorder.store.mockClear();
-    mockRecorder.storeHighScore.mockClear();
-    sameGame = new SameGame(rng, mockRecorder);
+    sameGame = new SameGame(rng);
   });
 
   it('should have state "NOT-STARTED" if the game has not started yet', () => {
@@ -49,23 +31,35 @@ describe('engine', () => {
     const TEST_NR_OF_COLUMNS = 12;
     const BASE_PARTY: PartyMembers = buildBasePartyMembers();
     const stateListener = vi.fn();
+    const gameOverListener = vi.fn();
+    const gameStartListener = vi.fn();
+    const moveAddedListener = vi.fn();
     let initialBoard: Board;
 
     beforeEach(() => {
       vi.useFakeTimers();
       stateListener.mockClear();
-      sameGame.addStateChangeListener(stateListener);
-      sameGame.startGame(
-        TEST_NR_OF_ROWS,
-        TEST_NR_OF_COLUMNS,
-        BASE_PARTY,
-        TEST_SEED
-      );
+      sameGame.addEventListener('STATE-CHANGE', stateListener);
+      gameOverListener.mockClear();
+      sameGame.addEventListener('GAME-OVER', gameOverListener);
+      gameStartListener.mockClear();
+      sameGame.addEventListener('START-GAME', gameStartListener);
+      moveAddedListener.mockClear();
+      sameGame.addEventListener('MOVE-ADDED', moveAddedListener);
+      sameGame.startGame({
+        nrOfRows: TEST_NR_OF_ROWS,
+        nrOfColumns: TEST_NR_OF_COLUMNS,
+        partyMembers: BASE_PARTY,
+        seed: TEST_SEED,
+      });
       initialBoard = sameGame.board;
     });
 
     afterEach(() => {
-      sameGame.removeStateChangeListener(stateListener);
+      sameGame.removeEventListener('STATE-CHANGE', stateListener);
+      sameGame.removeEventListener('GAME-OVER', gameOverListener);
+      sameGame.removeEventListener('START-GAME', gameStartListener);
+      sameGame.removeEventListener('MOVE-ADDED', moveAddedListener);
       vi.useRealTimers();
     });
 
@@ -81,6 +75,13 @@ describe('engine', () => {
       });
       expect(sameGame.score).toBe(0);
       expect(sameGame.seed).toBe(TEST_SEED);
+      expect(gameStartListener).toHaveBeenCalledOnce();
+      expect(gameStartListener).toHaveBeenCalledWith({
+        nrOfRows: TEST_NR_OF_ROWS,
+        nrOfColumns: TEST_NR_OF_COLUMNS,
+        partyMembers: BASE_PARTY,
+        seed: TEST_SEED,
+      });
     });
 
     it('should have the given number of rows and columns', () => {
@@ -125,12 +126,14 @@ describe('engine', () => {
       const rowIdx = 1;
       const columnIdx = 3;
       stateListener.mockClear();
+      moveAddedListener.mockClear();
 
       const effectsThatRan = sameGame.handleCellClick(rowIdx, columnIdx);
 
       expect(effectsThatRan).toHaveLength(0);
       expect(sameGame.board).toStrictEqual(initialBoard);
       expect(stateListener).not.toHaveBeenCalled();
+      expect(moveAddedListener).not.toHaveBeenCalled();
       expect(sameGame.score).toBe(0);
     });
 
@@ -144,6 +147,7 @@ describe('engine', () => {
       );
       const expectedScore = 8; // (4 - 2)^2 * 2
       stateListener.mockClear();
+      moveAddedListener.mockClear();
 
       const effectsThatRan = sameGame.handleCellClick(rowIdx, columnIdx);
 
@@ -162,6 +166,8 @@ describe('engine', () => {
         },
         gameState: 'IN-PROGRESS',
       });
+      expect(moveAddedListener).toHaveBeenCalledOnce();
+      expect(moveAddedListener).toHaveBeenCalledWith('2:5');
       expect(sameGame.score).toBe(expectedScore);
     });
 
@@ -213,6 +219,9 @@ describe('engine', () => {
         },
         gameState: 'IN-PROGRESS',
       });
+      expect(moveAddedListener).toHaveBeenCalledTimes(2);
+      expect(moveAddedListener).toHaveBeenNthCalledWith(1, '2:5');
+      expect(moveAddedListener).toHaveBeenNthCalledWith(2, '2:5');
       expect(sameGame.score).toBe(expectedScore);
     });
 
@@ -293,6 +302,8 @@ describe('engine', () => {
         },
         gameState: 'IN-PROGRESS',
       });
+      expect(moveAddedListener).toHaveBeenCalledOnce();
+      expect(moveAddedListener).toHaveBeenCalledWith('1:7');
       const expectedScore = 172; // 36 * 2 + 100
       expect(sameGame.score).toBe(expectedScore);
 
@@ -349,8 +360,8 @@ describe('engine', () => {
         },
         gameState: 'GAME-OVER',
       });
-      expect(mockRecorder.store).toHaveBeenCalled();
-      expect(mockRecorder.storeHighScore).toHaveBeenCalledWith({
+      expect(gameOverListener).toHaveBeenCalled();
+      expect(gameOverListener).toHaveBeenCalledWith({
         allCleared: false,
         cellsRemoved: 135,
         multiplier: 2,
@@ -393,6 +404,7 @@ describe('engine', () => {
       expect(sameGame['_gameState']).toBe('GAME-OVER');
 
       stateListener.mockClear();
+      moveAddedListener.mockClear();
 
       const finishedBoard = sameGame.board;
       const lastMove = { rowIdx: 7, columnIdx: 0 };
@@ -405,6 +417,7 @@ describe('engine', () => {
       sameGame.handleCellClick(lastMove.rowIdx, lastMove.columnIdx);
 
       expect(stateListener).not.toHaveBeenCalled();
+      expect(moveAddedListener).not.toHaveBeenCalled();
     });
   });
 
@@ -415,21 +428,33 @@ describe('engine', () => {
     const TEST_NR_OF_COLUMNS = 12;
     const BASE_PARTY: PartyMembers = buildBasePartyMembers();
     const stateListener = vi.fn();
+    const gameOverListener = vi.fn();
+    const gameStartListener = vi.fn();
+    const moveAddedListener = vi.fn();
 
     beforeEach(() => {
       vi.useFakeTimers();
       stateListener.mockClear();
-      sameGame.addStateChangeListener(stateListener);
-      sameGame.startGame(
-        TEST_NR_OF_ROWS,
-        TEST_NR_OF_COLUMNS,
-        { ...BASE_PARTY, M: 50, W: -1 },
-        TEST_SEED
-      );
+      sameGame.addEventListener('STATE-CHANGE', stateListener);
+      gameOverListener.mockClear();
+      sameGame.addEventListener('GAME-OVER', gameOverListener);
+      gameStartListener.mockClear();
+      sameGame.addEventListener('START-GAME', gameStartListener);
+      moveAddedListener.mockClear();
+      sameGame.addEventListener('MOVE-ADDED', moveAddedListener);
+      sameGame.startGame({
+        nrOfRows: TEST_NR_OF_ROWS,
+        nrOfColumns: TEST_NR_OF_COLUMNS,
+        partyMembers: { ...BASE_PARTY, M: 50, W: -1 },
+        seed: TEST_SEED,
+      });
     });
 
     afterEach(() => {
-      sameGame.removeStateChangeListener(stateListener);
+      sameGame.removeEventListener('STATE-CHANGE', stateListener);
+      sameGame.removeEventListener('GAME-OVER', gameOverListener);
+      sameGame.removeEventListener('START-GAME', gameStartListener);
+      sameGame.removeEventListener('MOVE-ADDED', moveAddedListener);
       vi.useRealTimers();
     });
 

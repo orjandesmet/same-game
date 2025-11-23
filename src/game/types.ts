@@ -1,5 +1,5 @@
 import type { Board } from './board';
-import type { ExtendedColor } from './creatures';
+import type { ExtendedColor, PartyMembers } from './creatures';
 
 export const ALL_CLEARED_BONUS = 1000;
 
@@ -19,3 +19,16 @@ export type GameState = Readonly<{
   scoreCard: Readonly<ScoreCard>;
   gameState: GameStatus;
 }>;
+
+export type StartGameParameters = {
+  nrOfRows: number;
+  nrOfColumns: number;
+  partyMembers: PartyMembers;
+  seed: number;
+};
+
+export type EventName =
+  | 'STATE-CHANGE'
+  | 'START-GAME'
+  | 'GAME-OVER'
+  | 'MOVE-ADDED';
