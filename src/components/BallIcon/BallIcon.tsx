@@ -11,7 +11,7 @@ export function BallIcon({ solid, className }: BallIconProps) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
-      className={clsx(styles.ballIcon, solid && styles.solid, className)}
+      className={clsx(styles['ball-icon'], solid && styles.solid, className)}
       viewBox="0 0 8 8"
       aria-hidden="true"
     >

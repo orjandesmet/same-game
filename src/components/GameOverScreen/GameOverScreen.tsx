@@ -27,9 +27,10 @@ export function GameOverScreen({
       {scoreCard.multiplier && scoreCard.multiplier !== 1 && (
         <span>Multiplier: x{scoreCard.multiplier ?? 1}</span>
       )}
+      <hr className={styles.hr} />
       {!!scoreCard.creatures?.length && (
         <>
-          <span>POKéMON used:</span>
+          <span>Bonuses:</span>
           <ul className={styles['creature-list']}>
             {creatureScores.map(({ color, level, score }) => {
               const evolutionIdx = creatureUtils.getEvolutionIdx(color, level);
@@ -48,10 +49,8 @@ export function GameOverScreen({
           </ul>
         </>
       )}
-      {scoreCard.allCleared && (
-        <span>All cleared bonus: ${ALL_CLEARED_BONUS}</span>
-      )}
-      <hr />
+      {scoreCard.allCleared && <span>All cleared: ${ALL_CLEARED_BONUS}</span>}
+      <hr className={styles.hr} />
       <span>Final score: ${score}</span>
       <button
         className={styles['restart-button']}

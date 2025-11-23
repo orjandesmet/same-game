@@ -1,6 +1,6 @@
-@use '../../scss/creatureBackgrounds';
+@use '../../scss/creature-backgrounds';
 
-.effectsOverlay {
+.effects-overlay {
   --i-band-height: 10vh;
   --i-band-border-width: 3px;
   --i-image-size: 17.5vh;
@@ -12,7 +12,7 @@
   inset: 0;
   background: rgb(0 0 0 / 45%);
 
-  .effectBand {
+  .effect-band {
     position: absolute;
     top: calc(50% - var(--i-band-height) / 2 - var(--i-band-border-width));
     left: -100vw;
@@ -64,7 +64,7 @@
     }
   }
 
-  .effectImg {
+  .effect-img {
     position: absolute;
     top: calc(50% - calc(var(--i-image-size) / 2));
     background-size: var(--i-image-size) var(--i-image-size);
@@ -76,7 +76,7 @@
     filter: var(--i-img-border-filter);
     z-index: 100;
 
-    @include creatureBackgrounds.addLeveledBackgrounds;
+    @include creature-backgrounds.add-leveled-backgrounds;
 
     .effect-2,
     .effect-3 {
@@ -84,7 +84,7 @@
     }
   }
 
-  .effectText {
+  .effect-text {
     width: 100vw;
     height: fit-content;
     font-size: 2em;
@@ -97,9 +97,9 @@
     left: 100vw;
   }
 
-  &:not(.effectCount-2, .effectCount-3) {
+  &:not(.effect-count-2, .effect-count-3) {
     .effect-1 {
-      &.effectBand {
+      &.effect-band {
         animation:
           slidelefttocenter var(--i-start-animation-duration) ease-out 0s
             forwards,
@@ -107,7 +107,7 @@
             var(--i-effect-duration) forwards;
       }
 
-      &.effectImg {
+      &.effect-img {
         animation:
           slidecentertoright var(--i-start-animation-duration) ease-out 0s
             reverse forwards,
@@ -116,7 +116,7 @@
             reverse forwards;
       }
 
-      &.effectText {
+      &.effect-text {
         animation:
           slidecentertoright var(--i-start-animation-duration) ease-out 0s
             reverse forwards,
@@ -128,10 +128,10 @@
   }
 
   /* Two effects: Metronome + one more OR Transform + one more */
-  &.effectCount-2 {
+  &.effect-count-2 {
     .effect-1 {
       &.w {
-        &.effectBand {
+        &.effect-band {
           animation:
             slidelefttocenter var(--i-start-animation-duration) ease-out 0s
               forwards,
@@ -139,7 +139,7 @@
               var(--i-metronome-effect-duration) forwards;
         }
 
-        &.effectImg {
+        &.effect-img {
           animation:
             slidecentertoright var(--i-start-animation-duration) ease-out 0s
               reverse forwards,
@@ -151,7 +151,7 @@
               reverse forwards;
         }
 
-        &.effectText {
+        &.effect-text {
           animation:
             slidecentertoright var(--i-start-animation-duration) ease-out 0s
               reverse forwards,
@@ -165,7 +165,7 @@
         }
 
         ~ .effect-2 {
-          &.effectBand {
+          &.effect-band {
             animation:
               slidelefttocenter var(--i-start-animation-duration) ease-out
                 var(--i-metronome-effect-duration) forwards,
@@ -176,7 +176,7 @@
                 forwards;
           }
 
-          &.effectText {
+          &.effect-text {
             animation:
               slidecentertoright var(--i-start-animation-duration) ease-out
                 var(--i-metronome-effect-duration) reverse forwards,
@@ -191,7 +191,7 @@
       }
 
       &.p {
-        &.effectBand {
+        &.effect-band {
           animation:
             slidelefttocenter var(--i-start-animation-duration) ease-out 0s
               forwards,
@@ -199,7 +199,7 @@
               var(--i-transform-effect-duration) forwards;
         }
 
-        &.effectImg {
+        &.effect-img {
           animation:
             slidecentertoright var(--i-start-animation-duration) ease-out 0s
               reverse forwards,
@@ -212,7 +212,7 @@
               reverse forwards;
         }
 
-        &.effectText {
+        &.effect-text {
           animation:
             slidecentertoright var(--i-start-animation-duration) ease-out 0s
               reverse forwards,
@@ -225,7 +225,7 @@
         }
 
         ~ .effect-2 {
-          &.effectBand {
+          &.effect-band {
             animation:
               slidelefttocenter var(--i-start-animation-duration) ease-out
                 var(--i-transform-effect-duration) forwards,
@@ -236,7 +236,7 @@
                 forwards;
           }
 
-          &.effectImg {
+          &.effect-img {
             left: 0;
             transform: scale(0);
             filter: var(--i-img-border-filter) brightness(0);
@@ -256,9 +256,9 @@
   }
 
   /* Three effects: Metronome + transform + one more */
-  &.effectCount-3 {
+  &.effect-count-3 {
     .effect-1 {
-      &.effectBand {
+      &.effect-band {
         animation:
           slidelefttocenter var(--i-start-animation-duration) ease-out 0s
             forwards,
@@ -266,7 +266,7 @@
             var(--i-metronome-effect-duration) forwards;
       }
 
-      &.effectImg {
+      &.effect-img {
         animation:
           slidecentertoright var(--i-start-animation-duration) ease-out 0s
             reverse forwards,
@@ -280,7 +280,7 @@
             reverse forwards;
       }
 
-      &.effectText {
+      &.effect-text {
         animation:
           slidecentertoright var(--i-start-animation-duration) ease-out 0s
             reverse forwards,
@@ -295,7 +295,7 @@
     }
 
     .effect-2 {
-      &.effectBand {
+      &.effect-band {
         animation:
           slidelefttocenter var(--i-start-animation-duration) ease-out
             var(--i-metronome-effect-duration) forwards,
@@ -307,7 +307,7 @@
             forwards;
       }
 
-      &.effectText {
+      &.effect-text {
         animation:
           slidecentertoright var(--i-start-animation-duration) ease-out
             var(--i-metronome-effect-duration) reverse forwards,
@@ -322,7 +322,7 @@
     }
 
     .effect-3 {
-      &.effectBand {
+      &.effect-band {
         animation:
           slidelefttocenter var(--i-start-animation-duration) ease-out
             calc(
@@ -338,7 +338,7 @@
             forwards;
       }
 
-      &.effectImg {
+      &.effect-img {
         left: 0;
         transform: scale(0);
         filter: var(--i-img-border-filter) brightness(0);

@@ -8,3 +8,8 @@ export type Recording = {
   partyMembers: PartyMembers;
   moves: CellKey[];
 };
+
+export type ReplayState = {
+  recording: Recording;
+  currentMoveIndex: number;
+};

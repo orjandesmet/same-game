@@ -1,32 +1,38 @@
-.optionsFormDialog::backdrop {
+.options-form-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.options-form-dialog::backdrop {
   background: rgb(0 0 0 / 75%);
   backdrop-filter: blur(2px);
 }
 
-.optionsForm {
+.options-form {
   background-color: var(--i-background-color);
   max-width: 480px;
-  margin: 0px auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1em;
 }
 
-.optionsFieldset {
+.options-fieldset {
   display: grid;
   column-gap: 0.5rem;
   grid-template-columns: 1fr 120px;
 }
 
-.optionsFieldset label {
+.options-fieldset label {
   text-align: end;
 }
 
-.optionsFieldset input {
+.options-fieldset input {
   text-align: start;
 }
 
-.optionsFormButtons {
+.options-form-buttons {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -34,65 +40,66 @@
   box-sizing: border-box;
 }
 
-.optionsLabel {
+.options-label {
   display: inline-flex;
   align-items: baseline;
   justify-content: end;
   flex-wrap: wrap;
   gap: 0.5em;
 }
-.optionsLabel.party {
+
+.options-label.party {
   align-items: center;
 }
 
-.optionsArrow {
+.options-arrow {
   opacity: 0;
   width: 1em;
   aspect-ratio: 1 /1;
   flex-shrink: 0;
 }
 
-.optionsLabel:has(+ input[type='range']:focus) .optionsArrow,
-.optionsLabel:has(+ input[type='range']:focus-visible) .optionsArrow,
-input[type='checkbox']:focus + .optionsArrow,
-input[type='checkbox']:focus-visible + .optionsArrow {
+.options-label:has(+ input[type='range']:focus) .options-arrow,
+.options-label:has(+ input[type='range']:focus-visible) .options-arrow,
+input[type='checkbox']:focus + .options-arrow,
+input[type='checkbox']:focus-visible + .options-arrow {
   opacity: 1;
 }
 
-.partyMembers {
+.party-members {
   display: flex;
   flex-direction: column;
   gap: 0.25em;
 }
 
-.partyMember {
+.party-member {
   display: flex;
   flex-direction: row;
   align-items: baseline;
 }
 
-.partyImage {
+.party-image {
   width: 1.5em;
   aspect-ratio: 1 / 1;
 }
 
-.partyName {
+.party-name {
   margin-block: auto;
   height: 1em;
 }
 
-.partyLevel {
+.party-level {
   margin-inline-start: auto;
 }
 
-.lvlInput {
+.lvl-input {
   border: none;
   width: 5em;
   font-size: 1em;
-  font-family: 'Pokemon GB';
+  font-family: Pokemon GB;
 }
 
-input[type=checkbox] {
+input[type='checkbox'] {
   position: absolute;
   left: -100vw;
 }

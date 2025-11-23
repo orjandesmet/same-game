@@ -1,3 +1,4 @@
+import { SeedIcon } from '@components/SeedIcon';
 import clsx from 'clsx';
 import type { PropsWithChildren } from 'react';
 import styles from './ScoreBoard.module.css';
@@ -10,19 +11,19 @@ type ScoreBoardProps = PropsWithChildren<{
 
 export function ScoreBoard(props: ScoreBoardProps) {
   return (
-    <div className={styles.scoreBoard}>
-      <div className={clsx(styles.scoreBoardData, styles.score)}>
+    <div className={styles['score-board']}>
+      <div className={clsx(styles['score-board-data'], styles.score)}>
         Score:&nbsp;
-        <span className={styles.scoreBoardValue}>${props.score}</span>
+        <span className={styles['score-board-value']}>${props.score}</span>
       </div>
-      <div className={styles.scoreBoardData}>
+      <div className={styles['score-board-data']}>
         Moves left:&nbsp;
-        <span className={styles.scoreBoardValue}>{props.movesLeft}</span>
+        <span className={styles['score-board-value']}>{props.movesLeft}</span>
       </div>
-      <div className={styles.scoreBoardInfo}>
-        <div className={styles.scoreBoardInfoItem}>
-          <span>🌱</span>
-          <span className={styles.scoreBoardValue}>{props.seed}</span>
+      <div className={styles['score-board-info']}>
+        <div className={styles['score-board-info-item']}>
+          <SeedIcon />
+          <span className={styles['score-board-value']}>{props.seed}</span>
         </div>
         {props.children}
       </div>

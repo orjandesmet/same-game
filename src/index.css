@@ -1,5 +1,7 @@
 :root {
-  font-family: 'Pokemon GB', monospace;
+  font-family:
+    Pokemon GB,
+    monospace;
   line-height: 1.5;
   font-weight: normal;
   font-size: 0.8rem;
@@ -7,7 +9,6 @@
 
   --i-background-color: light-dark(#fff, #242424);
   --i-foreground-color: light-dark(#213547, rgb(255 255 255 / 87%));
-
   --i-color-r: #e1af87;
   --i-color-r-accent-1: #e46c43;
   --i-color-r-accent-2: #fcda6c;
@@ -68,7 +69,7 @@ button {
   transition: border-color 0.25s;
 }
 
-button:hover {
+button:not(:disabled):hover {
   border-color: light-dark(#65afff, #007aff);
 }
 

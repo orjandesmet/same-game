@@ -8,7 +8,6 @@ const BASE_NR_OF_COLUMNS = 10;
 const BASE_NR_OF_ROWS = 10;
 
 export function useGameOptions() {
-  const [canAccessSettings, setCanAccessSettings] = useState(true);
   const [isDebugging, setIsDebugging] = useState(false);
   const [isPi, setIsPi] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -45,7 +44,6 @@ export function useGameOptions() {
   }, []);
 
   const resetDebugger = useCallback(() => {
-    setCanAccessSettings(true);
     setIsDebugging(false);
     setNrOfColumns(BASE_NR_OF_COLUMNS);
     setNrOfRows(BASE_NR_OF_ROWS);
@@ -67,7 +65,6 @@ export function useGameOptions() {
   }, [isDebugging, resetDebugger]);
 
   return {
-    canAccessSettings,
     nrOfColumns,
     nrOfRows,
     partyMembers,

@@ -6,12 +6,12 @@ type ArrowRightIconProps = {
   className?: string;
 };
 
-export function ArrowRight({ solid, className }: ArrowRightIconProps) {
+export function ArrowRightIcon({ solid, className }: ArrowRightIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
-      className={clsx(styles.arrowRightIcon, className)}
+      className={clsx(styles['arrow-right-icon'], className)}
       viewBox="0 0 8 8"
       aria-hidden="true"
     >

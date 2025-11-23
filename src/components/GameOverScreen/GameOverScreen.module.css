@@ -22,3 +22,8 @@
   width: 3rem;
   height: 3rem;
 }
+
+.hr {
+  width: calc(100% - 32px);
+  max-width: 400px;
+}

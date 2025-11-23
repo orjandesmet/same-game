@@ -3,6 +3,7 @@ import { DebugBanner } from '@components/DebugBanner';
 import { EffectsOverlay } from '@components/EffectsOverlay';
 import { GameOverScreen } from '@components/GameOverScreen';
 import { OptionsForm } from '@components/OptionsForm';
+import { ReplayControls } from '@components/ReplayControls';
 import { ScoreBoard } from '@components/ScoreBoard';
 import { SameGame } from '@game';
 import type { ColumnIdx, RowIdx } from '@game/board';
@@ -30,7 +31,6 @@ function App() {
   const [recording, setRecording] = useState<Recording | null>(null);
 
   const {
-    canAccessSettings,
     nrOfColumns,
     nrOfRows,
     partyMembers,
@@ -69,12 +69,19 @@ function App() {
 
   useEffect(() => {
     game.enableDebugMode(isDebugging);
-    setRecording(recorder.readRecording());
 
     if (isReady) {
       game.startGame({ nrOfRows, nrOfColumns, partyMembers, seed });
     }
   }, [nrOfRows, nrOfColumns, partyMembers, seed, isDebugging, isReady]);
+
+  useEffect(() => {
+    const watcher = setRecording;
+    recorder.watchRecordingChange(watcher);
+    return () => {
+      recorder.disposeWatcher(watcher);
+    };
+  }, []);
 
   const cssVars = useMemo(() => {
     if (isPi) {
@@ -93,20 +100,21 @@ function App() {
 
   return (
     <div className={styles['game-root']} style={cssVars}>
-      {canAccessSettings && (
-        <OptionsForm
-          nrOfRows={nrOfRows}
-          nrOfColumns={nrOfColumns}
-          partyMembers={partyMembers}
-          onNrOfRowsChange={setNrOfRows}
-          onNrOfColumnsChange={setNrOfColumns}
-          onPartyMembersChange={setPartyMembers}
-          onStartGame={createNewSeed}
-        />
-      )}
+      <OptionsForm
+        nrOfRows={nrOfRows}
+        nrOfColumns={nrOfColumns}
+        partyMembers={partyMembers}
+        onNrOfRowsChange={setNrOfRows}
+        onNrOfColumnsChange={setNrOfColumns}
+        onPartyMembersChange={setPartyMembers}
+        onStartGame={createNewSeed}
+        recording={recording}
+        recorder={recorder}
+      />
       <Board
         board={board}
         onCellClick={handleCellClick}
+        isDisabled={!!recording && !!recorder.replayState}
         isGameOver={gameState === 'GAME-OVER'}
       >
         <GameOverScreen
@@ -116,18 +124,27 @@ function App() {
           scoreCard={scoreCard}
         />
       </Board>
-      <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed}>
-        <div className={styles['github-link']}>
-          <Octicon className={styles['github-logo']} />
-          <a
-            href="https://github.com/orjandesmet/same-game"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-        </div>
-      </ScoreBoard>
+      {recorder.replayState ? (
+        <ReplayControls
+          board={board}
+          isDisabled={gameState === 'PAUSED'}
+          recorder={recorder}
+          replayState={recorder.replayState}
+        />
+      ) : (
+        <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed}>
+          <div className={styles['github-link']}>
+            <Octicon className={styles['github-logo']} />
+            <a
+              href="https://github.com/orjandesmet/same-game"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          </div>
+        </ScoreBoard>
+      )}
       <span className={styles['app-version']}>v{__APP_VERSION__}</span>
       {isDebugging && (
         <DebugBanner

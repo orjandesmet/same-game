@@ -1,0 +1,29 @@
+.replay-controls {
+  background-color: light-dark(#f0f0f0, #1e1e1e);
+  border: 1px solid var(--i-foreground-color);
+  border-radius: 8px;
+  padding: 0.5em;
+  margin: 0.75em;
+
+  .replay-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    .progress {
+      flex-grow: 1;
+      height: 1em;
+    }
+  }
+
+  .move {
+    font-size: 0.8em;
+  }
+
+  .button {
+    padding: 0;
+    width: 1.5em;
+    background-color: transparent;
+    border: none;
+  }
+}

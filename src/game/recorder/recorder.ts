@@ -1,5 +1,6 @@
 import type { Recording } from './types';
 
 export interface Recorder {
-  readRecording(): Recording | null;
+  watchRecordingChange(callback: (recording: Recording | null) => void): void;
+  disposeWatcher(callback: (recording: Recording | null) => void): void;
 }

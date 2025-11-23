@@ -1,2 +1,2 @@
 export { PlayRecorder } from './play-recorder';
-export type { Recording } from './types';
+export type { Recording, ReplayState } from './types';
