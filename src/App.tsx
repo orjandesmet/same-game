@@ -123,6 +123,7 @@ function App() {
           </a>
         </div>
       </ScoreBoard>
+      <span className={styles['app-version']}>v{__APP_VERSION__}</span>
       {isDebugging && (
         <DebugBanner
           multiplier={scoreCard?.multiplier}
