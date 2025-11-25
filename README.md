@@ -62,4 +62,4 @@ Add query parameters:
 
 Pokémon, the Pokémon logo, and the names of all Pokémon characters are trademarks of Nintendo, The Pokémon Company, and/or Game Freak.
 All rights reserved.
-I am not, in any way, affiliated by these companies.
+I am not, in any way, affiliated with these companies.
