@@ -77,9 +77,9 @@ function App() {
 
   useEffect(() => {
     const watcher = setRecording;
-    recorder.watchRecordingChange(watcher);
+    recorder.addRecordingChangeListener(watcher);
     return () => {
-      recorder.disposeWatcher(watcher);
+      recorder.removeRecordingChangeListener(watcher);
     };
   }, []);
 

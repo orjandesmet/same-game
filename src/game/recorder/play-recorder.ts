@@ -6,28 +6,27 @@ import type { StartGameParameters } from '../types';
 import type { Recorder } from './recorder';
 import type { Recording, ReplayState } from './types';
 
-const REPLAY_STORAGE_KEY = 'same-game-moves-replay';
+export const REPLAY_STORAGE_KEY = 'same-game-moves-replay';
 
 export class PlayRecorder implements Recorder {
   private readonly _gameInstance: SameGame;
+  private _storage: Storage;
   private _movesRecord: CellKey[] = [];
   private _nrOfRows = 0;
   private _nrOfColumns = 0;
   private _partyMembers: PartyMembers = buildBasePartyMembers();
   private _seed: number = 0;
   private _replayState: ReplayState | null = null;
-  private _recorderWatchers: Array<(recording: Recording | null) => void> = [];
-
-  public get hasRecording() {
-    return this.readRecording() !== null;
-  }
+  private _recordingListeners: Array<(recording: Recording | null) => void> =
+    [];
 
   public get replayState() {
     return this._replayState;
   }
 
-  constructor(gameInstance: SameGame) {
+  constructor(gameInstance: SameGame, storage = localStorage) {
     this._gameInstance = gameInstance;
+    this._storage = storage;
     this._gameInstance.addEventListener('MOVE-ADDED', this.addMove.bind(this));
     this._gameInstance.addEventListener('START-GAME', this.reset.bind(this));
     this._gameInstance.addEventListener('GAME-OVER', this.store.bind(this));
@@ -69,25 +68,31 @@ export class PlayRecorder implements Recorder {
       moves: this._movesRecord,
     };
 
-    localStorage.setItem(REPLAY_STORAGE_KEY, JSON.stringify(recording));
-    this._recorderWatchers.forEach((cb) => cb(recording));
+    this._storage.setItem(REPLAY_STORAGE_KEY, JSON.stringify(recording));
+    this.notifyListeners(recording);
   }
 
-  watchRecordingChange(watcher: (recording: Recording | null) => void) {
-    this._recorderWatchers.push(watcher);
-    watcher(this.readRecording());
+  private notifyListeners(recording: Recording | null) {
+    this._recordingListeners.forEach((listener) => listener(recording));
   }
 
-  disposeWatcher(watcher: (recording: Recording | null) => void): void {
-    const watcherIdx = this._recorderWatchers.indexOf(watcher);
+  addRecordingChangeListener(listener: (recording: Recording | null) => void) {
+    this._recordingListeners.push(listener);
+    listener(this.readRecording());
+  }
+
+  removeRecordingChangeListener(
+    listener: (recording: Recording | null) => void
+  ): void {
+    const watcherIdx = this._recordingListeners.indexOf(listener);
     if (watcherIdx === -1) {
       return;
     }
-    this._recorderWatchers.splice(watcherIdx, 1);
+    this._recordingListeners.splice(watcherIdx, 1);
   }
 
   private readRecording(): Recording | null {
-    const recording = localStorage.getItem(REPLAY_STORAGE_KEY);
+    const recording = this._storage.getItem(REPLAY_STORAGE_KEY);
     if (!recording) {
       return null;
     }
@@ -99,8 +104,8 @@ export class PlayRecorder implements Recorder {
   }
 
   deleteRecording() {
-    localStorage.removeItem(REPLAY_STORAGE_KEY);
-    this._recorderWatchers.forEach((cb) => cb(null));
+    this._storage.removeItem(REPLAY_STORAGE_KEY);
+    this.notifyListeners(null);
   }
 
   startReplay(recording: Recording) {

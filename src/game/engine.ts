@@ -11,6 +11,7 @@ import type { Color, PartyMembers } from './creatures';
 import { effectUtils, type Effect } from './effects';
 import {
   cleanEventListeners,
+  type EventData,
   type EventListener,
   type EventListeners,
 } from './eventListeners';
@@ -40,7 +41,7 @@ export class SameGame {
     creatures: [],
   };
   private _gameState: GameStatus = 'NOT-STARTED';
-  private _eventListeners: EventListeners = cleanEventListeners();
+  protected _eventListeners: EventListeners = cleanEventListeners();
 
   private _debug: DebugFn = () => {};
 
@@ -89,9 +90,14 @@ export class SameGame {
       scoreCard: structuredClone(this._scoreCard),
       gameState: this._gameState,
     };
-    this._eventListeners['STATE-CHANGE'].forEach((listener) =>
-      listener(gameState)
-    );
+    this.notifyListeners('STATE-CHANGE', gameState);
+  }
+
+  protected notifyListeners<E extends EventName>(
+    eventName: E,
+    data: EventData<E>
+  ) {
+    this._eventListeners[eventName].forEach((listener) => listener(data));
   }
 
   public enableDebugMode(enabled: boolean) {
@@ -126,9 +132,12 @@ export class SameGame {
       multiplier: colors.length / 2,
       creatures: [],
     };
-    this._eventListeners['START-GAME'].forEach((listener) =>
-      listener({ nrOfRows, nrOfColumns, partyMembers, seed })
-    );
+    this.notifyListeners('START-GAME', {
+      nrOfRows,
+      nrOfColumns,
+      partyMembers,
+      seed,
+    });
 
     this._board = boardUtils.createBoard(
       nrOfRows,
@@ -178,9 +187,7 @@ export class SameGame {
         this._scoreCard.allCleared = true;
         this._debug('All cleared, bonus', ALL_CLEARED_BONUS, '->', this.score);
       }
-      this._eventListeners['GAME-OVER'].forEach((listener) =>
-        listener(structuredClone(this._scoreCard))
-      );
+      this.notifyListeners('GAME-OVER', structuredClone(this._scoreCard));
     }
   }
 
@@ -205,9 +212,7 @@ export class SameGame {
 
     if (cell.hasCreature) {
       this._debug('Clicked on cell with Pokémon', cellKey);
-      this._eventListeners['MOVE-ADDED'].forEach((listener) =>
-        listener(cellKey)
-      );
+      this.notifyListeners('MOVE-ADDED', cellKey);
       const effects = effectUtils.getEffectsForCell(
         cell.color,
         cell.hasSpecialCreature,
@@ -232,11 +237,11 @@ export class SameGame {
             effects.stages,
             this._board,
             affectedGroup,
-            (newBoard) => this.effectCallback(newBoard),
+            this.effectCallback.bind(this),
             {
               cellUpdate: (board, group, updatedCell) =>
                 this.updateCellsInBoard(board, group, updatedCell),
-              cellRemove: (board, group) => this.removeGroup(board, group),
+              cellRemove: this.removeGroup.bind(this),
               _debug: this._debug,
             }
           )
@@ -255,9 +260,7 @@ export class SameGame {
     // Normal behaviour
     const group = this._allGroups.find((g) => g.includes(cellKey));
     if (group && group.length >= 2) {
-      this._eventListeners['MOVE-ADDED'].forEach((listener) =>
-        listener(cellKey)
-      );
+      this.notifyListeners('MOVE-ADDED', cellKey);
       this._board = this.removeGroup(this._board, group);
       this.recalculateGameState();
       this.notifyStateChange();

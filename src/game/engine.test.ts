@@ -38,13 +38,10 @@ describe('engine', () => {
 
     beforeEach(() => {
       vi.useFakeTimers();
-      stateListener.mockClear();
+      vi.clearAllMocks();
       sameGame.addEventListener('STATE-CHANGE', stateListener);
-      gameOverListener.mockClear();
       sameGame.addEventListener('GAME-OVER', gameOverListener);
-      gameStartListener.mockClear();
       sameGame.addEventListener('START-GAME', gameStartListener);
-      moveAddedListener.mockClear();
       sameGame.addEventListener('MOVE-ADDED', moveAddedListener);
       sameGame.startGame({
         nrOfRows: TEST_NR_OF_ROWS,
@@ -434,13 +431,10 @@ describe('engine', () => {
 
     beforeEach(() => {
       vi.useFakeTimers();
-      stateListener.mockClear();
+      vi.clearAllMocks();
       sameGame.addEventListener('STATE-CHANGE', stateListener);
-      gameOverListener.mockClear();
       sameGame.addEventListener('GAME-OVER', gameOverListener);
-      gameStartListener.mockClear();
       sameGame.addEventListener('START-GAME', gameStartListener);
-      moveAddedListener.mockClear();
       sameGame.addEventListener('MOVE-ADDED', moveAddedListener);
       sameGame.startGame({
         nrOfRows: TEST_NR_OF_ROWS,

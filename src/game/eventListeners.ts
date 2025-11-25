@@ -6,20 +6,17 @@ import type {
   StartGameParameters,
 } from './types';
 
-type StateEventListener = (data: GameState) => void;
-type StartGameEventListener = (parameters: StartGameParameters) => void;
-type AddMoveEventListener = (move: CellKey) => void;
-type GameOverListener = (scoreCard: Readonly<ScoreCard>) => void;
-
-export type EventListener<E extends string> = E extends 'STATE-CHANGE'
-  ? StateEventListener
+export type EventData<E extends EventName> = E extends 'STATE-CHANGE'
+  ? GameState
   : E extends 'START-GAME'
-    ? StartGameEventListener
+    ? StartGameParameters
     : E extends 'GAME-OVER'
-      ? GameOverListener
+      ? Readonly<ScoreCard>
       : E extends 'MOVE-ADDED'
-        ? AddMoveEventListener
+        ? CellKey
         : never;
+
+export type EventListener<E extends EventName> = (data: EventData<E>) => void;
 
 export type EventListeners = {
   [K in EventName]: EventListener<K>[];
