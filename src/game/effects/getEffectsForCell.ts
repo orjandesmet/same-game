@@ -10,6 +10,9 @@ import type { Effects } from './types';
 import { createMetronomeEffects } from './W/createMetronomeEffects';
 import { createShockedEffects } from './Y/createShockedEffects';
 
+// TODO: should be moved to types
+type EffectColor = CellColor | 'F' | 'C' | 'A';
+
 export function getEffectsForCell(
   cellColor: CellColor,
   cellHasSpecialCreature: boolean,
@@ -42,6 +45,12 @@ export function getEffectsForCell(
         getEffectsForCell,
         cellHasSpecialCreature
       );
+    case 'F':
+      return createFissureEffects();
+    case 'C':
+      return createConfuseRayEffects(party, rng, cellHasSpecialCreature);
+    case 'A':
+      return createRoarEffects(party, rng, cellHasSpecialCreature);
     default:
       return null;
   }
