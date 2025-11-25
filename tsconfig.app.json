@@ -31,8 +31,8 @@
       "@game/*": ["./src/game/*/index.ts"],
       "@game/rng/*": ["./src/game/rng/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@utils/*": ["./src/utils/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "vite-env.d.ts"]
 }
