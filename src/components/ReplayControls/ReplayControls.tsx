@@ -4,6 +4,7 @@ import { ArrowRightIcon } from '@components/ArrowRightIcon';
 import { BlockIcon } from '@components/BlockIcon';
 import type { Board } from '@game/board';
 import { Move } from '../Move/Move';
+import { ProgressBar } from '../ProgressBar/ProgressBar';
 import styles from './ReplayControls.module.scss';
 
 type ReplayControlsProps = {
@@ -22,11 +23,8 @@ export function ReplayControls({
   return (
     <div className={styles['replay-controls']}>
       <div className={styles['replay-progress-row']}>
-        <span>
-          Replay ({replayState.currentMoveIndex} /{' '}
-          {replayState.recording.moves.length})
-        </span>
-        <progress
+        <span>Replay</span>
+        <ProgressBar
           className={styles.progress}
           value={replayState.currentMoveIndex}
           max={replayState.recording.moves.length}

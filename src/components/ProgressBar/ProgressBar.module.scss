@@ -1,0 +1,70 @@
+$border-width: 4px;
+$padding: 4px;
+$bar-height: 4px;
+$total-height: $bar-height + $padding + $border-width;
+$before-width: 20px;
+
+.progress-bar {
+  --i-border-color: light-dark(
+    black,
+    #ccc
+  ); /* can't use currentcolor here, because it is changed in ::after */
+
+  --i-text-color: light-dark(#e9cd7c, black);
+
+  box-sizing: border-box;
+  height: #{$total-height};
+  padding-block-end: #{$padding};
+  border-block-end: #{$padding} solid var(--i-border-color);
+  border-inline-start: calc($before-width / 2) solid transparent;
+  border-bottom-right-radius: #{$border-width};
+
+  /* reset browser appearance */
+  appearance: none;
+  appearance: none;
+  appearance: none;
+  display: inline-flex;
+  align-items: flex-start;
+
+  &::before {
+    content: '';
+    width: #{$before-width};
+    height: #{$total-height};
+    border-block-start: calc($total-height / 2) solid transparent;
+    border-block-end: calc($total-height / 2) solid var(--i-border-color);
+    border-inline-start: calc($before-width / 2) solid transparent;
+    border-inline-end: calc($before-width / 2) solid var(--i-border-color);
+    box-sizing: border-box;
+    display: inline-block;
+    margin-inline-start: calc($before-width / -2);
+  }
+
+  &::after {
+    content: attr(value) '/ ' attr(max);
+    background-color: var(--i-border-color);
+    border-bottom-right-radius: #{$border-width};
+    display: inline-block;
+    bottom: #{$border-width * -1};
+    color: var(--i-text-color);
+
+    // font-family: monospace;
+    padding-inline: 1em 0.5em;
+    font-size: 0.5em;
+    font-weight: bold;
+    height: 1lh;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+
+  &::-webkit-progress-bar {
+    background: transparent;
+  }
+
+  &::-webkit-progress-value {
+    background: #2087f6;
+  }
+
+  &::-moz-progress-bar {
+    background: #2087f6;
+  }
+}
