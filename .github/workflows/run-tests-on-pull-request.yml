@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-node-${{ matrix.node-version }}
 
       - name: Install dependencies with npm
-        run: npm install --frozen-lockfile
+        run: npm install
 
       - name: Run tests
         run: npm run test:ci
