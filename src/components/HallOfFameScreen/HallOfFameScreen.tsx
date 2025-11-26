@@ -1,7 +1,9 @@
 import type { HallOfFameDataList, HallOfFameRecorder } from '@game/recorder';
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { HallOfFameListItem } from './HallOfFameListItem';
 import styles from './HallOfFameScreen.module.scss';
+import { parseHofDataList } from './parseHofDataList';
 
 type HallOfFameScreenProps = {
   dataList: HallOfFameDataList | null;
@@ -19,7 +21,9 @@ export function HallOfFameScreen({
     dialog.current?.close();
   }, [recorder]);
 
-  if (!dataList || dataList.length === 0) {
+  const parsedDataList = useMemo(() => parseHofDataList(dataList), [dataList]);
+
+  if (parsedDataList.length === 0) {
     return null;
   }
 
@@ -27,6 +31,11 @@ export function HallOfFameScreen({
     <>
       {createPortal(
         <dialog ref={dialog} className={styles['hof-dialog']}>
+          <ul className={styles['hof-list']}>
+            {parsedDataList.map((hofData) => (
+              <HallOfFameListItem key={hofData.date} hofData={hofData} />
+            ))}
+          </ul>
           <form method="dialog">
             <button
               type="button"

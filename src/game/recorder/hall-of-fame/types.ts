@@ -1,7 +1,7 @@
 import type { ScoreCard, StartGameParameters } from '@game';
 
 export type HallOfFameData = {
-  id: number;
+  date: number;
   startGameParameters: StartGameParameters;
   scoreCard: ScoreCard;
 };
