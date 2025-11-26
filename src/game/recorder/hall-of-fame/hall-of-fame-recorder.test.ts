@@ -79,6 +79,8 @@ describe('HallOfFameRecorder', () => {
       G: 20,
       Y: 50,
     };
+    const mockDate = new Date(2022, 0, 1);
+    vi.setSystemTime(mockDate);
     mockEngine.mockStartGame({
       nrOfColumns: 10,
       nrOfRows: 10,
@@ -97,6 +99,7 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters: {
             nrOfColumns: 10,
             nrOfRows: 10,
@@ -130,12 +133,16 @@ describe('HallOfFameRecorder', () => {
     };
     mockEngine.mockStartGame(startGameParameters);
     expect(mockStorage.setItem).not.toHaveBeenCalled();
+    const mockDate = new Date(2022, 0, 1);
+    vi.setSystemTime(mockDate);
     mockEngine.mockGameOver({
       allCleared: true,
       cellsRemoved: 23,
       creatures: [],
       multiplier: 2,
     });
+    const mockDate2 = new Date(2022, 0, 2);
+    vi.setSystemTime(mockDate2);
     mockEngine.mockGameOver({
       allCleared: true,
       cellsRemoved: 50,
@@ -148,6 +155,7 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters,
           scoreCard: {
             allCleared: true,
@@ -163,6 +171,7 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters,
           scoreCard: {
             allCleared: true,
@@ -172,6 +181,7 @@ describe('HallOfFameRecorder', () => {
           },
         },
         {
+          id: mockDate2.getMilliseconds(),
           startGameParameters,
           scoreCard: {
             allCleared: true,
@@ -198,6 +208,8 @@ describe('HallOfFameRecorder', () => {
       partyMembers,
       seed: 1234,
     };
+    const mockDate = new Date(2022, 0, 1);
+    vi.setSystemTime(mockDate);
     mockEngine.mockStartGame(startGameParameters);
     expect(mockStorage.setItem).not.toHaveBeenCalled();
     const scoreCards: ScoreCard[] = Array.from({ length: 6 }).map((_, idx) => ({
@@ -213,22 +225,27 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters,
           scoreCard: scoreCards[1],
         },
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters,
           scoreCard: scoreCards[2],
         },
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters,
           scoreCard: scoreCards[3],
         },
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters,
           scoreCard: scoreCards[4],
         },
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters,
           scoreCard: scoreCards[5],
         },
@@ -255,6 +272,7 @@ describe('HallOfFameRecorder', () => {
     it('should determine that there is a Hof data if the localStorage returns one', () => {
       const mockHofData: HallOfFameDataList = [
         {
+          id: 12345,
           startGameParameters: {
             seed: 1234,
             nrOfRows: 10,
@@ -311,6 +329,8 @@ describe('HallOfFameRecorder', () => {
         seed: 1234,
       });
 
+      const mockDate = new Date(2022, 0, 1);
+      vi.setSystemTime(mockDate);
       mockEngine.mockGameOver({
         allCleared: true,
         cellsRemoved: 10,
@@ -320,6 +340,7 @@ describe('HallOfFameRecorder', () => {
       expect(dataChangeListener).toHaveBeenCalledOnce();
       expect(dataChangeListener).toHaveBeenCalledWith([
         {
+          id: mockDate.getMilliseconds(),
           startGameParameters: {
             seed: 1234,
             nrOfRows: 10,
