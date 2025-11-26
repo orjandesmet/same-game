@@ -235,10 +235,11 @@ export function OptionsForm({
         </dialog>,
         document.body
       )}
-      <div className={styles['options-form-buttons']}>
+      <div className={styles['title-bar']}>
         <button type="button" onClick={() => props.onStartGame()}>
           NEW GAME
         </button>
+        <span className={styles['title']}>Same Game</span>
         <button
           type="button"
           disabled={!!recorder.replayState}

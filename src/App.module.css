@@ -15,16 +15,3 @@
 .github-logo {
   height: 1.2em;
 }
-
-.app-version {
-  font-size: 0.8em;
-  opacity: 0.6;
-  position: fixed;
-  inset: auto 8px 72px auto;
-}
-
-@media screen and (width >= 768px) {
-  .app-version {
-    inset: auto 8px 8px auto;
-  }
-}

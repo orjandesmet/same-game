@@ -32,12 +32,27 @@
   text-align: start;
 }
 
-.options-form-buttons {
+.title-bar {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr min-content 1fr;
+  align-items: baseline;
   justify-content: space-between;
   padding: 0.5rem 0;
   box-sizing: border-box;
+}
+
+.title-bar .title + button {
+  margin-inline-start: auto;
+}
+
+.title-bar button:has(+ .title) {
+  margin-inline-end: auto;
+}
+
+.title {
+  font-size: 1.1rem;
+  white-space: nowrap;
 }
 
 .options-label {
