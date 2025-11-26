@@ -1,0 +1,59 @@
+@use '../../scss/cell-effects';
+@use '../../scss/creature-backgrounds';
+
+.cell {
+  box-sizing: border-box;
+  padding: 0;
+
+  /* Place cell in the grid explicitly */
+  width: var(--cell-size-with-gap);
+  height: var(--cell-size-with-gap);
+  grid-row: calc(var(--i-row-idx) + 1);
+  grid-column: calc(var(--i-column-idx) + 1);
+  background-size: 65%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border-radius: 50%;
+
+  &.empty {
+    pointer-events: none;
+  }
+
+  &.button:disabled {
+    cursor: not-allowed;
+  }
+
+  &.button:not(:disabled, .empty):hover {
+    border: 1px solid light-dark(red, blue);
+  }
+
+  &.r {
+    background-color: var(--i-color-r);
+  }
+
+  &.b {
+    background-color: var(--i-color-b);
+  }
+
+  &.g {
+    background-color: var(--i-color-g);
+  }
+
+  &.y {
+    background-color: var(--i-color-y);
+  }
+
+  &.p {
+    background-color: var(--i-color-p);
+  }
+
+  &.w {
+    background-color: var(--i-color-w);
+  }
+
+  &.with-creature {
+    @include creature-backgrounds.add-leveled-backgrounds;
+  }
+
+  @include cell-effects.state-effects;
+}

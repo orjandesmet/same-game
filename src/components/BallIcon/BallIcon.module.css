@@ -1,7 +1,8 @@
-.ballIcon {
+.ball-icon {
   height: 1em;
   aspect-ratio: 1 / 1;
 }
-.ballIcon:not(.solid) {
+
+.ball-icon:not(.solid) {
   opacity: 0.5;
 }

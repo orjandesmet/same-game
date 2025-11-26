@@ -9,21 +9,27 @@ import { calculateScore } from './calculateScore';
 import { cellUtils, type Cell } from './cells';
 import type { Color, PartyMembers } from './creatures';
 import { effectUtils, type Effect } from './effects';
+import {
+  cleanEventListeners,
+  type EventData,
+  type EventListener,
+  type EventListeners,
+} from './eventListeners';
 import { getSelectedPartyMembers } from './getSelectedPartyMembers';
-import { PlayRecorder } from './play-recorder';
 import { PlainRNG, type PRNG, type Seed } from './rng';
 import { rollForSpecialCreature } from './rollForSpecialCreature';
 import {
   ALL_CLEARED_BONUS,
+  type EventName,
   type GameState,
   type GameStatus,
   type ScoreCard,
+  type StartGameParameters,
 } from './types';
 
 export class SameGame {
-  private _rng: Readonly<PRNG>;
+  private readonly _rng: Readonly<PRNG>;
   private _party: Partial<PartyMembers> = {};
-  private _recorder: Readonly<PlayRecorder>;
   private _board: Board = [];
   private _allGroups: Group[] = [];
   private _movesLeft = 0;
@@ -35,13 +41,12 @@ export class SameGame {
     creatures: [],
   };
   private _gameState: GameStatus = 'NOT-STARTED';
-  private _stateChangeListeners: Array<(gameState: GameState) => void> = [];
+  protected _eventListeners: EventListeners = cleanEventListeners();
 
   private _debug: DebugFn = () => {};
 
   constructor(rng: PRNG = new PlainRNG()) {
     this._rng = rng;
-    this._recorder = new PlayRecorder();
   }
 
   public get board() {
@@ -60,14 +65,22 @@ export class SameGame {
     return this._rng.seed;
   }
 
-  public addStateChangeListener(listener: (gameState: GameState) => void) {
-    this._stateChangeListeners.push(listener);
+  public addEventListener<E extends EventName>(
+    eventName: E,
+    listener: EventListener<E>
+  ) {
+    this._eventListeners[eventName].push(listener);
   }
 
-  public removeStateChangeListener(listener: (gameState: GameState) => void) {
-    this._stateChangeListeners = this._stateChangeListeners.filter(
-      (l) => l !== listener
-    );
+  public removeEventListener<E extends EventName>(
+    eventName: E,
+    listener: EventListener<E>
+  ) {
+    const indexOfListener = this._eventListeners[eventName].indexOf(listener);
+    if (indexOfListener === -1) {
+      return;
+    }
+    this._eventListeners[eventName].splice(indexOfListener, 1);
   }
 
   private notifyStateChange() {
@@ -77,7 +90,14 @@ export class SameGame {
       scoreCard: structuredClone(this._scoreCard),
       gameState: this._gameState,
     };
-    this._stateChangeListeners.forEach((listener) => listener(gameState));
+    this.notifyListeners('STATE-CHANGE', gameState);
+  }
+
+  protected notifyListeners<E extends EventName>(
+    eventName: E,
+    data: EventData<E>
+  ) {
+    this._eventListeners[eventName].forEach((listener) => listener(data));
   }
 
   public enableDebugMode(enabled: boolean) {
@@ -90,17 +110,17 @@ export class SameGame {
     }
   }
 
-  public startGame(
-    rows: number,
-    columns: number,
-    partyMembers: PartyMembers,
-    seed?: Seed
-  ) {
+  public startGame({
+    nrOfRows,
+    nrOfColumns,
+    partyMembers,
+    seed,
+  }: StartGameParameters) {
     if (seed) {
       this.reseed(seed);
     }
     this._debug(
-      `Starting new game ${rows}x${columns} with party ${JSON.stringify(partyMembers)}, (seed: ${seed})`
+      `Starting new game ${nrOfRows}x${nrOfColumns} with party ${JSON.stringify(partyMembers)}, (seed: ${seed})`
     );
     const { colors, selectedPartyMembers } =
       getSelectedPartyMembers(partyMembers);
@@ -112,11 +132,16 @@ export class SameGame {
       multiplier: colors.length / 2,
       creatures: [],
     };
-    this._recorder.reset(rows, columns, selectedPartyMembers, seed);
+    this.notifyListeners('START-GAME', {
+      nrOfRows,
+      nrOfColumns,
+      partyMembers,
+      seed,
+    });
 
     this._board = boardUtils.createBoard(
-      rows,
-      columns,
+      nrOfRows,
+      nrOfColumns,
       selectedPartyMembers,
       this._rng
     );
@@ -162,7 +187,7 @@ export class SameGame {
         this._scoreCard.allCleared = true;
         this._debug('All cleared, bonus', ALL_CLEARED_BONUS, '->', this.score);
       }
-      this._recorder.store();
+      this.notifyListeners('GAME-OVER', structuredClone(this._scoreCard));
     }
   }
 
@@ -179,7 +204,6 @@ export class SameGame {
       return [];
     }
     const cellKey = cellUtils.createCellKey(rowIdx, columnIdx);
-    this._recorder.addMove(cellKey);
     const cell = this._board[columnIdx][rowIdx];
     if (cellUtils.isEmptyCell(cell)) {
       this._debug('Clicked on empty cell', cellKey);
@@ -188,6 +212,7 @@ export class SameGame {
 
     if (cell.hasCreature) {
       this._debug('Clicked on cell with Pokémon', cellKey);
+      this.notifyListeners('MOVE-ADDED', cellKey);
       const effects = effectUtils.getEffectsForCell(
         cell.color,
         cell.hasSpecialCreature,
@@ -212,11 +237,11 @@ export class SameGame {
             effects.stages,
             this._board,
             affectedGroup,
-            (newBoard) => this.effectCallback(newBoard),
+            this.effectCallback.bind(this),
             {
               cellUpdate: (board, group, updatedCell) =>
                 this.updateCellsInBoard(board, group, updatedCell),
-              cellRemove: (board, group) => this.removeGroup(board, group),
+              cellRemove: this.removeGroup.bind(this),
               _debug: this._debug,
             }
           )
@@ -235,6 +260,7 @@ export class SameGame {
     // Normal behaviour
     const group = this._allGroups.find((g) => g.includes(cellKey));
     if (group && group.length >= 2) {
+      this.notifyListeners('MOVE-ADDED', cellKey);
       this._board = this.removeGroup(this._board, group);
       this.recalculateGameState();
       this.notifyStateChange();

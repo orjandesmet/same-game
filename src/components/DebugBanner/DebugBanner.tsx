@@ -7,6 +7,7 @@ import {
 } from '@game/creatures';
 import type { Seed } from '@game/rng';
 
+import { SeedIcon } from '@components/SeedIcon';
 import styles from './DebugBanner.module.css';
 
 type DebugBannerProps = {
@@ -49,7 +50,7 @@ export function DebugBanner({
       </div>
       <hr className={styles.hr} />
       <div className={styles.seed}>
-        <span>🌱</span>
+        <SeedIcon />
         <span>{seed}</span>
       </div>
       <div>MULTIPLIER: x{multiplier}</div>

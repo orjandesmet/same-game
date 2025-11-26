@@ -38,10 +38,10 @@ export function useGameState(
   }, []);
 
   useEffect(() => {
-    game.addStateChangeListener(handleStateChange);
+    game.addEventListener('STATE-CHANGE', handleStateChange);
 
     return () => {
-      game.removeStateChangeListener(handleStateChange);
+      game.removeEventListener('STATE-CHANGE', handleStateChange);
     };
   }, [game, handleStateChange]);
 

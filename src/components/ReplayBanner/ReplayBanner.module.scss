@@ -1,0 +1,18 @@
+.replay-banner {
+  font-size: 0.8em;
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .button {
+    padding: 0;
+    width: 1.5em;
+    border-radius: 2px;
+
+    &.close {
+      color: var(--i-color-r-accent-1);
+    }
+  }
+}

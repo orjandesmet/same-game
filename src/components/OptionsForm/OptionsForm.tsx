@@ -1,4 +1,4 @@
-import { ArrowRight } from '@components/ArrowRightIcon';
+import { ArrowRightIcon } from '@components/ArrowRightIcon';
 import { BallIcon } from '@components/BallIcon';
 import { LvlIcon } from '@components/LvlIcon';
 import {
@@ -8,24 +8,35 @@ import {
   type Color,
   type PartyMembers,
 } from '@game/creatures';
+import type { PlayRecorder, Recording } from '@game/recorder';
 import { clamp } from '@utils/clamp';
 import clsx from 'clsx';
-import { useCallback, useRef, type ChangeEvent } from 'react';
+import {
+  useCallback,
+  useRef,
+  type ChangeEvent,
+  type PropsWithChildren,
+} from 'react';
 import { createPortal } from 'react-dom';
+import { ReplayBanner } from '../ReplayBanner/ReplayBanner';
 import styles from './OptionsForm.module.css';
 
-type OptionsFormProps = {
+type OptionsFormProps = PropsWithChildren<{
   nrOfRows: number;
   nrOfColumns: number;
   partyMembers: PartyMembers;
+  recorder: PlayRecorder;
+  recording: Recording | null;
   onNrOfRowsChange: (nrOfRows: number) => void;
   onNrOfColumnsChange: (nrOfColumns: number) => void;
   onPartyMembersChange: (partyMembers: PartyMembers) => void;
   onStartGame: () => void;
-};
+}>;
 
 export function OptionsForm({
   partyMembers,
+  recorder,
+  recording,
   onPartyMembersChange,
   ...props
 }: OptionsFormProps) {
@@ -117,16 +128,15 @@ export function OptionsForm({
   return (
     <>
       {createPortal(
-        <dialog className={styles.optionsFormDialog} ref={dialog}>
+        <dialog className={styles['options-form-dialog']} ref={dialog}>
           <form
             method="dialog"
-            className={styles.optionsForm}
+            className={styles['options-form']}
             onClick={(e) => e.stopPropagation()}
           >
-            <fieldset className={styles.optionsFieldset}>
-              <legend>OPTION</legend>
-              <label className={styles.optionsLabel} htmlFor="fldNrOfRows">
-                <ArrowRight className={styles.optionsArrow} solid />
+            <div className={styles['options-fieldset']}>
+              <label className={styles['options-label']} htmlFor="fldNrOfRows">
+                <ArrowRightIcon className={styles['options-arrow']} solid />
                 <span>Nr of Rows</span>
                 <span>({props.nrOfRows})</span>
               </label>
@@ -138,8 +148,11 @@ export function OptionsForm({
                 value={props.nrOfRows}
                 onChange={handleNrOfRowsChange}
               />
-              <label className={styles.optionsLabel} htmlFor="fldNrOfColumns">
-                <ArrowRight className={styles.optionsArrow} solid />
+              <label
+                className={styles['options-label']}
+                htmlFor="fldNrOfColumns"
+              >
+                <ArrowRightIcon className={styles['options-arrow']} solid />
                 <span>Nr of Columns</span>
                 <span>({props.nrOfColumns})</span>
               </label>
@@ -151,10 +164,9 @@ export function OptionsForm({
                 value={props.nrOfColumns}
                 onChange={handleNrOfColumnsChange}
               />
-            </fieldset>
-            <fieldset>
-              <legend>POKéMON (minimum: 2)</legend>
-              <div className={styles.partyMembers}>
+            </div>
+            <div>
+              <div className={styles['party-members']}>
                 {COLORS.map((color) => {
                   const lvl = Math.abs(partyMembers[color]);
                   const evolutionIdx = creatureUtils.getEvolutionIdx(
@@ -162,7 +174,7 @@ export function OptionsForm({
                     lvl
                   );
                   return (
-                    <div className={styles.partyMember} key={color}>
+                    <div className={styles['party-member']} key={color}>
                       <input
                         id={`chk${color}`}
                         name="fldParty"
@@ -172,9 +184,12 @@ export function OptionsForm({
                         disabled={isDisabled(color)}
                         onChange={handlePartyMemberChange}
                       />
-                      <ArrowRight className={styles.optionsArrow} solid />
+                      <ArrowRightIcon
+                        className={styles['options-arrow']}
+                        solid
+                      />
                       <label
-                        className={clsx(styles.optionsLabel, styles.party)}
+                        className={clsx(styles['options-label'], styles.party)}
                         htmlFor={`chk${color}`}
                       >
                         <BallIcon
@@ -182,19 +197,19 @@ export function OptionsForm({
                           aria-hidden
                         />
                         <img
-                          className={styles.partyImage}
+                          className={styles['party-image']}
                           src={`/creatures/sprites/${color}-${evolutionIdx}.png`}
                           alt={CREATURE_NAMES[color][evolutionIdx]}
                         />
-                        <span className={styles.partyName}>
+                        <span className={styles['party-name']}>
                           {CREATURE_NAMES[color][evolutionIdx]}
                         </span>
                       </label>
-                      <span className={styles.partyLevel}>
+                      <span className={styles['party-level']}>
                         <LvlIcon />
                         <input
                           type="number"
-                          className={styles.lvlInput}
+                          className={styles['lvl-input']}
                           inputMode="numeric"
                           value={lvl}
                           onChange={(e) =>
@@ -209,17 +224,26 @@ export function OptionsForm({
                   );
                 })}
               </div>
-            </fieldset>
+            </div>
             <button type="submit">CLOSE</button>
           </form>
+          <ReplayBanner
+            recording={recording}
+            recorder={recorder}
+            onButtonClick={() => dialog.current?.close()}
+          />
         </dialog>,
         document.body
       )}
-      <div className={styles.optionsFormButtons}>
+      <div className={styles['options-form-buttons']}>
         <button type="button" onClick={() => props.onStartGame()}>
           NEW GAME
         </button>
-        <button type="button" onClick={() => dialog.current?.showModal()}>
+        <button
+          type="button"
+          disabled={!!recorder.replayState}
+          onClick={() => dialog.current?.showModal()}
+        >
           OPTION
         </button>
       </div>

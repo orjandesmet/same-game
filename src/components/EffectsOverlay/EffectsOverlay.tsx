@@ -31,8 +31,8 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
   return (
     <div
       className={clsx(
-        styles.effectsOverlay,
-        styles[`effectCount-${effects.length}`]
+        styles['effects-overlay'],
+        styles[`effect-count-${effects.length}`]
       )}
       style={cssVariables}
     >
@@ -41,7 +41,7 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
           <Fragment key={effect.effectName}>
             <div
               className={clsx(
-                styles.effectBand,
+                styles['effect-band'],
                 styles[`effect-${idx + 1}`],
                 styles[effect.color.toLowerCase()]
               )}
@@ -50,7 +50,7 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
             </div>
             <div
               className={clsx(
-                styles.effectImg,
+                styles['effect-img'],
                 styles[`effect-${idx + 1}`],
                 styles[effect.color.toLowerCase()],
                 effect.hasSpecialCreature && styles.m,
@@ -61,7 +61,7 @@ export function EffectsOverlay({ effects }: EffectsOverlayProps) {
             ></div>
             <div
               className={clsx(
-                styles.effectText,
+                styles['effect-text'],
                 styles[`effect-${idx + 1}`],
                 styles[effect.color.toLowerCase()]
               )}

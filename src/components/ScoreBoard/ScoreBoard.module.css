@@ -1,4 +1,4 @@
-.scoreBoard {
+.score-board {
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: 1fr min-content;
@@ -12,16 +12,16 @@
   box-sizing: border-box;
 }
 
-.scoreBoardData {
+.score-board-data {
   text-align: start;
   grid-column: 1;
 }
 
-.scoreBoardData.score {
+.score-board-data.score {
   grid-column: 1 / -1;
 }
 
-.scoreBoardInfo {
+.score-board-info {
   font-size: 0.65em;
   display: flex;
   flex-direction: column;
@@ -30,24 +30,25 @@
   grid-row: 2;
 }
 
-.scoreBoardInfoItem {
+.score-board-info-item {
   display: inline-flex;
   align-items: start;
   gap: 0.5em;
 }
 
 @media screen and (width >= 480px) {
-  .scoreBoard {
+  .score-board {
     grid-template-columns: max-content 1fr min-content;
     grid-auto-flow: column;
     justify-items: center;
   }
 
-  .scoreBoardData, .scoreBoardInfo {
+  .score-board-data,
+  .score-board-info {
     grid-row: 1;
   }
 
-  .scoreBoardData.score {
+  .score-board-data.score {
     grid-column: 2;
   }
 }
