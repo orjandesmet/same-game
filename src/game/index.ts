@@ -6,4 +6,5 @@ export {
   type GameState,
   type GameStatus,
   type ScoreCard,
+  type StartGameParameters,
 } from './types';

@@ -1,51 +1,37 @@
-import { buildBasePartyMembers } from '../buildBasePartyMembers';
-import type { CellKey } from '../cells';
-import { type PartyMembers } from '../creatures';
-import type { SameGame } from '../engine';
-import type { StartGameParameters } from '../types';
-import type { Recorder } from './recorder';
-import type { Recording, ReplayState } from './types';
+import {
+  buildBasePartyMembers,
+  type SameGame,
+  type StartGameParameters,
+} from '@game';
+import type { CellKey } from '@game/cells';
+import { newSeed } from '@game/rng';
+import { Recorder } from '../recorder';
+import type { ReplayRecording, ReplayState } from './types';
 
 export const REPLAY_STORAGE_KEY = 'same-game-moves-replay';
 
-export class PlayRecorder implements Recorder {
-  private readonly _gameInstance: SameGame;
-  private _storage: Storage;
+export class ReplayRecorder extends Recorder<ReplayRecording> {
+  private _startGameParameters: StartGameParameters | null = null;
   private _movesRecord: CellKey[] = [];
-  private _nrOfRows = 0;
-  private _nrOfColumns = 0;
-  private _partyMembers: PartyMembers = buildBasePartyMembers();
-  private _seed: number = 0;
   private _replayState: ReplayState | null = null;
-  private _recordingListeners: Array<(recording: Recording | null) => void> =
-    [];
 
   public get replayState() {
     return this._replayState;
   }
 
   constructor(gameInstance: SameGame, storage = localStorage) {
-    this._gameInstance = gameInstance;
-    this._storage = storage;
+    super(gameInstance, storage);
     this._gameInstance.addEventListener('MOVE-ADDED', this.addMove.bind(this));
     this._gameInstance.addEventListener('START-GAME', this.reset.bind(this));
     this._gameInstance.addEventListener('GAME-OVER', this.store.bind(this));
   }
 
-  private reset({
-    nrOfRows,
-    nrOfColumns,
-    partyMembers,
-    seed,
-  }: StartGameParameters) {
+  private reset(startGameParameters: StartGameParameters) {
     if (this._replayState) {
       return;
     }
+    this._startGameParameters = startGameParameters;
     this._movesRecord = [];
-    this._nrOfRows = nrOfRows;
-    this._nrOfColumns = nrOfColumns;
-    this._partyMembers = partyMembers;
-    this._seed = seed;
   }
 
   private addMove(move: CellKey) {
@@ -60,11 +46,11 @@ export class PlayRecorder implements Recorder {
       this._replayState = null;
       return;
     }
-    const recording: Recording = {
-      seed: this._seed,
-      nrOfRows: this._nrOfRows,
-      nrOfColumns: this._nrOfColumns,
-      partyMembers: this._partyMembers,
+    if (!this._startGameParameters) {
+      return;
+    }
+    const recording: ReplayRecording = {
+      ...this._startGameParameters,
       moves: this._movesRecord,
     };
 
@@ -72,32 +58,18 @@ export class PlayRecorder implements Recorder {
     this.notifyListeners(recording);
   }
 
-  private notifyListeners(recording: Recording | null) {
-    this._recordingListeners.forEach((listener) => listener(recording));
+  addDataChangeListener(listener: (recording: ReplayRecording | null) => void) {
+    super.addDataChangeListener(listener);
+    listener(this.readInitialData());
   }
 
-  addRecordingChangeListener(listener: (recording: Recording | null) => void) {
-    this._recordingListeners.push(listener);
-    listener(this.readRecording());
-  }
-
-  removeRecordingChangeListener(
-    listener: (recording: Recording | null) => void
-  ): void {
-    const watcherIdx = this._recordingListeners.indexOf(listener);
-    if (watcherIdx === -1) {
-      return;
-    }
-    this._recordingListeners.splice(watcherIdx, 1);
-  }
-
-  private readRecording(): Recording | null {
+  protected readInitialData(): ReplayRecording | null {
     const recording = this._storage.getItem(REPLAY_STORAGE_KEY);
     if (!recording) {
       return null;
     }
     try {
-      return JSON.parse(recording) satisfies Recording;
+      return JSON.parse(recording) satisfies ReplayRecording;
     } catch {
       return null;
     }
@@ -108,7 +80,7 @@ export class PlayRecorder implements Recorder {
     this.notifyListeners(null);
   }
 
-  startReplay(recording: Recording) {
+  startReplay(recording: ReplayRecording) {
     this._replayState = {
       recording,
       currentMoveIndex: 0,
@@ -141,10 +113,10 @@ export class PlayRecorder implements Recorder {
   stopReplay() {
     this._replayState = null;
     this._gameInstance.startGame({
-      nrOfRows: this._nrOfRows,
-      nrOfColumns: this._nrOfColumns,
-      partyMembers: this._partyMembers,
-      seed: this._seed,
+      nrOfColumns: 10,
+      nrOfRows: 10,
+      partyMembers: buildBasePartyMembers(),
+      seed: newSeed(),
     });
   }
 }

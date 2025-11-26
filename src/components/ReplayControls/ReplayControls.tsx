@@ -1,4 +1,4 @@
-import type { PlayRecorder, ReplayState } from '@game/recorder';
+import type { ReplayRecorder, ReplayState } from '@game/recorder';
 
 import { ArrowRightIcon } from '@components/ArrowRightIcon';
 import { BlockIcon } from '@components/BlockIcon';
@@ -10,7 +10,7 @@ import styles from './ReplayControls.module.scss';
 type ReplayControlsProps = {
   board: Board;
   isDisabled: boolean;
-  recorder: PlayRecorder;
+  recorder: ReplayRecorder;
   replayState: ReplayState;
 };
 

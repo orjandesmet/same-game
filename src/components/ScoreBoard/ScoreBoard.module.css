@@ -65,8 +65,11 @@
     grid-row: 1;
   }
 
-  .score-board-data.score,
   .score-board-data.moves {
+    grid-column: 1;
+  }
+
+  .score-board-data.score {
     grid-column: 2;
   }
 

@@ -8,7 +8,7 @@ import {
   type Color,
   type PartyMembers,
 } from '@game/creatures';
-import type { PlayRecorder, Recording } from '@game/recorder';
+import type { ReplayRecorder, ReplayRecording } from '@game/recorder';
 import { clamp } from '@utils/clamp';
 import clsx from 'clsx';
 import {
@@ -25,8 +25,8 @@ type OptionsFormProps = PropsWithChildren<{
   nrOfRows: number;
   nrOfColumns: number;
   partyMembers: PartyMembers;
-  recorder: PlayRecorder;
-  recording: Recording | null;
+  recorder: ReplayRecorder;
+  recording: ReplayRecording | null;
   onNrOfRowsChange: (nrOfRows: number) => void;
   onNrOfColumnsChange: (nrOfColumns: number) => void;
   onPartyMembersChange: (partyMembers: PartyMembers) => void;
@@ -237,7 +237,7 @@ export function OptionsForm({
       )}
       <div className={styles['title-bar']}>
         <button type="button" onClick={() => props.onStartGame()}>
-          NEW GAME
+          NEW
         </button>
         <span className={styles['title']}>Same Game</span>
         <button

@@ -1,6 +1,7 @@
 import { buildBasePartyMembers } from '@game';
 import { COLORS, type Color, type PartyMembers } from '@game/creatures';
 import type { Seed } from '@game/rng';
+import { newSeed } from '@game/rng';
 import { clamp } from '@utils/clamp';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -125,8 +126,4 @@ function handleParty(partySearchParams: string[]): PartyMembers | null {
     }, startingParty);
   }
   return null;
-}
-
-function newSeed() {
-  return Date.now() % (12 * 60 * 60 * 1000);
 }

@@ -34,12 +34,19 @@
 
 .title-bar {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr min-content 1fr;
+  display: flex;
+  flex-direction: row;
   align-items: baseline;
   justify-content: space-between;
   padding: 0.5rem 0;
   box-sizing: border-box;
+}
+
+@media screen and (width >= 480px) {
+  .title-bar {
+    display: grid;
+    grid-template-columns: 1fr min-content 1fr;
+  }
 }
 
 .title-bar .title + button {
