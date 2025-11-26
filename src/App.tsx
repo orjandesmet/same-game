@@ -2,6 +2,7 @@ import { Board } from '@components/Board';
 import { DebugBanner } from '@components/DebugBanner';
 import { EffectsOverlay } from '@components/EffectsOverlay';
 import { GameOverScreen } from '@components/GameOverScreen';
+import { HallOfFameScreen } from '@components/HallOfFameScreen';
 import { OptionsForm } from '@components/OptionsForm';
 import { ReplayControls } from '@components/ReplayControls';
 import { ScoreBoard } from '@components/ScoreBoard';
@@ -120,7 +121,9 @@ function App() {
         onStartGame={createNewSeed}
         recording={recording}
         recorder={replayRecorder}
-      />
+      >
+        <HallOfFameScreen dataList={hofData} recorder={hofRecorder} />
+      </OptionsForm>
       <Board
         board={board}
         onCellClick={handleCellClick}
@@ -142,12 +145,7 @@ function App() {
           replayState={replayRecorder.replayState}
         />
       ) : (
-        <ScoreBoard
-          score={score}
-          movesLeft={movesLeft}
-          seed={game.seed}
-          hasHallOfFame={hofData?.length !== 0}
-        >
+        <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed}>
           <div className={styles['github-link']}>
             <Octicon className={styles['github-logo']} />
             <a

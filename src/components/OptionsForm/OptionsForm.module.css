@@ -32,7 +32,7 @@
   text-align: start;
 }
 
-.title-bar {
+.options-form-buttons {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -40,26 +40,6 @@
   justify-content: space-between;
   padding: 0.5rem 0;
   box-sizing: border-box;
-}
-
-@media screen and (width >= 480px) {
-  .title-bar {
-    display: grid;
-    grid-template-columns: 1fr min-content 1fr;
-  }
-}
-
-.title-bar .title + button {
-  margin-inline-start: auto;
-}
-
-.title-bar button:has(+ .title) {
-  margin-inline-end: auto;
-}
-
-.title {
-  font-size: 1.1rem;
-  white-space: nowrap;
 }
 
 .options-label {

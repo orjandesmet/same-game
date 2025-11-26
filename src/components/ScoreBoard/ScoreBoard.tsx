@@ -7,8 +7,6 @@ type ScoreBoardProps = PropsWithChildren<{
   score: number;
   movesLeft: number;
   seed: number;
-  hasHallOfFame?: boolean;
-  onOpenHallOfFame?: () => void;
 }>;
 
 export function ScoreBoard(props: ScoreBoardProps) {
@@ -29,18 +27,6 @@ export function ScoreBoard(props: ScoreBoardProps) {
         </div>
         {props.children}
       </div>
-      {props.hasHallOfFame && (
-        <button
-          className={styles['score-board-hof-button']}
-          type="button"
-          onClick={props.onOpenHallOfFame}
-        >
-          <span className={styles.full}>Hall of Fame</span>
-          <span className={styles.short} aria-hidden>
-            HoF
-          </span>
-        </button>
-      )}
       <span className={styles['app-version']}>v{__APP_VERSION__}</span>
     </div>
   );
