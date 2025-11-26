@@ -1,19 +1,6 @@
 {
   "name": "same-game",
-  "private": true,
   "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "test": "vitest --watch",
-    "test:ci": "vitest run --coverage",
-    "preview": "vite preview",
-    "lint-staged": "lint-staged",
-    "pre-commit": "husky precommit",
-    "prepare": "husky"
-  },
   "dependencies": {
     "@netlify/vite-plugin": "^2.7.14",
     "clsx": "^2.1.1",
@@ -27,6 +14,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "@vitest/coverage-v8": "^4.0.13",
+    "bumped": "^0.14.2",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.22",
@@ -45,9 +33,26 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.13"
   },
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "dev": "vite",
+    "lint": "eslint .",
+    "lint-staged": "lint-staged",
+    "pre-commit": "husky precommit",
+    "prepare": "husky",
+    "preview": "vite preview",
+    "release:major": "bumped release major",
+    "release:minor": "bumped release minor",
+    "release:patch": "bumped release patch",
+    "test": "vitest --watch",
+    "test:check": "vitest",
+    "test:ci": "vitest run --coverage"
+  },
+  "private": true,
   "lint-staged": {
     "*.{css,scss,html,json,cjs,mjs,js,ts,yaml,md,jsx,tsx}": "prettier --write",
     "*.{js,ts,jsx,tsx}": "eslint --fix",
     "*.{css,scss}": "stylelint --fix"
-  }
+  },
+  "type": "module"
 }
