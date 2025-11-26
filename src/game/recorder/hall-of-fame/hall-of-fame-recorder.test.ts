@@ -122,12 +122,13 @@ describe('HallOfFameRecorder', () => {
       G: 20,
       Y: 50,
     };
-    mockEngine.mockStartGame({
+    const startGameParameters: StartGameParameters = {
       nrOfColumns: 10,
       nrOfRows: 10,
       partyMembers,
       seed: 1234,
-    });
+    };
+    mockEngine.mockStartGame(startGameParameters);
     expect(mockStorage.setItem).not.toHaveBeenCalled();
     mockEngine.mockGameOver({
       allCleared: true,
@@ -147,12 +148,7 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
-          startGameParameters: {
-            nrOfColumns: 10,
-            nrOfRows: 10,
-            partyMembers,
-            seed: 1234,
-          },
+          startGameParameters,
           scoreCard: {
             allCleared: true,
             cellsRemoved: 23,
@@ -167,12 +163,7 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
-          startGameParameters: {
-            nrOfColumns: 10,
-            nrOfRows: 10,
-            partyMembers,
-            seed: 1234,
-          },
+          startGameParameters,
           scoreCard: {
             allCleared: true,
             cellsRemoved: 23,
@@ -181,18 +172,65 @@ describe('HallOfFameRecorder', () => {
           },
         },
         {
-          startGameParameters: {
-            nrOfColumns: 10,
-            nrOfRows: 10,
-            partyMembers,
-            seed: 1234,
-          },
+          startGameParameters,
           scoreCard: {
             allCleared: true,
             cellsRemoved: 50,
             creatures: [],
             multiplier: 4,
           },
+        },
+      ])
+    );
+  });
+
+  it('should only store max 5 game-over events', () => {
+    const partyMembers = {
+      ...buildBasePartyMembers(),
+      R: 10,
+      B: 30,
+      G: 20,
+      Y: 50,
+    };
+    const startGameParameters: StartGameParameters = {
+      nrOfColumns: 10,
+      nrOfRows: 10,
+      partyMembers,
+      seed: 1234,
+    };
+    mockEngine.mockStartGame(startGameParameters);
+    expect(mockStorage.setItem).not.toHaveBeenCalled();
+    const scoreCards: ScoreCard[] = Array.from({ length: 6 }).map((_, idx) => ({
+      allCleared: true,
+      cellsRemoved: idx + 1,
+      creatures: [],
+      multiplier: 2,
+    }));
+    scoreCards.forEach(mockEngine.mockGameOver);
+
+    expect(mockStorage.setItem).toHaveBeenCalledTimes(6);
+    expect(mockStorage.setItem).toHaveBeenLastCalledWith(
+      HOF_STORAGE_KEY,
+      JSON.stringify([
+        {
+          startGameParameters,
+          scoreCard: scoreCards[1],
+        },
+        {
+          startGameParameters,
+          scoreCard: scoreCards[2],
+        },
+        {
+          startGameParameters,
+          scoreCard: scoreCards[3],
+        },
+        {
+          startGameParameters,
+          scoreCard: scoreCards[4],
+        },
+        {
+          startGameParameters,
+          scoreCard: scoreCards[5],
         },
       ])
     );

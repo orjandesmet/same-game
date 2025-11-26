@@ -42,7 +42,9 @@ export class HallOfFameRecorder extends Recorder<HallOfFameDataList> {
       startGameParameters: this._startGameParameters!,
       scoreCard,
     };
-    this._hallOfFameDataList.push(newHoFData);
+    this._hallOfFameDataList = this._hallOfFameDataList
+      .concat(newHoFData)
+      .slice(-5);
     this._storage.setItem(
       HOF_STORAGE_KEY,
       JSON.stringify(this._hallOfFameDataList)
