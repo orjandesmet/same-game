@@ -23,8 +23,13 @@ export function Move({ board, cellKey, className }: MoveProps) {
     <span className={clsx(styles.move, className)}>
       <span>Next move:</span>
       <BoardCell cell={cell} style={style} />
-      <span>
-        at row: {rowIdx + 1}, column: {columnIdx + 1}
+      <span className={styles['move-description']}>
+        <span>
+          <span className={styles['move-description-full-text']}>at&nbsp;</span>
+          row: {rowIdx + 1}
+          <span className={styles['move-description-full-text']}>,&nbsp;</span>
+        </span>
+        <span>column: {columnIdx + 1}</span>
       </span>
     </span>
   );
