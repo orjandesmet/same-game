@@ -18,9 +18,17 @@
   align-items: center;
 }
 
+.creature-list-item.m {
+  position: relative;
+}
+
 .creature-list-item.m::before {
-  /* TODO: add line */
-  color: black;
+  position: absolute;
+  left: -0.5em;
+  content: ' ';
+  height: 100%;
+  width: 1px;
+  background: currentcolor;
 }
 
 .creature-list-image {

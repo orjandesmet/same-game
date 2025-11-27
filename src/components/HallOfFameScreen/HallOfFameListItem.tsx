@@ -1,5 +1,4 @@
 import { SeedIcon } from '@components/SeedIcon';
-import { CREATURE_NAMES, creatureUtils } from '@game/creatures';
 import clsx from 'clsx';
 import styles from './HallOfFameListItem.module.scss';
 import type { ParsedCreatureListItem, ParsedListItem } from './types';
@@ -18,14 +17,16 @@ export function HallOfFameListItem({ hofData }: HallOfFameListItemProps) {
         Game: {hofData.dimensions} - <SeedIcon />
         {hofData.seed}
       </div>
-      <ul className={styles['hof-creature-list']}>
-        {hofData.creatures.map((creatureData) => (
-          <CreatureListItem
-            key={creatureData.color}
-            creatureData={creatureData}
-          />
-        ))}
-      </ul>
+      {hofData.creatures.length > 0 && (
+        <ul className={styles['hof-creature-list']}>
+          {hofData.creatures.map((creatureData) => (
+            <CreatureListItem
+              key={creatureData.color}
+              creatureData={creatureData}
+            />
+          ))}
+        </ul>
+      )}
       {hofData.allCleared && <div>All cleared!</div>}
     </li>
   );
@@ -36,24 +37,23 @@ type CreatureListItemProps = {
 };
 
 function CreatureListItem({ creatureData }: CreatureListItemProps) {
-  const evolutionIdx = creatureUtils.getEvolutionIdx(
-    creatureData.color,
-    creatureData.level
-  );
-
   return (
     <li
       className={clsx(
         styles['hof-creature-list-item'],
-        styles[creatureData.color.toLowerCase()]
+        creatureData.timesUsed > 0 && styles['hof-creature-is-used']
       )}
     >
       <img
         className={styles['hof-creature-list-image']}
-        src={`/creatures/sprites/${creatureData.color}-${evolutionIdx}.png`}
-        alt={CREATURE_NAMES[creatureData.color][evolutionIdx]}
+        src={`/creatures/sprites/${creatureData.sprite}.png`}
+        alt={creatureData.name}
       />
-      ${creatureData.score}
+      {creatureData.timesUsed > 1 && (
+        <span className={styles['hof-creature-usage']}>
+          x{creatureData.timesUsed}
+        </span>
+      )}
     </li>
   );
 }

@@ -3,9 +3,9 @@ import type { Seed } from '@game/rng';
 
 export type ParsedCreatureListItem = {
   color: ExtendedColor;
-  level: number;
-  isInParty: boolean;
-  score: number;
+  name: string;
+  timesUsed: number;
+  sprite: string;
 };
 
 export type ParsedListItem = {

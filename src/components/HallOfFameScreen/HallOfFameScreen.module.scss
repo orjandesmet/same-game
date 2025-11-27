@@ -16,6 +16,15 @@
 .hof-list {
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  overflow-y: scroll;
+}
+
+.hof-buttons {
+  display: flex;
+  justify-content: space-between;
 }
 
 .hof-button {

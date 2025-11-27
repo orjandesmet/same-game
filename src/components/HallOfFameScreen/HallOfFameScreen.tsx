@@ -36,16 +36,18 @@ export function HallOfFameScreen({
               <HallOfFameListItem key={hofData.date} hofData={hofData} />
             ))}
           </ul>
-          <form method="dialog">
+          <div className={styles['hof-buttons']}>
             <button
               type="button"
               className={styles['clear-button']}
               onClick={handleClear}
             >
-              Remove all
+              Clear entries
             </button>
-            <button type="submit">Close</button>
-          </form>
+            <button type="button" onClick={() => dialog.current?.close()}>
+              Close
+            </button>
+          </div>
         </dialog>,
         document.body
       )}
