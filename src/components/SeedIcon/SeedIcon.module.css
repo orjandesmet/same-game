@@ -1,0 +1,44 @@
+.seed-icon {
+  height: 1em;
+  aspect-ratio: 1 / 1;
+}
+
+.left-leaf {
+  opacity: 1;
+}
+
+.seed-icon:hover .left-leaf {
+  opacity: 0;
+}
+
+.left-leaf-alt {
+  opacity: 0;
+}
+
+.seed-icon:hover .left-leaf-alt {
+  opacity: 1;
+}
+
+.right-leaf {
+  opacity: 1;
+}
+
+.seed-icon:hover .right-leaf {
+  opacity: 0;
+}
+
+.right-leaf-alt {
+  opacity: 0;
+}
+
+.seed-icon:hover .right-leaf-alt {
+  opacity: 1;
+}
+
+.light-green {
+  fill: #7bc53d;
+}
+
+.dark-green {
+  fill: #3d6e1d;
+}
