@@ -99,7 +99,7 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters: {
             nrOfColumns: 10,
             nrOfRows: 10,
@@ -155,7 +155,7 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters,
           scoreCard: {
             allCleared: true,
@@ -171,7 +171,7 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters,
           scoreCard: {
             allCleared: true,
@@ -181,7 +181,7 @@ describe('HallOfFameRecorder', () => {
           },
         },
         {
-          date: mockDate2.getMilliseconds(),
+          date: mockDate2.getTime(),
           startGameParameters,
           scoreCard: {
             allCleared: true,
@@ -225,27 +225,27 @@ describe('HallOfFameRecorder', () => {
       HOF_STORAGE_KEY,
       JSON.stringify([
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters,
           scoreCard: scoreCards[1],
         },
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters,
           scoreCard: scoreCards[2],
         },
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters,
           scoreCard: scoreCards[3],
         },
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters,
           scoreCard: scoreCards[4],
         },
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters,
           scoreCard: scoreCards[5],
         },
@@ -340,7 +340,7 @@ describe('HallOfFameRecorder', () => {
       expect(dataChangeListener).toHaveBeenCalledOnce();
       expect(dataChangeListener).toHaveBeenCalledWith([
         {
-          date: mockDate.getMilliseconds(),
+          date: mockDate.getTime(),
           startGameParameters: {
             seed: 1234,
             nrOfRows: 10,
