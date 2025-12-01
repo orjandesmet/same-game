@@ -18,6 +18,19 @@
   align-items: center;
 }
 
+.creature-list-item.m {
+  position: relative;
+}
+
+.creature-list-item.m::before {
+  position: absolute;
+  left: -0.5em;
+  content: ' ';
+  height: 100%;
+  width: 1px;
+  background: currentcolor;
+}
+
 .creature-list-image {
   width: 3rem;
   height: 3rem;

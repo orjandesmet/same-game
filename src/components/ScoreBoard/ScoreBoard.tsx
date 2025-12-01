@@ -16,7 +16,7 @@ export function ScoreBoard(props: ScoreBoardProps) {
         Score:&nbsp;
         <span className={styles['score-board-value']}>${props.score}</span>
       </div>
-      <div className={styles['score-board-data']}>
+      <div className={clsx(styles['score-board-data'], styles.moves)}>
         Moves left:&nbsp;
         <span className={styles['score-board-value']}>{props.movesLeft}</span>
       </div>
@@ -27,6 +27,7 @@ export function ScoreBoard(props: ScoreBoardProps) {
         </div>
         {props.children}
       </div>
+      <span className={styles['app-version']}>v{__APP_VERSION__}</span>
     </div>
   );
 }

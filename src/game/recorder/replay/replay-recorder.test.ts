@@ -1,3 +1,9 @@
+import {
+  SameGame,
+  type GameState,
+  type ScoreCard,
+  type StartGameParameters,
+} from '@game';
 import type { ColumnIdx, RowIdx } from '@game/board';
 import { cellUtils } from '@game/cells';
 import {
@@ -10,12 +16,10 @@ import {
   type Mock,
   type MockedObject,
 } from 'vitest';
-import { buildBasePartyMembers } from '../buildBasePartyMembers';
-import { SameGame } from '../engine';
-import { cleanEventListeners } from '../eventListeners';
-import type { GameState, ScoreCard, StartGameParameters } from '../types';
-import { PlayRecorder, REPLAY_STORAGE_KEY } from './play-recorder';
-import type { Recording } from './types';
+import { buildBasePartyMembers } from '../../buildBasePartyMembers';
+import { cleanEventListeners } from '../../eventListeners';
+import { REPLAY_STORAGE_KEY, ReplayRecorder } from './replay-recorder';
+import type { ReplayRecording } from './types';
 
 class SameGameMock extends SameGame {
   public startGame = vi.fn();
@@ -48,13 +52,13 @@ const mockStorage: MockedObject<Storage> = {
   length: 0,
 };
 
-describe('play-recorder', () => {
+describe('ReplayRecorder', () => {
   const mockEngine = new SameGameMock();
-  let playRecorder: PlayRecorder;
+  let playRecorder: ReplayRecorder;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    playRecorder = new PlayRecorder(mockEngine, mockStorage);
+    playRecorder = new ReplayRecorder(mockEngine, mockStorage);
   });
 
   afterEach(() => {
@@ -67,12 +71,7 @@ describe('play-recorder', () => {
     });
 
     it('should handle a start-game event', () => {
-      expect(playRecorder['_nrOfColumns']).toBe(0);
-      expect(playRecorder['_nrOfRows']).toBe(0);
-      expect(playRecorder['_seed']).toBe(0);
-      expect(playRecorder['_partyMembers']).toStrictEqual(
-        buildBasePartyMembers()
-      );
+      expect(playRecorder['_startGameParameters']).toBeNull();
       expect(playRecorder['_movesRecord']).toHaveLength(0);
       const partyMembers = {
         ...buildBasePartyMembers(),
@@ -87,10 +86,12 @@ describe('play-recorder', () => {
         partyMembers,
         seed: 1234,
       });
-      expect(playRecorder['_nrOfColumns']).toBe(10);
-      expect(playRecorder['_nrOfRows']).toBe(10);
-      expect(playRecorder['_seed']).toBe(1234);
-      expect(playRecorder['_partyMembers']).toStrictEqual(partyMembers);
+      expect(playRecorder['_startGameParameters']).toStrictEqual({
+        nrOfColumns: 10,
+        nrOfRows: 10,
+        partyMembers,
+        seed: 1234,
+      });
       expect(playRecorder['_movesRecord']).toHaveLength(0);
     });
 
@@ -152,10 +153,10 @@ describe('play-recorder', () => {
       expect(mockStorage.setItem).toHaveBeenCalledWith(
         REPLAY_STORAGE_KEY,
         JSON.stringify({
-          seed: 1234,
-          nrOfRows: 10,
           nrOfColumns: 10,
+          nrOfRows: 10,
           partyMembers,
+          seed: 1234,
           moves: ['3:2', '5:1', '9:12'],
         })
       );
@@ -170,7 +171,7 @@ describe('play-recorder', () => {
       G: 20,
       Y: 50,
     };
-    const mockRecording: Recording = {
+    const mockRecording: ReplayRecording = {
       seed: 1234,
       nrOfRows: 10,
       nrOfColumns: 10,
@@ -199,12 +200,7 @@ describe('play-recorder', () => {
     });
 
     it('should not handle start-game event', () => {
-      expect(playRecorder['_nrOfColumns']).toBe(0);
-      expect(playRecorder['_nrOfRows']).toBe(0);
-      expect(playRecorder['_seed']).toBe(0);
-      expect(playRecorder['_partyMembers']).toStrictEqual(
-        buildBasePartyMembers()
-      );
+      expect(playRecorder['_startGameParameters']).toBeNull();
       expect(playRecorder['_movesRecord']).toHaveLength(0);
     });
 
@@ -256,24 +252,24 @@ describe('play-recorder', () => {
     });
   });
 
-  describe('== RecordingChangeListener ==', () => {
-    const recordingChangeListener = vi.fn();
+  describe('== DataChangeListener ==', () => {
+    const dataChangeListener = vi.fn();
 
     afterEach(() => {
-      playRecorder.removeRecordingChangeListener(recordingChangeListener);
+      playRecorder.removeDataChangeListener(dataChangeListener);
     });
 
-    it('should notify recordingChangeListener that there is a recording', () => {
+    it('should notify dataChangeListener that there is no recording', () => {
       (mockStorage.getItem as Mock<Storage['getItem']>).mockReturnValue(null);
 
-      playRecorder.addRecordingChangeListener(recordingChangeListener);
+      playRecorder.addDataChangeListener(dataChangeListener);
 
-      expect(recordingChangeListener).toHaveBeenCalledOnce();
-      expect(recordingChangeListener).toHaveBeenCalledWith(null);
+      expect(dataChangeListener).toHaveBeenCalledOnce();
+      expect(dataChangeListener).toHaveBeenCalledWith(null);
     });
 
     it('should determine that there is a recording if the localStorage returns one', () => {
-      const mockRecording: Recording = {
+      const mockRecording: ReplayRecording = {
         seed: 1234,
         nrOfRows: 10,
         nrOfColumns: 10,
@@ -284,10 +280,10 @@ describe('play-recorder', () => {
         JSON.stringify(mockRecording)
       );
 
-      playRecorder.addRecordingChangeListener(recordingChangeListener);
+      playRecorder.addDataChangeListener(dataChangeListener);
 
-      expect(recordingChangeListener).toHaveBeenCalledOnce();
-      expect(recordingChangeListener).toHaveBeenCalledWith(mockRecording);
+      expect(dataChangeListener).toHaveBeenCalledOnce();
+      expect(dataChangeListener).toHaveBeenCalledWith(mockRecording);
     });
 
     it('should not throw an error when the stored recording is of the wrong format', () => {
@@ -295,26 +291,26 @@ describe('play-recorder', () => {
         'SOMETHING WRONG'
       );
 
-      playRecorder.addRecordingChangeListener(recordingChangeListener);
+      playRecorder.addDataChangeListener(dataChangeListener);
 
-      expect(recordingChangeListener).toHaveBeenCalledOnce();
-      expect(recordingChangeListener).toHaveBeenCalledWith(null);
+      expect(dataChangeListener).toHaveBeenCalledOnce();
+      expect(dataChangeListener).toHaveBeenCalledWith(null);
     });
     // Add your tests here
 
     it('should send out an event when the recording has been removed', () => {
-      playRecorder.addRecordingChangeListener(recordingChangeListener);
-      recordingChangeListener.mockClear();
+      playRecorder.addDataChangeListener(dataChangeListener);
+      dataChangeListener.mockClear();
 
       playRecorder.deleteRecording();
       expect(mockStorage.removeItem).toHaveBeenCalled();
-      expect(recordingChangeListener).toHaveBeenCalledOnce();
-      expect(recordingChangeListener).toHaveBeenCalledWith(null);
+      expect(dataChangeListener).toHaveBeenCalledOnce();
+      expect(dataChangeListener).toHaveBeenCalledWith(null);
     });
 
     it('should send out an event when the recording has been stored', () => {
-      playRecorder.addRecordingChangeListener(recordingChangeListener);
-      recordingChangeListener.mockClear();
+      playRecorder.addDataChangeListener(dataChangeListener);
+      dataChangeListener.mockClear();
       mockEngine.mockStartGame({
         nrOfColumns: 10,
         nrOfRows: 10,
@@ -329,8 +325,8 @@ describe('play-recorder', () => {
         creatures: [],
         multiplier: 2,
       });
-      expect(recordingChangeListener).toHaveBeenCalledOnce();
-      expect(recordingChangeListener).toHaveBeenCalledWith({
+      expect(dataChangeListener).toHaveBeenCalledOnce();
+      expect(dataChangeListener).toHaveBeenCalledWith({
         seed: 1234,
         nrOfRows: 10,
         nrOfColumns: 10,

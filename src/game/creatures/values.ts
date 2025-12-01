@@ -1,4 +1,4 @@
-import type { Color, ExtendedColor, PartyMembers } from './types';
+import type { ExtendedColor, PartyMembers } from './types';
 
 export const BASE_CREATURE_PROBABILITY: PartyMembers = {
   R: 12,
@@ -20,11 +20,12 @@ export const CREATURE_NAMES: Record<ExtendedColor, string[]> = {
   M: ['MEW'],
 };
 
-export const EVOLUTION_LEVELS: Record<Color, [0, ...number[]]> = {
+export const EVOLUTION_LEVELS: Record<ExtendedColor, [0, ...number[]]> = {
   R: [0, 16, 36],
   B: [0, 15, 36],
   Y: [0],
   G: [0, 16, 32],
   P: [0],
   W: [0],
+  M: [0],
 };

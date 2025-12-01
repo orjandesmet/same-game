@@ -1,5 +1,5 @@
 import { SeedIcon } from '@components/SeedIcon';
-import type { PlayRecorder, Recording } from '@game/recorder';
+import type { ReplayRecorder, ReplayRecording } from '@game/recorder';
 
 import { ArrowRightIcon } from '@components/ArrowRightIcon';
 import { CloseIcon } from '@components/CloseIcon';
@@ -8,8 +8,8 @@ import { useCallback } from 'react';
 import styles from './ReplayBanner.module.scss';
 
 type ReplayBannerProps = {
-  recorder: PlayRecorder;
-  recording: Recording | null;
+  recorder: ReplayRecorder;
+  recording: ReplayRecording | null;
   onButtonClick?: () => void;
 };
 export function ReplayBanner({

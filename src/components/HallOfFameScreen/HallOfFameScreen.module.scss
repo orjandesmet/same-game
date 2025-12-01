@@ -1,0 +1,44 @@
+.hof-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.hof-dialog::backdrop {
+  background: rgb(0 0 0 / 75%);
+  backdrop-filter: blur(2px);
+}
+
+.clear-button {
+  color: var(--i-color-r-accent-1);
+}
+
+.hof-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  overflow-y: scroll;
+}
+
+.hof-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hof-button {
+  .full {
+    display: none;
+  }
+
+  @media screen and (width >= 480px) {
+    .short {
+      display: none;
+    }
+
+    .full {
+      display: inline;
+    }
+  }
+}

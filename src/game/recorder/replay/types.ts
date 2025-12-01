@@ -1,7 +1,7 @@
 import type { CellKey } from '@game/cells';
 import type { PartyMembers } from '@game/creatures';
 
-export type Recording = {
+export type ReplayRecording = {
   seed: number;
   nrOfRows: number;
   nrOfColumns: number;
@@ -10,6 +10,6 @@ export type Recording = {
 };
 
 export type ReplayState = {
-  recording: Recording;
+  recording: ReplayRecording;
   currentMoveIndex: number;
 };

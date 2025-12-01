@@ -2,13 +2,19 @@ import { Board } from '@components/Board';
 import { DebugBanner } from '@components/DebugBanner';
 import { EffectsOverlay } from '@components/EffectsOverlay';
 import { GameOverScreen } from '@components/GameOverScreen';
+import { HallOfFameScreen } from '@components/HallOfFameScreen';
 import { OptionsForm } from '@components/OptionsForm';
 import { ReplayControls } from '@components/ReplayControls';
 import { ScoreBoard } from '@components/ScoreBoard';
 import { SameGame } from '@game';
 import type { ColumnIdx, RowIdx } from '@game/board';
 import { effectUtils } from '@game/effects';
-import { PlayRecorder, type Recording } from '@game/recorder';
+import {
+  HallOfFameRecorder,
+  ReplayRecorder,
+  type HallOfFameDataList,
+  type ReplayRecording,
+} from '@game/recorder';
 import { Xorshift32 } from '@game/rng/xorshift32';
 import { useGameOptions } from '@hooks/useGameOptions';
 import { useGameState } from '@hooks/useGameState';
@@ -24,11 +30,13 @@ import type { EffectList } from './components/EffectsOverlay';
 import { Octicon } from './components/Octicon/Octicon';
 
 const game = new SameGame(new Xorshift32());
-const recorder = new PlayRecorder(game);
+const replayRecorder = new ReplayRecorder(game);
+const hofRecorder = new HallOfFameRecorder(game);
 
 function App() {
   const [effects, setEffects] = useState<EffectList>([]);
-  const [recording, setRecording] = useState<Recording | null>(null);
+  const [recording, setRecording] = useState<ReplayRecording | null>(null);
+  const [hofData, setHofData] = useState<HallOfFameDataList | null>(null);
 
   const {
     nrOfColumns,
@@ -76,10 +84,13 @@ function App() {
   }, [nrOfRows, nrOfColumns, partyMembers, seed, isDebugging, isReady]);
 
   useEffect(() => {
-    const watcher = setRecording;
-    recorder.addRecordingChangeListener(watcher);
+    const recorderListener = setRecording;
+    replayRecorder.addDataChangeListener(recorderListener);
+    const hofListener = setHofData;
+    hofRecorder.addDataChangeListener(hofListener);
     return () => {
-      recorder.removeRecordingChangeListener(watcher);
+      replayRecorder.removeDataChangeListener(recorderListener);
+      hofRecorder.removeDataChangeListener(hofListener);
     };
   }, []);
 
@@ -109,12 +120,14 @@ function App() {
         onPartyMembersChange={setPartyMembers}
         onStartGame={createNewSeed}
         recording={recording}
-        recorder={recorder}
-      />
+        recorder={replayRecorder}
+      >
+        <HallOfFameScreen dataList={hofData} recorder={hofRecorder} />
+      </OptionsForm>
       <Board
         board={board}
         onCellClick={handleCellClick}
-        isDisabled={!!recording && !!recorder.replayState}
+        isDisabled={!!recording && !!replayRecorder.replayState}
         isGameOver={gameState === 'GAME-OVER'}
       >
         <GameOverScreen
@@ -124,12 +137,12 @@ function App() {
           scoreCard={scoreCard}
         />
       </Board>
-      {recorder.replayState ? (
+      {replayRecorder.replayState ? (
         <ReplayControls
           board={board}
           isDisabled={gameState === 'PAUSED'}
-          recorder={recorder}
-          replayState={recorder.replayState}
+          recorder={replayRecorder}
+          replayState={replayRecorder.replayState}
         />
       ) : (
         <ScoreBoard score={score} movesLeft={movesLeft} seed={game.seed}>
@@ -145,7 +158,6 @@ function App() {
           </div>
         </ScoreBoard>
       )}
-      <span className={styles['app-version']}>v{__APP_VERSION__}</span>
       {isDebugging && (
         <DebugBanner
           multiplier={scoreCard?.multiplier}

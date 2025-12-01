@@ -5,6 +5,7 @@ import {
   type CreatureScore,
   creatureUtils,
 } from '@game/creatures';
+import clsx from 'clsx';
 import styles from './GameOverScreen.module.css';
 
 type GameOverProps = {
@@ -36,7 +37,13 @@ export function GameOverScreen({
               const evolutionIdx = creatureUtils.getEvolutionIdx(color, level);
 
               return (
-                <li className={styles['creature-list-item']} key={color}>
+                <li
+                  className={clsx(
+                    styles['creature-list-item'],
+                    styles[color.toLowerCase()]
+                  )}
+                  key={color}
+                >
                   <img
                     className={styles['creature-list-image']}
                     src={`/creatures/sprites/${color}-${evolutionIdx}.png`}

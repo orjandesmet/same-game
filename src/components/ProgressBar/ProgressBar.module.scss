@@ -21,8 +21,6 @@ $before-width: 20px;
 
   /* reset browser appearance */
   appearance: none;
-  appearance: none;
-  appearance: none;
   display: inline-flex;
   align-items: flex-start;
 
@@ -49,9 +47,9 @@ $before-width: 20px;
 
     // font-family: monospace;
     padding-inline: 1em 0.5em;
-    font-size: 0.5em;
+    font-size: 8px;
     font-weight: bold;
-    height: 1lh;
+    height: #{$total-height};
     box-sizing: border-box;
     white-space: nowrap;
   }

@@ -2,4 +2,23 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
+
+  &-description {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    text-align: start;
+
+    @media screen and (width >= 480px) {
+      display: inline;
+    }
+
+    &-full-text {
+      display: none;
+
+      @media screen and (width >= 480px) {
+        display: inline;
+      }
+    }
+  }
 }
