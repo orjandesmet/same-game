@@ -40,7 +40,7 @@ export class HallOfFameRecorder extends Recorder<HallOfFameDataList> {
   private store(scoreCard: ScoreCard) {
     const now = new Date();
     const newHoFData: HallOfFameData = {
-      date: now.getMilliseconds(),
+      date: now.getTime(),
       startGameParameters: this._startGameParameters!,
       scoreCard,
     };
