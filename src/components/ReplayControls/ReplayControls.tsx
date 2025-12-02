@@ -20,6 +20,9 @@ export function ReplayControls({
   recorder,
   replayState,
 }: ReplayControlsProps) {
+  const hasMovesLeft =
+    replayState.currentMoveIndex < replayState.recording.moves.length;
+
   return (
     <div className={styles['replay-controls']}>
       <div className={styles['replay-progress-row']}>
@@ -48,11 +51,13 @@ export function ReplayControls({
           <BlockIcon solid />
         </button>
       </div>
-      <Move
-        className={styles.move}
-        board={board}
-        cellKey={replayState.recording.moves[replayState.currentMoveIndex]}
-      />
+      {hasMovesLeft && (
+        <Move
+          className={styles.move}
+          board={board}
+          cellKey={replayState.recording.moves[replayState.currentMoveIndex]}
+        />
+      )}
     </div>
   );
 }

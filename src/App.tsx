@@ -31,7 +31,7 @@ import { Octicon } from './components/Octicon/Octicon';
 
 const game = new SameGame(new Xorshift32());
 const replayRecorder = new ReplayRecorder(game);
-const hofRecorder = new HallOfFameRecorder(game);
+const hofRecorder = new HallOfFameRecorder(game, replayRecorder);
 
 function App() {
   const [effects, setEffects] = useState<EffectList>([]);

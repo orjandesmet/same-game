@@ -1,6 +1,7 @@
 import type { SameGame } from '../../engine';
 import type { ScoreCard, StartGameParameters } from '../../types';
 import { Recorder } from '../recorder';
+import type { ReplayRecorder } from '../replay/replay-recorder';
 import type { HallOfFameData, HallOfFameDataList } from './types';
 
 export const HOF_STORAGE_KEY = 'same-game-hall-of-fame';
@@ -8,9 +9,15 @@ export const HOF_STORAGE_KEY = 'same-game-hall-of-fame';
 export class HallOfFameRecorder extends Recorder<HallOfFameDataList> {
   private _startGameParameters: StartGameParameters | null = null;
   private _hallOfFameDataList: HallOfFameDataList = [];
+  private _replayRecorder: ReplayRecorder;
 
-  constructor(gameInstance: SameGame, storage = localStorage) {
+  constructor(
+    gameInstance: SameGame,
+    replayRecorder: ReplayRecorder,
+    storage = localStorage
+  ) {
     super(gameInstance, storage);
+    this._replayRecorder = replayRecorder;
     this._gameInstance.addEventListener('START-GAME', this.reset.bind(this));
     this._gameInstance.addEventListener('GAME-OVER', this.store.bind(this));
   }
@@ -38,6 +45,9 @@ export class HallOfFameRecorder extends Recorder<HallOfFameDataList> {
   }
 
   private store(scoreCard: ScoreCard) {
+    if (this._replayRecorder.replayState) {
+      return;
+    }
     const now = new Date();
     const newHoFData: HallOfFameData = {
       date: now.getTime(),
