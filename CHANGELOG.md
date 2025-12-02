@@ -1,3 +1,11 @@
+## 1.2.0 (2025-12-02)
+
+- fix: Do not store in HoF while replaying a recording ([37fc1b1](https://github.com/orjandesmet/same-game/commit/37fc1b1)), closes [#63](https://github.com/orjandesmet/same-game/issues/63)
+- feat: Add a HoF screen with data (#58) ([b01e802](https://github.com/orjandesmet/same-game/commit/b01e802)), closes [#58](https://github.com/orjandesmet/same-game/issues/58)
+- feat: Updated seed icon (#61) ([a83b1b5](https://github.com/orjandesmet/same-game/commit/a83b1b5)), closes [#61](https://github.com/orjandesmet/same-game/issues/61)
+- fix: Use safe space for height ([6de64ad](https://github.com/orjandesmet/same-game/pull/58/commits/6de64ad)), closes [#47](https://github.com/orjandesmet/same-game/issues/47)
+- fix: Use flexbox in Move element ([eed23c5](https://github.com/orjandesmet/same-game/pull/58/commits/eed23c5)), closes [#57](https://github.com/orjandesmet/same-game/issues/57)
+
 ## 1.1.0 (2025-11-26)
 
 - feat: Record and replay (#49) ([71f49c7](https://github.com/orjandesmet/same-game/commit/71f49c7)), closes [#49](https://github.com/orjandesmet/same-game/issues/49)
