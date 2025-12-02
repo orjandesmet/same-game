@@ -27,7 +27,13 @@ export class ReplayRecorder extends Recorder<ReplayRecording> {
   }
 
   private reset(startGameParameters: StartGameParameters) {
-    if (this._replayState) {
+    if (
+      this._replayState &&
+      this._replayState.currentMoveIndex >=
+        this._replayState.recording.moves.length
+    ) {
+      this._replayState = null;
+    } else if (this._replayState) {
       return;
     }
     this._startGameParameters = startGameParameters;
@@ -43,7 +49,6 @@ export class ReplayRecorder extends Recorder<ReplayRecording> {
 
   private store() {
     if (this._replayState) {
-      this._replayState = null;
       return;
     }
     if (!this._startGameParameters) {
@@ -98,10 +103,6 @@ export class ReplayRecorder extends Recorder<ReplayRecording> {
       return false;
     }
     const { recording, currentMoveIndex } = this._replayState;
-    if (currentMoveIndex >= recording.moves.length) {
-      this._replayState = null;
-      return false;
-    }
     const [rowIdx, columnIdx] = recording.moves[currentMoveIndex]
       .split(':')
       .map(Number);

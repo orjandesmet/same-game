@@ -11,7 +11,11 @@ export class HallOfFameRecorder extends Recorder<HallOfFameDataList> {
   private _hallOfFameDataList: HallOfFameDataList = [];
   private _replayRecorder: ReplayRecorder;
 
-  constructor(gameInstance: SameGame, replayRecorder: ReplayRecorder, storage = localStorage) {
+  constructor(
+    gameInstance: SameGame,
+    replayRecorder: ReplayRecorder,
+    storage = localStorage
+  ) {
     super(gameInstance, storage);
     this._replayRecorder = replayRecorder;
     this._gameInstance.addEventListener('START-GAME', this.reset.bind(this));
@@ -41,7 +45,7 @@ export class HallOfFameRecorder extends Recorder<HallOfFameDataList> {
   }
 
   private store(scoreCard: ScoreCard) {
-    if (!!this._replayRecorder.replayState) {
+    if (this._replayRecorder.replayState) {
       return;
     }
     const now = new Date();
