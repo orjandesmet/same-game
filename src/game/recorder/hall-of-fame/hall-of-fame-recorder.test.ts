@@ -11,6 +11,8 @@ import {
 } from 'vitest';
 import { buildBasePartyMembers } from '../../buildBasePartyMembers';
 import { cleanEventListeners } from '../../eventListeners';
+import { ReplayRecorder } from '../replay/replay-recorder';
+import type { ReplayRecording } from '../replay/types';
 import { HallOfFameRecorder, HOF_STORAGE_KEY } from './hall-of-fame-recorder';
 import type { HallOfFameDataList } from './types';
 
@@ -37,11 +39,13 @@ const mockStorage: MockedObject<Storage> = {
 
 describe('HallOfFameRecorder', () => {
   const mockEngine = new SameGameMock();
+  let replayRecorder: ReplayRecorder;
   let hallOfFameRecorder: HallOfFameRecorder;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    hallOfFameRecorder = new HallOfFameRecorder(mockEngine, mockStorage);
+    replayRecorder = new ReplayRecorder(mockEngine, mockStorage);
+    hallOfFameRecorder = new HallOfFameRecorder(mockEngine, replayRecorder, mockStorage);
   });
 
   afterEach(() => {
@@ -115,6 +119,37 @@ describe('HallOfFameRecorder', () => {
         },
       ])
     );
+  });
+
+  it('should ignore the game-over event while replaying a recording', () => {
+    const partyMembers = {
+      ...buildBasePartyMembers(),
+      R: 10,
+      G: 30,
+      B: 20,
+    };
+    const startGameParameters: StartGameParameters = {
+      nrOfColumns: 12,
+      nrOfRows: 8,
+      partyMembers,
+      seed: 1234,
+    };
+    const recording: ReplayRecording = {
+      ...startGameParameters,
+      moves: ['1:3', '5:8'],
+    };
+    replayRecorder.startReplay(recording);
+    mockEngine.startGame(startGameParameters);
+    expect(mockStorage.setItem).not.toHaveBeenCalled();
+    const mockDate = new Date(2022, 3, 10);
+    vi.setSystemTime(mockDate);
+    mockEngine.mockGameOver({
+      allCleared: false,
+      cellsRemoved: 23,
+      creatures: [],
+      multiplier: 2,
+    });
+    expect(mockStorage.setItem).not.toHaveBeenCalled();
   });
 
   it('should handle multiple game-over events', () => {
