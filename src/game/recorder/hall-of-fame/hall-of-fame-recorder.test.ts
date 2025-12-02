@@ -36,6 +36,14 @@ const mockStorage: MockedObject<Storage> = {
   key: vi.fn(),
   length: 0,
 };
+const mockReplayStorage: MockedObject<Storage> = {
+  getItem: vi.fn(),
+  removeItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
+  key: vi.fn(),
+  length: 0,
+};
 
 describe('HallOfFameRecorder', () => {
   const mockEngine = new SameGameMock();
@@ -44,7 +52,7 @@ describe('HallOfFameRecorder', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    replayRecorder = new ReplayRecorder(mockEngine, mockStorage);
+    replayRecorder = new ReplayRecorder(mockEngine, mockReplayStorage);
     hallOfFameRecorder = new HallOfFameRecorder(mockEngine, replayRecorder, mockStorage);
   });
 
