@@ -1,3 +1,7 @@
+## 1.2.1 (2026-01-03)
+
+- fix: creature backgrounds for pi (#73) ([67a752d](https://github.com/orjandesmet/same-game/commit/67a752d)), closes [#72](https://github.com/orjandesmet/same-game/issues/72)
+
 ## 1.2.0 (2025-12-02)
 
 - fix: Do not store in HoF while replaying a recording ([37fc1b1](https://github.com/orjandesmet/same-game/commit/37fc1b1)), closes [#63](https://github.com/orjandesmet/same-game/issues/63)
