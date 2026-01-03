@@ -15,11 +15,11 @@
     background-image: var(--i-img-b, url('/creatures/B-0.png'));
 
     &.b-1 {
-      background-image: var(--i-img-r, url('/creatures/B-1.png'));
+      background-image: var(--i-img-b, url('/creatures/B-1.png'));
     }
 
     &.b-2 {
-      background-image: var(--i-img-r, url('/creatures/B-2.png'));
+      background-image: var(--i-img-b, url('/creatures/B-2.png'));
     }
   }
 
@@ -27,11 +27,11 @@
     background-image: var(--i-img-g, url('/creatures/G-0.png'));
 
     &.g-1 {
-      background-image: var(--i-img-r, url('/creatures/G-1.png'));
+      background-image: var(--i-img-g, url('/creatures/G-1.png'));
     }
 
     &.g-2 {
-      background-image: var(--i-img-r, url('/creatures/G-2.png'));
+      background-image: var(--i-img-g, url('/creatures/G-2.png'));
     }
   }
 
