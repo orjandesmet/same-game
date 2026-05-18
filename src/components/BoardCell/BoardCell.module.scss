@@ -51,6 +51,10 @@
     background-color: var(--i-color-w);
   }
 
+  &.is-color-hidden {
+    background-color: color-mix(in srgb, black 20%, white);
+  }
+
   &.with-creature {
     @include creature-backgrounds.add-leveled-backgrounds;
   }

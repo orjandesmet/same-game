@@ -9,6 +9,7 @@ export type EffectName =
   | 'THUNDER SHOCK'
   | 'TRANSFORM'
   | 'METRONOME'
+  | 'CONFUSE RAY'
   | 'FAINT';
 
 export type EffectGroupFn = (

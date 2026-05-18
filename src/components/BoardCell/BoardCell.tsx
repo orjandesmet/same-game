@@ -13,6 +13,7 @@ type CellProps = {
   style: CSSProperties;
   onCellClick?: () => void;
   isDisabled?: boolean;
+  isColorHidden?: boolean;
 };
 
 export function BoardCell({
@@ -21,6 +22,7 @@ export function BoardCell({
   style,
   isDisabled,
   onCellClick,
+  isColorHidden = false,
 }: CellProps) {
   if (cellUtils.isEmptyCell(cell)) {
     return (
@@ -33,12 +35,14 @@ export function BoardCell({
   }
   const classNames = clsx(
     styles.cell,
-    cell.hasCreature && styles['with-creature'],
+    isColorHidden && styles['is-color-hidden'],
+    !isColorHidden && cell.hasCreature && styles['with-creature'],
     cell.hasSpecialCreature && styles.m,
-    styles[cell.color.toLowerCase()],
-    styles[
-      `${cell.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(cell.color as Color, cell.level)}`
-    ],
+    !isColorHidden && styles[cell.color.toLowerCase()],
+    !isColorHidden &&
+      styles[
+        `${cell.color.toLowerCase()}-${creatureUtils.getEvolutionIdx(cell.color as Color, cell.level)}`
+      ],
     cell.cellState === 'BURNING' && styles.burning,
     cell.cellState === 'FLOODED' && styles.flooded,
     cell.cellState === 'CUTTING' && styles.cutting,

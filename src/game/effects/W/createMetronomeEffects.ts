@@ -13,6 +13,8 @@ type GetEffectsFn = (
   rng: Readonly<PRNG>
 ) => Effects | null;
 
+type MetronomeTarget = Color | 'CONFUSE_RAY';
+
 export function createMetronomeEffects(
   allGroups: Group[],
   party: Partial<PartyMembers>,
@@ -20,16 +22,22 @@ export function createMetronomeEffects(
   getEffectsForCell: GetEffectsFn,
   cellHasSpecialCreature: boolean
 ) {
-  const metronomeTargetColors = COLORS.filter(isMetronomeTarget);
+  const metronomeTargetColors: MetronomeTarget[] = [
+    ...COLORS.filter(isMetronomeTarget),
+    'CONFUSE_RAY',
+  ];
   const metronomeTarget =
     metronomeTargetColors[rng.nextRange(0, metronomeTargetColors.length)];
-  const randomResult = getEffectsForCell(
-    metronomeTarget,
-    cellHasSpecialCreature,
-    allGroups,
-    party,
-    rng
-  );
+  const randomResult =
+    metronomeTarget === 'CONFUSE_RAY'
+      ? createConfuseRayEffects(party, cellHasSpecialCreature)
+      : getEffectsForCell(
+          metronomeTarget,
+          cellHasSpecialCreature,
+          allGroups,
+          party,
+          rng
+        );
   if (!randomResult) {
     return null;
   }
@@ -52,4 +60,23 @@ export function createMetronomeEffects(
 
 function isMetronomeTarget(color: Color) {
   return color !== 'W';
+}
+
+function createConfuseRayEffects(
+  party: Partial<PartyMembers>,
+  cellHasSpecialCreature: boolean
+): Effects {
+  return {
+    groupFn: () => [],
+    stages: [
+      {
+        color: 'W',
+        level: party['W'] ?? 1,
+        effectName: 'CONFUSE RAY',
+        hasSpecialCreature: cellHasSpecialCreature,
+        fn: (board) => board,
+        duration: 0,
+      },
+    ],
+  };
 }

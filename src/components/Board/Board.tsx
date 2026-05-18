@@ -8,6 +8,7 @@ type BoardProps = PropsWithChildren<{
   onCellClick: (rowIdx: number, columnIdx: number) => void;
   isGameOver: boolean;
   isDisabled: boolean;
+  hideColors: boolean;
 }>;
 
 export function Board({
@@ -15,6 +16,7 @@ export function Board({
   onCellClick,
   isDisabled,
   isGameOver,
+  hideColors,
   children,
 }: BoardProps) {
   if (board.length === 0 || board[0].length === 0) {
@@ -43,6 +45,7 @@ export function Board({
                 style={cellStyles}
                 onCellClick={() => onCellClick(rowIdx, columnIdx)}
                 isDisabled={isDisabled}
+                isColorHidden={hideColors}
               />
             );
           })

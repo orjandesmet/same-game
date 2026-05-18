@@ -22,6 +22,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type CSSProperties,
 } from 'react';
@@ -32,11 +33,14 @@ import { Octicon } from './components/Octicon/Octicon';
 const game = new SameGame(new Xorshift32());
 const replayRecorder = new ReplayRecorder(game);
 const hofRecorder = new HallOfFameRecorder(game, replayRecorder);
+const CONFUSE_RAY_MOVES = 3;
 
 function App() {
   const [effects, setEffects] = useState<EffectList>([]);
   const [recording, setRecording] = useState<ReplayRecording | null>(null);
   const [hofData, setHofData] = useState<HallOfFameDataList | null>(null);
+  const [hiddenColorMovesLeft, setHiddenColorMovesLeft] = useState(0);
+  const confuseRayTimeoutRef = useRef<number | null>(null);
 
   const {
     nrOfColumns,
@@ -58,6 +62,23 @@ function App() {
   const handleCellClick = useCallback(
     (rowIdx: RowIdx, columnIdx: ColumnIdx) => {
       const effects = game.handleCellClick(rowIdx, columnIdx);
+      const hasConfuseRay = effects.some(
+        (effect) => effect.effectName === 'CONFUSE RAY'
+      );
+      const effectDuration = effectUtils.calculateEffectsDuration(effects);
+
+      if (confuseRayTimeoutRef.current !== null) {
+        clearTimeout(confuseRayTimeoutRef.current);
+        confuseRayTimeoutRef.current = null;
+      }
+
+      if (hasConfuseRay) {
+        confuseRayTimeoutRef.current = window.setTimeout(() => {
+          setHiddenColorMovesLeft(CONFUSE_RAY_MOVES);
+          confuseRayTimeoutRef.current = null;
+        }, effectDuration);
+      }
+
       setEffects(
         effects
           .filter(effectUtils.isVisibleEffectStage)
@@ -70,18 +91,42 @@ function App() {
       );
       setTimeout(() => {
         setEffects([]);
-      }, effectUtils.calculateEffectsDuration(effects));
+      }, effectDuration);
     },
     []
   );
 
   useEffect(() => {
+    const moveAddedListener = () => {
+      setHiddenColorMovesLeft((previous) => Math.max(0, previous - 1));
+    };
+    game.addEventListener('MOVE-ADDED', moveAddedListener);
+
+    return () => {
+      game.removeEventListener('MOVE-ADDED', moveAddedListener);
+    };
+  }, []);
+
+  useEffect(() => {
     game.enableDebugMode(isDebugging);
 
     if (isReady) {
+      if (confuseRayTimeoutRef.current !== null) {
+        clearTimeout(confuseRayTimeoutRef.current);
+        confuseRayTimeoutRef.current = null;
+      }
+      setHiddenColorMovesLeft(0);
       game.startGame({ nrOfRows, nrOfColumns, partyMembers, seed });
     }
   }, [nrOfRows, nrOfColumns, partyMembers, seed, isDebugging, isReady]);
+
+  useEffect(() => {
+    return () => {
+      if (confuseRayTimeoutRef.current !== null) {
+        clearTimeout(confuseRayTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const recorderListener = setRecording;
@@ -129,6 +174,7 @@ function App() {
         onCellClick={handleCellClick}
         isDisabled={!!recording && !!replayRecorder.replayState}
         isGameOver={gameState === 'GAME-OVER'}
+        hideColors={hiddenColorMovesLeft > 0}
       >
         <GameOverScreen
           onRestartClick={createNewSeed}

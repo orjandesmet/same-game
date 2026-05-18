@@ -11,6 +11,13 @@ const mockRNG: PRNG = {
   seed: 123456,
 };
 
+const mockConfuseRayRNG: PRNG = {
+  nextFloat: () => 0.123,
+  nextRange: () => 5,
+  reseed: () => {},
+  seed: 123456,
+};
+
 describe('createMetronomeEffects', () => {
   it('should get a random effect and add the metronome stage before it', () => {
     const party: Partial<PartyMembers> = { R: 100 };
@@ -87,5 +94,24 @@ describe('createMetronomeEffects', () => {
     );
 
     expect(metronomeEffect).toBeNull();
+  });
+
+  it('should create a confuse ray stage when metronome selects it', () => {
+    const party: Partial<PartyMembers> = { W: 24 };
+    const mockGetEffectsForCell = vi.fn(() => null);
+
+    const metronomeEffect = createMetronomeEffects(
+      [],
+      party,
+      mockConfuseRayRNG,
+      mockGetEffectsForCell,
+      false
+    );
+
+    expect(mockGetEffectsForCell).not.toHaveBeenCalled();
+    expect(metronomeEffect).not.toBeNull();
+    expect(metronomeEffect?.stages).toHaveLength(2);
+    expect(metronomeEffect?.stages.at(0)?.effectName).toBe('METRONOME');
+    expect(metronomeEffect?.stages.at(1)?.effectName).toBe('CONFUSE RAY');
   });
 });
